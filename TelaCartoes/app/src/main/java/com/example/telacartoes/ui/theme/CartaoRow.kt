@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.telacartoes.Cartao
+import com.example.telacartoes.Cartoes
 
 @Preview(
     showBackground = true,
@@ -26,7 +27,7 @@ fun CartaoRow(
 ) {
     LazyRow(
         modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(20.dp),
         contentPadding = PaddingValues(
             horizontal = 16.dp
         )
@@ -35,19 +36,6 @@ fun CartaoRow(
             Cartao(
                 numeroCartao = cartao.numeroCartao
             )
-        }
-    }
-}
-
-
-data class Cartoes(
-    val numeroCartao: String
-) {
-    companion object{
-        fun getMockList(): List<Cartoes> {
-            return List(3) {
-                Cartoes(numeroCartao = "000$it")
-            }
         }
     }
 }
