@@ -49,29 +49,13 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
     Scaffold(
         topBar = {
             TopBar()
-        }
+        },
     ) { padding ->
         LazyColumn(
             contentPadding = padding
         ) {
-
             item {
-                Spacer(modifier = modifier.height(30.dp))
-            }
-
-            item {
-                LazyRow(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    contentPadding = PaddingValues(
-                        horizontal = 16.dp
-                    )
-                ) {
-                    items(Cartoes.getMockList()) { cartao ->
-                        Cartao(
-                            numeroCartao = cartao.numeroCartao
-                        )
-                    }
-                }
+                CartaoRow()
             }
         }
 

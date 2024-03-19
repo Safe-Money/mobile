@@ -14,9 +14,13 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -26,6 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
 import androidx.compose.ui.unit.sp
+import com.example.telacartoes.ui.theme.CardTypography
 
 @Preview
 @Composable
@@ -41,26 +46,31 @@ fun Cartao(
 
     Box(
         modifier = modifier
-            .width(300.dp)
+            .width(260.dp)
             .height(160.dp)
+            .clip(RoundedCornerShape(16.dp))
     ) {
         // Imagem de fundo
         Image(
-            painter = painterResource(id = R.drawable.image_cartao),
+            painter = painterResource(id = R.drawable.image_card),
             contentDescription = null,
-            contentScale = ContentScale.FillBounds,
-            modifier = modifier.widthIn(min = 300.dp).fillMaxHeight()
+            contentScale = ContentScale.Crop,
+            modifier = modifier
+                .widthIn(min = 300.dp)
+                .fillMaxHeight()
         )
 
         Column (
             modifier = modifier
-                .fillMaxWidth()
-                .padding(16.dp)
+                .fillMaxSize()
+                .padding(16.dp, 24.dp),
+            verticalArrangement = Arrangement.SpaceBetween
         ){
             Row(
                 modifier = modifier
                     .fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.logo_visa5),
@@ -69,87 +79,85 @@ fun Cartao(
                         .width(40.dp)
                 )
 
-                Row () {
+                Row (
+                    modifier = modifier.width(90.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     Text(
                         text = "Limite:",
-                        color = Color.White,
-                        textAlign = TextAlign.Center,
-                        fontSize = 13.sp
+                        style = CardTypography.bodySmall
                     )
 
                     Text(
                         text = "2.000,00",
-                        color = Color.White,
-                        textAlign = TextAlign.Center,
-                        fontSize = 13.sp,
-                        fontWeight = FontWeight.Bold
+                        style = CardTypography.bodyLarge
                     )
                 }
 
             }
 
-            Row(
+            Column(
                 modifier = modifier
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+                    .height(40.dp),
+                verticalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(
-                    text = "****  $numeroCartao",
-                    color = Color.White,
-                    textAlign = TextAlign.Center,
-                    fontSize = 13.sp,
-                    fontWeight = FontWeight.Bold
-                )
-
-                Row() {
+                Row(
+                    modifier = modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     Text(
-                        text = "Fechamento:",
-                        color = Color.White,
-                        textAlign = TextAlign.Center,
-                        fontSize = 13.sp
+                        text = "****  $numeroCartao",
+                        style = CardTypography.bodyLarge
                     )
 
-                    Text(
-                        text = "21/10",
-                        color = Color.White,
-                        textAlign = TextAlign.Center,
-                        fontSize = 13.sp,
-                        fontWeight = FontWeight.Bold
-                    )
+                    Row(
+                        modifier = modifier.width(100.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            text = "Fechamento:",
+                            style = CardTypography.bodySmall
+                        )
+
+                        Text(
+                            text = "21/10",
+                            style = CardTypography.bodyLarge
+                        )
+                    }
+
                 }
 
-            }
-
-            Row(
-                modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    text = "Apelido do cartão",
-                    color = Color.White,
-                    textAlign = TextAlign.Center,
-                    fontSize = 13.sp,
-                    fontWeight = FontWeight.Bold
-                )
-
-                Row () {
+                Row(
+                    modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     Text(
-                        text = "Vencimento:",
-                        color = Color.White,
-                        textAlign = TextAlign.Center,
-                        fontSize = 13.sp
+                        text = "Apelido do cartão",
+                        style = CardTypography.bodyLarge
                     )
 
-                    Text(
-                        text = "29/10",
-                        color = Color.White,
-                        textAlign = TextAlign.Center,
-                        fontSize = 13.sp,
-                        fontWeight = FontWeight.Bold
-                    )
+                    Row (
+                        modifier = modifier.width(100.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            text = "Vencimento:",
+                            style = CardTypography.bodySmall
+                        )
+
+                        Text(
+                            text = "29/10",
+                            style = CardTypography.bodyLarge
+                        )
+                    }
+
                 }
-
             }
+
         }
     }
 }

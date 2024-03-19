@@ -11,4 +11,10 @@ val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
 
 val Branco = Color(0xFFFCFCFC)
+
+val CinzaDivisor = Color(0xFFCDCDCD)
+val CinzaLetra = Color(0xFFA7A7A7)
+
+val VerdeClaro = Color(0xFF98D389)
+
 val Vermelho = Color(0xFFFF4545)
