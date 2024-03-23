@@ -40,6 +40,7 @@ import androidx.compose.runtime.currentCompositionLocalContext
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -66,20 +67,30 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun ThreeContainersWithList() {
-    var greens = Color(R.color.verdeSafeMoney)
+
     val listaContas = listOf(
-        ContaBancaria(R.drawable.peixes, "Banco A", "R$ 5.000,00"),
-        ContaBancaria(R.drawable.img_primeira, "Banco B", "R$ 3.200,00"),
-        ContaBancaria(R.drawable.ic_launcher_foreground, "Banco C", "R$ 8.500,00"),
-        ContaBancaria(R.drawable.ic_launcher_foreground, "Banco D", "R$ 8.500,00")
+        ContaBancaria(R.drawable.logo_bradesco, "Banco A", 5000.00),
+        ContaBancaria(R.drawable.logo_santander, "Banco B", -3200.00),
+        ContaBancaria(R.drawable.logo_itau, "Banco C", 8500.00),
+        ContaBancaria(R.drawable.logo_santander, "Banco D", 8500.00)
         // Adicione mais contas conforme necessário
     )
     val listaCartao = listOf(
-        CartaoBancario(R.drawable.peixes, "Banco A", "R$ 5.000,00", "R$5.000,00"),
-        CartaoBancario(R.drawable.img_primeira, "Banco B", "R$ 3.200,00", "R$5.000,00"),
-        CartaoBancario(R.drawable.ic_launcher_foreground, "Banco C", "R$ 8.500,00", "R$5.000,00")
+        CartaoBancario(R.drawable.logo_elo, "Banco A", 5000.00, 5000.00),
+        CartaoBancario(R.drawable.logo_visa, "Banco B", 3200.00, 5000.00),
+        CartaoBancario(R.drawable.logo_mastercard, "Banco C", 8500.00, 5000.00)
         // Adicione mais contas conforme necessário
     )
+
+    val listaTransacao = listOf(
+        TransacaoBancaria(R.drawable.icon_shopping, "Shopping", "01/10", 5000.00),
+        TransacaoBancaria(R.drawable.icon_academia, "Academia", "01/11", 5000.00),
+        TransacaoBancaria(R.drawable.icon_saude, "Farmácia", "04/12", 5000.00),
+        TransacaoBancaria(R.drawable.icon_saude, "Amazon", "04/12", 5000.00) ,
+        TransacaoBancaria(R.drawable.icon_shopping, "Consulta", "04/12", 5000.00)
+        // Adicione mais contas conforme necessário
+    )                                                                                                     
+    
 
     LazyColumn(
         modifier = Modifier.fillMaxSize()
@@ -108,10 +119,11 @@ fun ThreeContainersWithList() {
                     ) {
                         // Imagem à esquerda
                         Image(
-                            painter = painterResource(id = R.drawable.peixes),
+                            painter = painterResource(id = R.drawable.safemoney_logo),
                             contentDescription = null,
                             modifier = Modifier
-                                .size(40.dp),
+                                .size(30.dp)
+                                .padding(top = 8.dp)
                         )
 
                         // Texto no centro
@@ -130,7 +142,7 @@ fun ThreeContainersWithList() {
 
                         // Imagem à direita
                         Image(
-                            painter = painterResource(id = R.drawable.peixes),
+                            painter = painterResource(id = R.drawable.sino),
                             contentDescription = null,
                             modifier = Modifier
                                 .size(40.dp)
@@ -169,7 +181,8 @@ fun ThreeContainersWithList() {
                         .height(250.dp)
                         .width(300.dp)
                         .padding(8.dp, top = 170.dp)
-                        .border(1.dp, Color.Black, shape = RoundedCornerShape(8.dp)) // Adiciona borda com raio de curvatura
+                        .clip(shape = RoundedCornerShape(8.dp))
+                        .shadow(elevation = 20.dp,)
                         .background(Color.White) // Define o fundo branco
                         .align(Alignment.Center)
                 ) {
@@ -181,31 +194,68 @@ fun ThreeContainersWithList() {
                         horizontalArrangement = Arrangement.SpaceAround,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.peixes),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .size(40.dp)
-                                .clip(CircleShape)
-                                .zIndex(1f)
-                        )
+                        Column() {
+                            Image(
+                                painter = painterResource(id = R.drawable.receita_logo),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .size(40.dp)
+                                    .clip(CircleShape)
+                                    .zIndex(1f)
+                                    .padding(horizontal = 3.dp)
+                                    .align(Alignment.CenterHorizontally)
+                            )
+                            Text(
+                                text = "Receita",
+                                style = TextStyle(
+                                    fontSize = 12.sp,
+                                ),
+                                color = Color.Black
+                            )
+                        }
 
                         // Imagem 2
-                        Image(
-                            painter = painterResource(id = R.drawable.img_primeira),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .size(40.dp)
-                                .padding(horizontal = 8.dp) // Adapte o espaçamento conforme necessário
-                        )
+                        Column{
+                            Image(
+                                painter = painterResource(id = R.drawable.despesa_logo),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .size(40.dp)
+                                    .align(Alignment.CenterHorizontally)
+                                    .padding(horizontal = 3.dp) // Adapte o espaçamento conforme necessário
+                            )
+
+                            Text(
+                                text = "Despesa",
+                                style = TextStyle(
+                                    fontSize = 12.sp,
+                                ),
+                                modifier = Modifier,
+                                color = Color.Black
+                            )
+                        }
 
                         // Imagem 3
-                        Image(
-                            painter = painterResource(id = R.drawable.ic_launcher_foreground),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .size(40.dp)
-                        )
+
+                        Column() {
+                            Image(
+                                painter = painterResource(id = R.drawable.transferencia_logo),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .size(40.dp)
+                                    .padding(horizontal = 3.dp)
+                                    .align(Alignment.CenterHorizontally)
+                            )
+
+                            Text(
+                                text = "Transição",
+                                style = TextStyle(
+                                    fontSize = 12.sp,
+                                ),
+                                modifier = Modifier,
+                                color = Color.Black
+                            )
+                        }
                     }
                 }
             }
@@ -236,7 +286,8 @@ fun ThreeContainersWithList() {
         item {
             Container2("Cartões", 60) {
                 LazyColumn(
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
                         .height(175.dp)
                     ,
                     contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
@@ -254,103 +305,105 @@ fun ThreeContainersWithList() {
         }
 
         item {
-            Container("Transações Recentes", 60) {
+            Container3("Transações Recentes", 60) {
                 LazyColumn(
                     modifier = Modifier
-                        .height(175.dp)
+                        .height(250.dp)
                         .fillMaxWidth()
                 ) {
-                    items(listaContas) { conta ->
-                        ContasTableRow(
+                    items(listaTransacao.take(5)) { conta ->
+                        TransacaoTableRow(
                             imagemResId = conta.imagemResId,
-                            nomeBanco = conta.nomeBanco,
-                            saldo = conta.saldo
+                            nomeTransacao = conta.nomeTransacao,
+                            data = conta.data,
+                            valor= conta.valor
                         )
                     }
                 }
             }
         }
         item {
-            Container("Previsão final do mes", 60) {
-                    ColumnWithTwoRows()
-
+            Container4("Previsão final do mês", 60) {
+                Row(
+                    modifier = Modifier.fillMaxWidth()
+                        .padding(16.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Box(
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        BarGraph(
+                            graphBarData = listOf(0.5f, 0.8f),
+                            xAxisScaleData = listOf(1, 2),
+                            barData_ = listOf(0, 1500, 3000, 4500, 6000),
+                            height = 200.dp,
+                            roundType = BarType.TOP_CURVED,
+                            barWidth = 55.dp,
+                            barColor = Color.Green, // Lista de cores para as barras
+                            barArrangement = Arrangement.SpaceEvenly
+                        )
+                    }
+                    Column(
+                        modifier = Modifier.padding(start = 16.dp),
+                    ) {
+                        Text(
+                            text = "Receita: R$4.500,00",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = Color(0XFF030303),
+                                    modifier = Modifier.border(1.dp, Color.Black, CircleShape)
+                                        .padding(6.dp)// Adicionar borda circular
+                        )
+                        Text(
+                            text = "Despesa: R$4.500,00",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = Color(0XFF030303),
+                                    modifier = Modifier.border(1.dp, Color.Black, CircleShape)
+                            .padding(6.dp)
+                        )
+                        Text(
+                            text = "Balanço: R$4.500,00",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = Color(0XFF030303),
+                                    modifier = Modifier.border(1.dp, Color.Black, CircleShape)
+                            .padding(6.dp)
+                        )
+                    }
+                }
             }
         }
+
 
         item { Spacer(modifier = Modifier.height(20.dp)) }
     }
 }
 
-@Composable
-fun ColumnWithTwoRows() {
-    // Dados de exemplo para as colunas
-    val data = listOf(
-        Pair("Categoria A", 100),
-        Pair("Categoria B", 200),
-        Pair("Categoria C", 150),
-        Pair("Categoria D", 300)
-    )
-
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-    ) {
-        // Itera sobre os dados e cria uma linha para cada par de dados
-        data.forEach { (label, value) ->
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp)
-            ) {
-                // Rótulo da categoria
-                Text(
-                    text = label,
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(end = 8.dp)
-                        .align(Alignment.CenterVertically)
-                )
-
-                // Barra representando o valor
-                Box(
-                    modifier = Modifier
-                        .weight(3f)
-                        .height(20.dp)
-                        .background(Color.Gray)
-                ) {
-                    // Ajusta a largura da barra de acordo com o valor
-                    Box(
-                        modifier = Modifier
-                            .fillMaxHeight()
-                            .fillMaxWidth(value.toFloat() / data.maxOf { it.second }.toFloat())
-                            .background(Color.Red)
-                    )
-                }
-            }
-        }
-    }
-}
-
-
 data class ContaBancaria(
     @DrawableRes val imagemResId: Int,
     val nomeBanco: String,
-    val saldo: String
+    val saldo: Double
 )
 data class CartaoBancario(
     @DrawableRes val imagemResId: Int,
     val nomeBanco: String,
-    val fatura: String,
-    val disponivel: String
+    val fatura: Double,
+    val disponivel: Double
+)
+
+data class TransacaoBancaria(
+     @DrawableRes val imagemResId: Int,
+     val nomeTransacao: String,
+     val data: String,
+     val valor: Double
 )
 
 @Composable
 fun ContasTableRow(
     @DrawableRes imagemResId: Int,
     nomeBanco: String,
-    saldo: String
+    saldo: Double
 ) {
+    val textColor = if (saldo > 0) Color.Green else Color.Red
+
     Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -364,7 +417,7 @@ fun ContasTableRow(
                 painter = painterResource(id = imagemResId),
                 contentDescription = null,
                 modifier = Modifier
-                    .weight(0.15f)
+                    .weight(0.12f)
                     .size(40.dp)
                     .clip(CircleShape)
             )
@@ -372,18 +425,31 @@ fun ContasTableRow(
             Spacer(modifier = Modifier.width(8.dp))
 
             // Parte 2: Nome do Banco
-            Text(
-                text = nomeBanco,
-                style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier.weight(0.55f)
-            )
+            Column(                                                     
+                      modifier = Modifier.weight(0.55f)
+            ) {                                                          
+                        Text(                                           
+                            text = nomeBanco,                           
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = Color(0XFF030303)                   
+                        )                                               
+                        Text(                                           
+                            text = "Vencimento 01/10",                  
+                            style = TextStyle(                          
+                                fontSize = 8.sp                         
+                            ),                                          
+                            color = Color(0XFF565656)                   
+                        )                                               
+            }                                                           
 
             Spacer(modifier = Modifier.width(8.dp))
 
             // Parte 3: Saldo
             Text(
-                text = saldo,
+                text = "R$ $saldo" ,
                 style = MaterialTheme.typography.bodyMedium,
+                color = textColor,
+                textAlign = TextAlign.Center,
                 modifier = Modifier.weight(0.3f)
             )
     }
@@ -391,7 +457,7 @@ fun ContasTableRow(
         modifier = Modifier
             .fillMaxWidth()
             .height(1.dp)
-            .background(color = Color.Gray)
+            .background(color = Color(0XFFCDCDCD))
     )
 }
 
@@ -399,13 +465,16 @@ fun ContasTableRow(
 fun CartoesTableRow(
     @DrawableRes imagemResId: Int,
     nomeBanco: String,
-    fatura:String,
-    disponivel: String
+    fatura:Double,
+    disponivel: Double
 ) {
+
+        val textColor = if (fatura > 0) Color.Green else Color.Red
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp),
+            .padding(top = 8.dp, bottom = 8.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -414,7 +483,7 @@ fun CartoesTableRow(
             painter = painterResource(id = imagemResId),
             contentDescription = null,
             modifier = Modifier
-                .weight(0.15f)
+                .weight(0.12f)
                 .size(40.dp)
                 .clip(CircleShape)
         )
@@ -422,26 +491,42 @@ fun CartoesTableRow(
         Spacer(modifier = Modifier.width(8.dp))
 
         // Parte 2: Nome do Banco
-        Text(
-            text = nomeBanco,
-            style = MaterialTheme.typography.bodyMedium,
-            modifier = Modifier.weight(0.25f)
-        )
+
+        Column(
+                  modifier = Modifier.weight(0.28f)
+        ) {
+                    Text(
+                        text = nomeBanco,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = Color(0XFF030303)
+                    )
+                    Text(
+                        text = "Vencimento 01/10",
+                        style = TextStyle(
+                            fontSize = 8.sp
+                        ),
+                        color = Color(0XFF565656)
+                    )
+        }
 
         Spacer(modifier = Modifier.width(8.dp))
 
         // Parte 3: fatura
         Text(
-            text = fatura,
+            text = "R$ $fatura",
             style = MaterialTheme.typography.bodyMedium,
+            color = textColor,
+            textAlign = TextAlign.Center,
             modifier = Modifier.weight(0.3f)
         )
         Spacer(modifier = Modifier.width(8.dp))
 
         // Parte 3: disponivel
         Text(
-            text = disponivel,
+            text = "R$ $disponivel",
             style = MaterialTheme.typography.bodyMedium,
+            color = Color(0XFFC568F6),
+            textAlign = TextAlign.Center,
             modifier = Modifier.weight(0.3f)
         )
     }
@@ -449,20 +534,96 @@ fun CartoesTableRow(
         modifier = Modifier
             .fillMaxWidth()
             .height(1.dp)
-            .background(color = Color.Gray)
+            .background(color = Color(0XFFCDCDCD))
     )
 }
+   @Composable                                                                                                                                                                                       
+   fun TransacaoTableRow(
+       @DrawableRes imagemResId: Int,                                                                                                                                                                
+       nomeTransacao: String,
+       data: String,
+       valor: Double
+   ) {                                                                                                                                                                                               
+
+       Row(                                                                                                                                                                                          
+           modifier = Modifier
+               .fillMaxWidth()
+               .padding(top = 4.dp, bottom = 4.dp),
+           horizontalArrangement = Arrangement.SpaceBetween,                                                                                                                                         
+           verticalAlignment = Alignment.CenterVertically                                                                                                                                            
+       ) {                                                                                                                                                                                            
+           // Parte 1: Imagem                                                                                                                                                                        
+           Image(                                                                                                                                                                                    
+               painter = painterResource(id = imagemResId),                                                                                                                                          
+               contentDescription = null,                                                                                                                                                            
+               modifier = Modifier                                                                                                                                                                   
+                   .weight(0.12f)                                                                                                                                                                    
+                   .size(40.dp)
+                   .clip(CircleShape)                                                                                                                                                                
+           )                                                                                                                                                                                         
+                                                                                                                                                                                                     
+           Spacer(modifier = Modifier.width(8.dp))                                                                                                                                                   
+                                                                                                                                                                                                     
+           // Parte 2: Nome do Banco                                                                                                                                                                 
+                                                                                                                                                                                                     
+           Column(                                                                                                                                                                                   
+                     modifier = Modifier.weight(0.28f)                                                                                                                                               
+           ) {                                                                                                                                                                                        
+                       Text(                                                                                                                                                                         
+                           text = nomeTransacao,
+                           style = MaterialTheme.typography.bodyMedium,                                                                                                                              
+                           color = Color(0XFF030303)                                                                                                                                                 
+                       )                                                                                                                                                                             
+                       Text(                                                                                                                                                                         
+                           text = "Débito",
+                           style = TextStyle(                                                                                                                                                        
+                               fontSize = 8.sp                                                                                                                                                       
+                           ),                                                                                                                                                                        
+                           color = Color(0XFF565656)                                                                                                                                                 
+                       )                                                                                                                                                                             
+           }                                                                                                                                                                                         
+                                                                                                                                                                                                     
+           Spacer(modifier = Modifier.width(8.dp))                                                                                                                                                   
+                                                                                                                                                                                                     
+           // Parte 3: fatura                                                                                                                                                                        
+           Text(                                                                                                                                                                                     
+               text = "R$ $data",
+               style = MaterialTheme.typography.bodyMedium,                                                                                                                                          
+               color = Color(0xFF3A3A3A),
+               textAlign = TextAlign.Center,                                                                                                                                                         
+               modifier = Modifier.weight(0.3f)                                                                                                                                                      
+           )                                                                                                                                                                                         
+           Spacer(modifier = Modifier.width(8.dp))                                                                                                                                                   
+                                                                                                                                                                                                     
+           // Parte 3: disponivel                                                                                                                                                                    
+           Text(                                                                                                                                                                                     
+               text = "R$ $valor",
+               style = MaterialTheme.typography.bodyMedium,                                                                                                                                          
+               color = Color(0XFF3A3A3A),
+               textAlign = TextAlign.Center,                                                                                                                                                         
+               modifier = Modifier.weight(0.3f)                                                                                                                                                      
+           )                                                                                                                                                                                         
+       }                                                                                                                                                                                             
+       Spacer(                                                                                                                                                                                       
+           modifier = Modifier                                                                                                                                                                       
+               .fillMaxWidth()                                                                                                                                                                       
+               .height(1.dp)                                                                                                                                                                         
+               .background(color = Color(0XFFCDCDCD))                                                                                                                                                
+       )                                                                                                                                                                                             
+   }
+
+
 
 @Composable
 fun Container(title: String, distancia: Int, content: @Composable (() -> Unit)? = null) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top=distancia.dp, start = 8.dp, end = 8.dp)
+            .padding(top = distancia.dp, start = 16.dp, end = 16.dp)
     ) {
         Row() {
             Image(
-                painter = painterResource(id = R.drawable.peixes), // Substitua pelo recurso de imagem adequado
+                painter = painterResource(id = R.drawable.container_logo), // Substitua pelo recurso de imagem adequado
                 contentDescription = null,
                 modifier = Modifier
                     .size(40.dp)
@@ -473,24 +634,12 @@ fun Container(title: String, distancia: Int, content: @Composable (() -> Unit)? 
             Text(
                 text = title,
                 style = TextStyle(
-                    fontWeight = FontWeight.Bold,
+                    fontWeight = FontWeight.Medium,
                     fontSize = 18.sp
 
                 ),
                 modifier = Modifier
                     .weight(0.4f)
-                    .padding(8.dp)
-                    .align(Alignment.Top)
-            )
-            Text(
-                text = "Ver Todos >",
-                style = TextStyle(
-                    fontWeight = FontWeight.Normal,
-                    fontSize = 15.sp
-
-                ),
-                modifier = Modifier
-                    .weight(0.2f)
                     .padding(8.dp)
                     .align(Alignment.Top)
             )
@@ -508,7 +657,11 @@ fun Container(title: String, distancia: Int, content: @Composable (() -> Unit)? 
             )
             Text(
                 text = "saldo",
-                style = MaterialTheme.typography.bodyLarge,
+                color = Color(0XFFA7A7A7),
+                 style = TextStyle(
+                     fontSize = 12.sp
+                 ),
+                textAlign = TextAlign.Center,
                 modifier = Modifier
                     .weight(0.3f)
             )
@@ -522,11 +675,11 @@ fun Container2(title: String, distancia: Int, content: @Composable (() -> Unit)?
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top=distancia.dp, start = 8.dp, end = 8.dp)
+            .padding(top = distancia.dp, start = 16.dp, end = 16.dp)
     ) {
         Row() {
             Image(
-                painter = painterResource(id = R.drawable.peixes), // Substitua pelo recurso de imagem adequado
+                painter = painterResource(id = R.drawable.container_logo), // Substitua pelo recurso de imagem adequado
                 contentDescription = null,
                 modifier = Modifier
                     .size(40.dp)
@@ -537,7 +690,7 @@ fun Container2(title: String, distancia: Int, content: @Composable (() -> Unit)?
             Text(
                 text = title,
                 style = TextStyle(
-                    fontWeight = FontWeight.Bold,
+                    fontWeight = FontWeight.Medium,
                     fontSize = 18.sp
 
                 ),
@@ -548,7 +701,11 @@ fun Container2(title: String, distancia: Int, content: @Composable (() -> Unit)?
             )
             Text(
                 text = "Ver Todos >",
-                style = MaterialTheme.typography.bodyLarge,
+                style = TextStyle(                 
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 12.sp
+                ),
+                textAlign = TextAlign.End,
                 modifier = Modifier
                     .weight(0.2f)
                     .padding(8.dp)
@@ -568,13 +725,21 @@ fun Container2(title: String, distancia: Int, content: @Composable (() -> Unit)?
             )
             Text(
                 text = "saldo",
-                style = MaterialTheme.typography.bodyLarge,
+                color = Color(0XFFA7A7A7),
+                 style = TextStyle(  
+                     fontSize = 12.sp
+                 ),
+                textAlign = TextAlign.Center,
                 modifier = Modifier
                     .weight(0.3f)
             )
             Text(
                 text = "disponivel",
-                style = MaterialTheme.typography.bodyLarge,
+                color = Color(0XFFA7A7A7), 
+                style = TextStyle(
+                    fontSize = 12.sp
+                ),
+                textAlign = TextAlign.Center,
                 modifier = Modifier
                     .weight(0.3f)
             )
@@ -583,11 +748,118 @@ fun Container2(title: String, distancia: Int, content: @Composable (() -> Unit)?
     }
 }
 
+ @Composable                                                                                         
+ fun Container3(title: String, distancia: Int, content: @Composable (() -> Unit)? = null) {
+     Column(                                                                                         
+         modifier = Modifier                                                                         
+             .fillMaxWidth()                                                                         
+             .padding(top = distancia.dp, start = 16.dp, end = 16.dp)                                
+     ) {                                                                                              
+         Row() {                                                                                      
+             Image(                                                                                  
+                 painter = painterResource(id = R.drawable.container_logo), // Substitua pelo recurso
+                 contentDescription = null,                                                          
+                 modifier = Modifier                                                                 
+                     .size(40.dp)                                                                    
+                     .padding(5.dp)                                                                  
+                     .clip(CircleShape)                                                              
+             )                                                                                       
+                                                                                                     
+             Text(                                                                                   
+                 text = title,                                                                       
+                 style = TextStyle(                                                                  
+                     fontWeight = FontWeight.Medium,                                                 
+                     fontSize = 18.sp                                                                
+                                                                                                     
+                 ),                                                                                  
+                 modifier = Modifier                                                                 
+                     .weight(0.4f)                                                                   
+                     .padding(8.dp)                                                                  
+                     .align(Alignment.Top)                                                           
+             )                                                                                       
+             Text(                                                                                   
+                 text = "Ver Todos >",                                                               
+                 style = TextStyle(                                                                  
+                     fontWeight = FontWeight.Normal,                                                 
+                     fontSize = 12.sp                                                                
+                 ),                                                                                  
+                 textAlign = TextAlign.End,                                                          
+                 modifier = Modifier                                                                 
+                     .weight(0.2f)                                                                   
+                     .padding(8.dp)                                                                  
+                     .align(Alignment.Top)                                                           
+             )                                                                                       
+         }                                                                                           
+         Row(                                                                                        
+             modifier = Modifier                                                                     
+                 .padding(start=8.dp)                                                                
+         ){                                                                                           
+             Text(                                                                                   
+                 text = "",                                                                          
+                 style = MaterialTheme.typography.bodyLarge,                                         
+                 modifier = Modifier                                                                 
+                     .weight(0.4f)                                                                   
+                                                                                                     
+             )                                                                                       
+             Text(                                                                                   
+                 text = "data",
+                 color = Color(0XFFA7A7A7),                                                          
+                  style = TextStyle(                                                                 
+                      fontSize = 12.sp                                                               
+                  ),                                                                                 
+                 textAlign = TextAlign.Center,                                                       
+                 modifier = Modifier                                                                 
+                     .weight(0.3f)                                                                   
+             )                                                                                       
+             Text(                                                                                   
+                 text = "valor",
+                 color = Color(0XFFA7A7A7),                                                          
+                 style = TextStyle(                                                                  
+                     fontSize = 12.sp                                                                
+                 ),                                                                                  
+                 textAlign = TextAlign.Center,                                                       
+                 modifier = Modifier                                                                 
+                     .weight(0.3f)                                                                   
+             )                                                                                       
+         }                                                                                           
+         content?.invoke()                                                                           
+     }                                                                                               
+ }
 
 @Composable
-fun ListItemContainer(itemText: String) {
-    Container(itemText,1)
+fun Container4(title: String, distancia: Int, content: @Composable (() -> Unit)? = null) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = distancia.dp, start = 16.dp, end = 16.dp)
+    ) {
+        Row() {
+            Image(
+                painter = painterResource(id = R.drawable.container_logo), // Substitua pelo recurso de imagem adequado
+                contentDescription = null,
+                modifier = Modifier
+                    .size(40.dp)
+                    .padding(5.dp)
+                    .clip(CircleShape)
+            )
+
+            Text(
+                text = title,
+                style = TextStyle(
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 18.sp
+
+                ),
+                modifier = Modifier
+                    .weight(0.4f)
+                    .padding(8.dp)
+                    .align(Alignment.Top)
+            )
+        }
+        content?.invoke()
+    }
 }
+
 
 @Preview(showBackground = true)
 @Composable
