@@ -23,6 +23,7 @@ import com.example.safemoney.planejamento.LancamentosScreen2
 import com.example.safemoney.planejamento.Planejamento
 import com.example.safemoney.splash.SplashScreen
 import com.example.safemoney.ui.theme.SafeMoneyTheme
+import com.example.tela_objetivos.ObjetivoScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,7 +68,9 @@ fun SafeMoneyApp(navController: NavHostController) {
         composable("splash") {
             SplashScreen(navController = navController)
         }
-
+        composable("objetivo") {
+            ObjetivoScreen(navController = navController)
+        }
 
 
 

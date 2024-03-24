@@ -31,10 +31,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.safemoney.R
 import com.example.safemoney.ui.theme.Branco
 
 
@@ -62,8 +65,9 @@ fun TopBar(
         ) {
             Text(
                 text = "Objetivos",
-                fontWeight = FontWeight.Medium,
-                fontSize = 16.sp
+                fontFamily = FontFamily(Font(R.font.montserrat)),
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
             )
 
             Row() {

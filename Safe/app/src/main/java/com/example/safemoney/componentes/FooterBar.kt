@@ -55,7 +55,7 @@ val pageOptions = listOf(
     Page(icone = R.drawable.home, label = "Início", route = "painel"),
     Page(icone = R.drawable.lancamento, label = "Lançamentos", route = "lancamentos"),
     Page(icone = R.drawable.cartao, label = "Cartões", route = "splash"),
-    Page(icone = R.drawable.mais, label = "Mais", route = "cadastro")
+    Page(icone = R.drawable.mais, label = "Mais", route = "menu")
 )
 
 @Composable

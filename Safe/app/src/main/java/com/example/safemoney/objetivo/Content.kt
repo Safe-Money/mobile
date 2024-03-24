@@ -1,5 +1,3 @@
-package com.example.projetoaula07_03.home
-
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -46,11 +44,11 @@ fun AppBarLayoutPreview2() {
 
 @Composable
 fun Content(
-    @DrawableRes image: Int = R.drawable.img_primeira,
+    @DrawableRes image: Int = R.drawable.play5,
     trashImage: Int = R.drawable.excluir,
     moneyImage: Int = R.drawable.money,
-    editImage: Int = R.drawable.editar,
-    paris: Int = R.drawable.img_primeira,
+    editImage: Int = R.drawable.edit,
+    paris: Int = R.drawable.paris,
 
     modifier: Modifier = Modifier
 ) {
@@ -134,30 +132,30 @@ fun Content(
                     painter = painterResource(id = moneyImage),
                     contentDescription = null,
                     modifier = Modifier
-                        .size(20.dp)
+                        .size(15.dp)
                 )
 
             }
             Column(
                 modifier = Modifier
                     .width(100.dp)
-                    .padding(start = 8.dp)
+                    .padding(start = 3.dp)
 
             ) {
 
                 Image(
                     painter = painterResource(id = editImage),
                     contentDescription = null,
-                    modifier = Modifier.size(20.dp)
+                    modifier = Modifier.size(18.dp)
                 )
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(4.dp))
 
                 Image(
                     painter = painterResource(id = trashImage),
                     contentDescription = null,
                     modifier = Modifier
-                        .size(20.dp)
+                        .size(21.dp)
                 )
             }
 
@@ -244,21 +242,21 @@ fun Content(
                     painter = painterResource(id = moneyImage),
                     contentDescription = null,
                     modifier = Modifier
-                        .size(20.dp)
+                        .size(15.dp)
                 )
 
             }
             Column(
                 modifier = Modifier
                     .width(100.dp)
-                    .padding(start = 8.dp)
+                    .padding(start = 3.dp)
 
             ) {
 
                 Image(
                     painter = painterResource(id = editImage),
                     contentDescription = null,
-                    modifier = Modifier.size(20.dp)
+                    modifier = Modifier.size(18.dp)
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -267,7 +265,7 @@ fun Content(
                     painter = painterResource(id = trashImage),
                     contentDescription = null,
                     modifier = Modifier
-                        .size(25.dp)
+                        .size(21.dp)
                 )
             }
 
@@ -276,4 +274,3 @@ fun Content(
     }
 
 }
-

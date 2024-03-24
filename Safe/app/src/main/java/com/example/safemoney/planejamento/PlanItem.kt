@@ -51,7 +51,7 @@ fun PlanItem(i: Item){
         Row (modifier = Modifier
             .fillMaxWidth()
             .align(Alignment.Center)
-            .height(60.dp),
+            .height(45.dp),
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ){
 

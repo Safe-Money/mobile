@@ -163,9 +163,12 @@ fun Planejamento(navController: NavController) {
 }
 
 val planejamentos = listOf(
-    Item(R.drawable.saude, 10.0, 100.0),
-    Item(R.drawable.saude, 45.0, 300.0),
-    Item(R.drawable.saude, 250.0, 2000.0)
+    Item(R.drawable.icon___saude, 10.0, 100.0),
+    Item(R.drawable.icon___academia, 45.0, 300.0),
+    Item(R.drawable.icon___shopping, 250.0, 2000.0),
+    Item(R.drawable.icon___saude, 250.0, 2000.0),
+    Item(R.drawable.icon___shopping, 250.0, 2000.0),
+    Item(R.drawable.icon___academia, 250.0, 2000.0)
 )
 
 @Preview(showBackground = true)

@@ -119,7 +119,7 @@ fun Options(navController: NavController) {
                     .clickable {
                         when (menuOption.label) {
                             "Planejamentos" -> navController.navigate("planejamento")
-                            "Objetivos" -> navController.navigate("objetivos")
+                            "Objetivos" -> navController.navigate("objetivo")
                             "Configurações" -> navController.navigate("configuracoes")
                             "Sair" -> navController.navigate("sair")
                         }
