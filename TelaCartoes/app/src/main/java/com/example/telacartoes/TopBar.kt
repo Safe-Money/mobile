@@ -96,7 +96,7 @@ fun TopBar(
         Divider(
             modifier = Modifier.fillMaxWidth(),
             color = Color(0xFFCDCDCD),
-            thickness = 0.5.dp
+            thickness = 0.6.dp
         )
     }
 

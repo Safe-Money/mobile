@@ -47,30 +47,25 @@ class MainActivity : ComponentActivity() {
 fun Greeting(name: String, modifier: Modifier = Modifier) {
 
     Scaffold(
-        topBar = {
-            TopBar()
-        },
+
     ) { padding ->
         LazyColumn(
             contentPadding = padding
         ) {
             item {
+                TopBar()
+            }
+            item {
                 CartaoRow()
             }
-        }
-
-    }
-}
-
-data class Cartoes(
-    val numeroCartao: String
-) {
-    companion object{
-        fun getMockList(): List<Cartoes> {
-            return List(3) {
-                Cartoes(numeroCartao = "000$it")
+            item {
+                BotaoMes()
+            }
+            item {
+                TransacaoColumn()
             }
         }
+
     }
 }
 
