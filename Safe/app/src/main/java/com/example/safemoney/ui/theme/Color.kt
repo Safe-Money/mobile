@@ -20,3 +20,5 @@ val CinzaDivisor = Color(0xFFCDCDCD)
 val CinzaLetra = Color(0xFFA7A7A7)
 val Vermelho = Color(0xFFFF4545)
 val CinzaClaro = Color(0xFF3A3A3A)
+
+val VerdeEscuro = Color(0xFF08632D)

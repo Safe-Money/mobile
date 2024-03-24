@@ -11,6 +11,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.safemoney.cadastro.CadastroScreen
 import com.example.safemoney.cartoes.Cartoes
+import com.example.safemoney.cartoes.MainCartao
 import com.example.safemoney.config.ConfigScreen
 import com.example.safemoney.login.LoginScreen1
 import com.example.safemoney.menu.Menu
@@ -65,8 +66,8 @@ fun SafeMoneyApp(navController: NavHostController) {
             CadastroScreen(navController = navController)
         }
 
-        composable("splash") {
-            SplashScreen(navController = navController)
+        composable("cartoes") {
+            MainCartao(navController = navController)
         }
         composable("objetivo") {
             ObjetivoScreen(navController = navController)

@@ -54,7 +54,7 @@ class Page(val icone: Int, val label: String, val route: String)
 val pageOptions = listOf(
     Page(icone = R.drawable.home, label = "Início", route = "painel"),
     Page(icone = R.drawable.lancamento, label = "Lançamentos", route = "lancamentos"),
-    Page(icone = R.drawable.cartao, label = "Cartões", route = "splash"),
+    Page(icone = R.drawable.cartao, label = "Cartões", route = "cartoes"),
     Page(icone = R.drawable.mais, label = "Mais", route = "menu")
 )
 
