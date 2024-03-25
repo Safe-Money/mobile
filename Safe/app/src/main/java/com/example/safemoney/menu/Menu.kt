@@ -121,7 +121,7 @@ fun Options(navController: NavController) {
                             "Planejamentos" -> navController.navigate("planejamento")
                             "Objetivos" -> navController.navigate("objetivo")
                             "Configurações" -> navController.navigate("configuracoes")
-                            "Sair" -> navController.navigate("sair")
+                            "Sair" -> navController.navigate("login")
                         }
                     },
                 verticalAlignment = Alignment.CenterVertically

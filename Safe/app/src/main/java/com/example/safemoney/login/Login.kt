@@ -55,11 +55,12 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontVariation.width
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.navigation.NavController
 import com.example.safemoney.R
 import com.example.safemoney.ui.theme.SafeMoneyTheme
 @Composable
 
-fun LoginScreen1() {
+fun LoginScreen1(navController: NavController) {
     MaterialTheme {
 
         var username by remember { mutableStateOf("") }
@@ -191,7 +192,9 @@ fun LoginScreen1() {
             Spacer(modifier = Modifier.height(40.dp))
 
             Button(
-                onClick = { },
+                onClick = {
+                    navController.navigate("painel")
+                },
                 modifier = Modifier
                     .fillMaxWidth(0.8f)
                     .height(45.dp),
@@ -233,10 +236,3 @@ fun LoginScreen1() {
 }
 
 
-@Preview(showBackground = true)
-@Composable
-fun LoginScreenPreview1() {
-    SafeMoneyTheme {
-        LoginScreen1()
-    }
-}

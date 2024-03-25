@@ -61,14 +61,14 @@ import com.example.safemoney.R
 fun ThreeContainersWithList(navController: NavController) {
 
     val listaContas = listOf(
-        ContaBancaria(R.drawable.logo_bradesco, "Banco A", 5000.00),
-        ContaBancaria(R.drawable.logo_santander, "Banco B", -3200.00),
-        ContaBancaria(R.drawable.logo_itau, "Banco C", 8500.00),
-        ContaBancaria(R.drawable.logo_santander, "Banco D", 8500.00)
+        ContaBancaria(R.drawable.bradesco, "Banco A", 5000.00),
+        ContaBancaria(R.drawable.santander, "Banco B", -3200.00),
+        ContaBancaria(R.drawable.itau, "Banco C", 8500.00),
+        ContaBancaria(R.drawable.santander, "Banco D", 8500.00)
         // Adicione mais contas conforme necessário
     )
     val listaCartao = listOf(
-        CartaoBancario(R.drawable.logo_elo, "Banco A", 5000.00, 5000.00),
+        CartaoBancario(R.drawable.elo, "Banco A", 5000.00, 5000.00),
         CartaoBancario(R.drawable.logo_visa, "Banco B", 3200.00, 5000.00),
         CartaoBancario(R.drawable.logo_mastercard, "Banco C", 8500.00, 5000.00)
         // Adicione mais contas conforme necessário
@@ -111,7 +111,7 @@ fun ThreeContainersWithList(navController: NavController) {
                     ) {
                         // Imagem à esquerda
                         Image(
-                            painter = painterResource(id = R.drawable.logo),
+                            painter = painterResource(id = R.drawable.safemoney_branco),
                             contentDescription = null,
                             modifier = Modifier
                                 .size(30.dp)
@@ -365,14 +365,17 @@ fun ThreeContainersWithList(navController: NavController) {
                         )
                     }
                 }
+
             }
+
         }
 
 
-        item { Spacer(modifier = Modifier.height(20.dp)) }
+
+
     }
 
-    FooterBar(navController)
+
 }
 
 data class ContaBancaria(
@@ -411,14 +414,17 @@ fun ContasTableRow(
 
     ) {
         // Parte 1: Imagem
-        Image(
-            painter = painterResource(id = imagemResId),
-            contentDescription = null,
+        Box(
             modifier = Modifier
-                .weight(0.12f)
-                .size(40.dp)
+                .size(25.dp)
                 .clip(CircleShape)
-        )
+        ) {
+            Image(
+                painter = painterResource(id = imagemResId),
+                contentDescription = null,
+                modifier = Modifier.fillMaxSize()
+            )
+        }
 
         Spacer(modifier = Modifier.width(8.dp))
 
@@ -477,14 +483,17 @@ fun CartoesTableRow(
         verticalAlignment = Alignment.CenterVertically
     ) {
         // Parte 1: Imagem
-        Image(
-            painter = painterResource(id = imagemResId),
-            contentDescription = null,
+        Box(
             modifier = Modifier
-                .weight(0.12f)
-                .size(40.dp)
+                .size(25.dp)
                 .clip(CircleShape)
-        )
+        ) {
+            Image(
+                painter = painterResource(id = imagemResId),
+                contentDescription = null,
+                modifier = Modifier.fillMaxSize()
+            )
+        }
 
         Spacer(modifier = Modifier.width(8.dp))
 
@@ -860,4 +869,6 @@ fun Container4(title: String, distancia: Int, content: @Composable (() -> Unit)?
 
 
 }
+
+
 

@@ -1,5 +1,6 @@
 package com.example.safemoney
 
+import MainPainel
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -11,8 +12,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.safemoney.cadastro.CadastroScreen
 import com.example.safemoney.cartoes.Cartoes
-import com.example.safemoney.cartoes.MainCartao
 import com.example.safemoney.config.ConfigScreen
+import com.example.safemoney.cartoes.MainCartao
+
 import com.example.safemoney.login.LoginScreen1
 import com.example.safemoney.menu.Menu
 import com.example.safemoney.menu.Options
@@ -41,9 +43,9 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun SafeMoneyApp(navController: NavHostController) {
 
-    NavHost(navController = navController, startDestination = "painel") {
+    NavHost(navController = navController, startDestination = "cadastro") {
         composable("painel") {
-            ThreeContainersWithList(navController = navController)
+            MainPainel(navController = navController)
         }
 
         composable("planejamento") {
@@ -71,6 +73,10 @@ fun SafeMoneyApp(navController: NavHostController) {
         }
         composable("objetivo") {
             ObjetivoScreen(navController = navController)
+        }
+
+        composable("login") {
+            LoginScreen1(navController = navController)
         }
 
 

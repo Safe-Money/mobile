@@ -212,7 +212,7 @@ fun CadastroScreen(navController: NavController) {
 
             Button(
                 onClick = {
-
+                    navController.navigate("login")
                 },
                 modifier = Modifier
                     .fillMaxWidth(0.8f)
