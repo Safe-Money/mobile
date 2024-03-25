@@ -38,7 +38,8 @@ fun BarGraph(
     height: Dp,
     roundType: BarType,
     barWidth: Dp,
-    barColor: Color,
+    barColor1: Color,
+    barColor2: Color,
     barArrangement: Arrangement.Horizontal
 ) {
 
@@ -170,7 +171,8 @@ fun BarGraph(
                         horizontalAlignment = CenterHorizontally
                     ) {
 
-                        // Each Graph
+                        // Cada gráfico
+                        val barColor = if (index % 2 == 0) barColor1 else barColor2  // Alternância entre as cores
                         Box(
                             modifier = Modifier
                                 .padding(bottom = 5.dp)
@@ -185,7 +187,7 @@ fun BarGraph(
                                     .clip(barShap)
                                     .fillMaxWidth()
                                     .fillMaxHeight(graphBarHeight)
-                                    .background(barColor)
+                                    .background(barColor) // Usando a cor alternada
                             )
                         }
 

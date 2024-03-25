@@ -45,6 +45,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -53,6 +54,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.a4adsb_29_02.BarGraph
 import com.example.safemoney.FooterBar
 import com.example.safemoney.R
@@ -83,6 +85,9 @@ fun ThreeContainersWithList(navController: NavController) {
         // Adicione mais contas conforme necessário
     )
 
+
+    val barColor1 = Color.Red
+    val barColor2 = Color.Green
 
     LazyColumn(
         modifier = Modifier.fillMaxSize()
@@ -123,7 +128,8 @@ fun ThreeContainersWithList(navController: NavController) {
                             text = "SafeMoney",
                             style = TextStyle(
                                 fontWeight = FontWeight.Bold,
-                                fontSize = 17.sp
+                                fontSize = 17.sp,
+                                fontFamily = FontFamily(Font(R.font.montserrat)),
                             ),
                             modifier = Modifier
                                 .weight(0.2f)
@@ -149,6 +155,7 @@ fun ThreeContainersWithList(navController: NavController) {
                         Text(
                             text = "seu Balanço:",
                             style = MaterialTheme.typography.bodyLarge,
+                            fontFamily = FontFamily(Font(R.font.montserrat)),
                             modifier = Modifier
                                 .padding(8.dp),
                             color = Color.White
@@ -158,6 +165,7 @@ fun ThreeContainersWithList(navController: NavController) {
                             style = TextStyle(
                                 fontSize = 24.sp,
                                 fontWeight = FontWeight.Bold,
+                                fontFamily = FontFamily(Font(R.font.montserrat)),
                                 letterSpacing = 2.sp
                             ),
                             modifier = Modifier
@@ -201,6 +209,7 @@ fun ThreeContainersWithList(navController: NavController) {
                                 text = "Receita",
                                 style = TextStyle(
                                     fontSize = 12.sp,
+                                    fontFamily = FontFamily(Font(R.font.montserrat)),
                                 ),
                                 color = Color.Black
                             )
@@ -221,6 +230,7 @@ fun ThreeContainersWithList(navController: NavController) {
                                 text = "Despesa",
                                 style = TextStyle(
                                     fontSize = 12.sp,
+                                    fontFamily = FontFamily(Font(R.font.montserrat)),
                                 ),
                                 modifier = Modifier,
                                 color = Color.Black
@@ -243,12 +253,18 @@ fun ThreeContainersWithList(navController: NavController) {
                                 text = "Transição",
                                 style = TextStyle(
                                     fontSize = 12.sp,
+                                    fontFamily = FontFamily(Font(R.font.montserrat)),
                                 ),
                                 modifier = Modifier,
                                 color = Color.Black
                             )
                         }
                     }
+                    Box(
+                        modifier = Modifier
+                            .matchParentSize() // Preenche todo o espaço disponível
+                            .border(1.dp, Color(0x55000000), shape = RoundedCornerShape(8.dp)) // Cor semi-transparente da borda
+                    )
                 }
             }
         }
@@ -314,6 +330,7 @@ fun ThreeContainersWithList(navController: NavController) {
                 }
             }
         }
+
         item {
             Container4("Previsão final do mês", 60) {
                 Row(
@@ -326,56 +343,110 @@ fun ThreeContainersWithList(navController: NavController) {
                         modifier = Modifier.weight(1f)
                     ) {
                         BarGraph(
-                            graphBarData = listOf(0.5f, 0.8f),
+                            graphBarData = listOf(0.8f, 0.5f),
                             xAxisScaleData = listOf(1, 2),
                             barData_ = listOf(0, 1500, 3000, 4500, 6000),
-                            height = 200.dp,
+                            height = 150.dp,
                             roundType = BarType.TOP_CURVED,
-                            barWidth = 55.dp,
-                            barColor = Color.Green, // Lista de cores para as barras
+                            barWidth = 30.dp,
+                            barColor1 = barColor2,
+                            barColor2 = barColor1,
                             barArrangement = Arrangement.SpaceEvenly
                         )
                     }
                     Column(
-                        modifier = Modifier.padding(start = 16.dp),
+
+                        modifier = Modifier
+                            .padding(start = 16.dp, bottom = 24.dp)
+                            .fillMaxHeight()
+                            .height(140.dp),
+                        verticalArrangement = Arrangement.SpaceBetween
+
                     ) {
-                        Text(
-                            text = "Receita: R$4.500,00",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = Color(0XFF030303),
+                        Row(
                             modifier = Modifier
                                 .border(1.dp, Color.Black, CircleShape)
-                                .padding(6.dp)// Adicionar borda circular
-                        )
-                        Text(
-                            text = "Despesa: R$4.500,00",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = Color(0XFF030303),
+                                .padding(6.dp),
+                            verticalAlignment = Alignment.CenterVertically
+
+                        ) {
+                            Text(
+                                text = "Receita: ",
+                                style = TextStyle(
+                                    fontSize = 12.sp,
+                                ),
+                                fontFamily = FontFamily(Font(R.font.montserrat)),
+                                color = Color(0xFF030303),
+                            )
+
+                            Text(
+                                text = "R$4.500,00",
+                                style = TextStyle(
+                                    fontSize = 12.sp,
+                                ),
+                                fontFamily = FontFamily(Font(R.font.montserrat)),
+                                color = Color(0xFF09B451),
+                                modifier = Modifier
+                            )
+                        }
+                        Row(
                             modifier = Modifier
                                 .border(1.dp, Color.Black, CircleShape)
-                                .padding(6.dp)
-                        )
-                        Text(
-                            text = "Balanço: R$4.500,00",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = Color(0XFF030303),
+                                .padding(6.dp),
+                            verticalAlignment = Alignment.CenterVertically
+
+                        ) {
+                            Text(
+                                text = "Despesa: ",
+                                style = TextStyle(
+                                    fontSize = 12.sp,
+                                ),
+                                fontFamily = FontFamily(Font(R.font.montserrat)),
+                                color = Color(0xFF030303),
+                            )
+
+                            Text(
+                                text = "R$4.500,00",
+                                style = TextStyle(
+                                    fontSize = 12.sp,
+                                ),
+                                fontFamily = FontFamily(Font(R.font.montserrat)),
+                                color = Color(0xFFEE0E0E),
+                                modifier = Modifier
+                            )
+                        }
+                        Row(
                             modifier = Modifier
                                 .border(1.dp, Color.Black, CircleShape)
-                                .padding(6.dp)
-                        )
+                                .padding(6.dp),
+                            verticalAlignment = Alignment.CenterVertically
+
+                        ) {
+                            Text(
+                                text = "Balanço: ",
+                                style = TextStyle(
+                                    fontSize = 12.sp,
+                                ),
+                                fontFamily = FontFamily(Font(R.font.montserrat)),
+                                color = Color(0xFF030303),
+                            )
+
+                            Text(
+                                text = "R$4.500,00",
+                                style = TextStyle(
+                                    fontSize = 12.sp,
+                                ),
+                                fontFamily = FontFamily(Font(R.font.montserrat)),
+                                color = Color(0xFF150863),
+                                modifier = Modifier
+                            )
+                        }
                     }
                 }
-
             }
-
         }
-
-
-
-
+        item { Spacer(modifier = Modifier.height(100.dp)) }
     }
-
-
 }
 
 data class ContaBancaria(
@@ -435,12 +506,14 @@ fun ContasTableRow(
             Text(
                 text = nomeBanco,
                 style = MaterialTheme.typography.bodyMedium,
+                fontFamily = FontFamily(Font(R.font.montserrat)),
                 color = Color(0XFF030303)
             )
             Text(
                 text = "Vencimento 01/10",
                 style = TextStyle(
-                    fontSize = 8.sp
+                    fontSize = 8.sp,
+                    fontFamily = FontFamily(Font(R.font.montserrat)),
                 ),
                 color = Color(0XFF565656)
             )
@@ -452,6 +525,7 @@ fun ContasTableRow(
         Text(
             text = "R$ $saldo" ,
             style = MaterialTheme.typography.bodyMedium,
+            fontFamily = FontFamily(Font(R.font.montserrat)),
             color = textColor,
             textAlign = TextAlign.Center,
             modifier = Modifier.weight(0.3f)
@@ -505,12 +579,14 @@ fun CartoesTableRow(
             Text(
                 text = nomeBanco,
                 style = MaterialTheme.typography.bodyMedium,
+                fontFamily = FontFamily(Font(R.font.montserrat)),
                 color = Color(0XFF030303)
             )
             Text(
                 text = "Vencimento 01/10",
                 style = TextStyle(
-                    fontSize = 8.sp
+                    fontSize = 8.sp,
+                    fontFamily = FontFamily(Font(R.font.montserrat)),
                 ),
                 color = Color(0XFF565656)
             )
@@ -522,6 +598,7 @@ fun CartoesTableRow(
         Text(
             text = "R$ $fatura",
             style = MaterialTheme.typography.bodyMedium,
+            fontFamily = FontFamily(Font(R.font.montserrat)),
             color = textColor,
             textAlign = TextAlign.Center,
             modifier = Modifier.weight(0.3f)
@@ -532,6 +609,7 @@ fun CartoesTableRow(
         Text(
             text = "R$ $disponivel",
             style = MaterialTheme.typography.bodyMedium,
+            fontFamily = FontFamily(Font(R.font.montserrat)),
             color = Color(0XFFC568F6),
             textAlign = TextAlign.Center,
             modifier = Modifier.weight(0.3f)
@@ -579,12 +657,14 @@ fun TransacaoTableRow(
             Text(
                 text = nomeTransacao,
                 style = MaterialTheme.typography.bodyMedium,
+                fontFamily = FontFamily(Font(R.font.montserrat)),
                 color = Color(0XFF030303)
             )
             Text(
                 text = "Débito",
                 style = TextStyle(
-                    fontSize = 8.sp
+                    fontSize = 8.sp,
+                    fontFamily = FontFamily(Font(R.font.montserrat)),
                 ),
                 color = Color(0XFF565656)
             )
@@ -596,6 +676,7 @@ fun TransacaoTableRow(
         Text(
             text = "R$ $data",
             style = MaterialTheme.typography.bodyMedium,
+            fontFamily = FontFamily(Font(R.font.montserrat)),
             color = Color(0xFF3A3A3A),
             textAlign = TextAlign.Center,
             modifier = Modifier.weight(0.3f)
@@ -606,6 +687,7 @@ fun TransacaoTableRow(
         Text(
             text = "R$ $valor",
             style = MaterialTheme.typography.bodyMedium,
+            fontFamily = FontFamily(Font(R.font.montserrat)),
             color = Color(0XFF3A3A3A),
             textAlign = TextAlign.Center,
             modifier = Modifier.weight(0.3f)
@@ -642,6 +724,7 @@ fun Container(title: String, distancia: Int, content: @Composable (() -> Unit)? 
                 text = title,
                 style = TextStyle(
                     fontWeight = FontWeight.Medium,
+                    fontFamily = FontFamily(Font(R.font.montserrat)),
                     fontSize = 18.sp
 
                 ),
@@ -658,6 +741,7 @@ fun Container(title: String, distancia: Int, content: @Composable (() -> Unit)? 
             Text(
                 text = "",
                 style = MaterialTheme.typography.bodyLarge,
+                fontFamily = FontFamily(Font(R.font.montserrat)),
                 modifier = Modifier
                     .weight(0.7f)
 
@@ -666,7 +750,8 @@ fun Container(title: String, distancia: Int, content: @Composable (() -> Unit)? 
                 text = "saldo",
                 color = Color(0XFFA7A7A7),
                 style = TextStyle(
-                    fontSize = 12.sp
+                    fontSize = 12.sp,
+                    fontFamily = FontFamily(Font(R.font.montserrat)),
                 ),
                 textAlign = TextAlign.Center,
                 modifier = Modifier
@@ -698,8 +783,8 @@ fun Container2(title: String, distancia: Int, content: @Composable (() -> Unit)?
                 text = title,
                 style = TextStyle(
                     fontWeight = FontWeight.Medium,
-                    fontSize = 18.sp
-
+                    fontSize = 18.sp,
+                    fontFamily = FontFamily(Font(R.font.montserrat)),
                 ),
                 modifier = Modifier
                     .weight(0.4f)
@@ -710,6 +795,7 @@ fun Container2(title: String, distancia: Int, content: @Composable (() -> Unit)?
                 text = "Ver Todos >",
                 style = TextStyle(
                     fontWeight = FontWeight.Normal,
+                    fontFamily = FontFamily(Font(R.font.montserrat)),
                     fontSize = 12.sp
                 ),
                 textAlign = TextAlign.End,
@@ -726,6 +812,7 @@ fun Container2(title: String, distancia: Int, content: @Composable (() -> Unit)?
             Text(
                 text = "",
                 style = MaterialTheme.typography.bodyLarge,
+                fontFamily = FontFamily(Font(R.font.montserrat)),
                 modifier = Modifier
                     .weight(0.4f)
 
@@ -734,7 +821,8 @@ fun Container2(title: String, distancia: Int, content: @Composable (() -> Unit)?
                 text = "saldo",
                 color = Color(0XFFA7A7A7),
                 style = TextStyle(
-                    fontSize = 12.sp
+                    fontSize = 12.sp,
+                    fontFamily = FontFamily(Font(R.font.montserrat)),
                 ),
                 textAlign = TextAlign.Center,
                 modifier = Modifier
@@ -744,7 +832,8 @@ fun Container2(title: String, distancia: Int, content: @Composable (() -> Unit)?
                 text = "disponivel",
                 color = Color(0XFFA7A7A7),
                 style = TextStyle(
-                    fontSize = 12.sp
+                    fontSize = 12.sp,
+                    fontFamily = FontFamily(Font(R.font.montserrat)),
                 ),
                 textAlign = TextAlign.Center,
                 modifier = Modifier
@@ -776,6 +865,7 @@ fun Container3(title: String, distancia: Int, content: @Composable (() -> Unit)?
                 text = title,
                 style = TextStyle(
                     fontWeight = FontWeight.Medium,
+                    fontFamily = FontFamily(Font(R.font.montserrat)),
                     fontSize = 18.sp
 
                 ),
@@ -788,6 +878,7 @@ fun Container3(title: String, distancia: Int, content: @Composable (() -> Unit)?
                 text = "Ver Todos >",
                 style = TextStyle(
                     fontWeight = FontWeight.Normal,
+                    fontFamily = FontFamily(Font(R.font.montserrat)),
                     fontSize = 12.sp
                 ),
                 textAlign = TextAlign.End,
@@ -804,6 +895,7 @@ fun Container3(title: String, distancia: Int, content: @Composable (() -> Unit)?
             Text(
                 text = "",
                 style = MaterialTheme.typography.bodyLarge,
+                fontFamily = FontFamily(Font(R.font.montserrat)),
                 modifier = Modifier
                     .weight(0.4f)
 
@@ -812,7 +904,8 @@ fun Container3(title: String, distancia: Int, content: @Composable (() -> Unit)?
                 text = "data",
                 color = Color(0XFFA7A7A7),
                 style = TextStyle(
-                    fontSize = 12.sp
+                    fontSize = 12.sp,
+                    fontFamily = FontFamily(Font(R.font.montserrat)),
                 ),
                 textAlign = TextAlign.Center,
                 modifier = Modifier
@@ -822,7 +915,8 @@ fun Container3(title: String, distancia: Int, content: @Composable (() -> Unit)?
                 text = "valor",
                 color = Color(0XFFA7A7A7),
                 style = TextStyle(
-                    fontSize = 12.sp
+                    fontSize = 12.sp,
+                    fontFamily = FontFamily(Font(R.font.montserrat)),
                 ),
                 textAlign = TextAlign.Center,
                 modifier = Modifier
@@ -854,8 +948,8 @@ fun Container4(title: String, distancia: Int, content: @Composable (() -> Unit)?
                 text = title,
                 style = TextStyle(
                     fontWeight = FontWeight.Medium,
-                    fontSize = 18.sp
-
+                    fontSize = 18.sp,
+                    fontFamily = FontFamily(Font(R.font.montserrat)),
                 ),
                 modifier = Modifier
                     .weight(0.4f)

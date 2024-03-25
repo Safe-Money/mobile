@@ -111,6 +111,7 @@ fun LoginScreen1(navController: NavController) {
                 shape = RoundedCornerShape(7.dp),
                 colors = TextFieldDefaults.colors(
                     unfocusedContainerColor = Color.Transparent,
+                    focusedContainerColor = Color.Transparent,
                     unfocusedIndicatorColor = Color(0XFF08632D),
                     focusedIndicatorColor = Color(0XFF08632D),
                     focusedLabelColor = Color(0XFF08632D),
