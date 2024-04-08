@@ -39,7 +39,7 @@ fun MainCartao(modifier: Modifier = Modifier, navController: NavController) {
             FooterBar(navController = navController)
         }
     ) { padding ->
-        Column {
+
             LazyColumn(
                 contentPadding = padding
             ) {
@@ -56,7 +56,7 @@ fun MainCartao(modifier: Modifier = Modifier, navController: NavController) {
                     TransacaoColumn()
                 }
             }
-        }
+
     }
 }
 

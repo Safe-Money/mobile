@@ -2,7 +2,19 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="AppBarLayoutPreview2">
+      <entry key="DataInputPreview">
+        <State />
+      </entry>
+      <entry key="DespesaScreenPreview">
+        <State />
+      </entry>
+      <entry key="DropInputPreview">
+        <State />
+      </entry>
+      <entry key="MainCartaoPreview">
+        <State />
+      </entry>
+      <entry key="ValorInputPreview">
         <State />
       </entry>
       <entry key="app">

@@ -12,13 +12,17 @@ val Pink40 = Color(0xFF7D5260)
 
 val Cinza = Color(0xFF7E7E7E)
 val CinzaGab = Color(0xFFE2E8F0)
+val CinzaDivisor = Color(0xFFCDCDCD)
+val CinzaLetra = Color(0xFFA7A7A7)
+val CinzaClaro = Color(0xFF3A3A3A)
+val CinzaAcao = Color(0xFF8F9095)
+
 val Verde = Color(0xFF08632D)
 val VerdeClaro = Color(0xFF98D389)
 val VerdePercent = Color(0xFF08632D)
-val Branco = Color(0xFFFCFCFC)
-val CinzaDivisor = Color(0xFFCDCDCD)
-val CinzaLetra = Color(0xFFA7A7A7)
-val Vermelho = Color(0xFFFF4545)
-val CinzaClaro = Color(0xFF3A3A3A)
-
 val VerdeEscuro = Color(0xFF08632D)
+val VerdeFocus = Color(0xFF3ABA6F)
+
+val Vermelho = Color(0xFFFF4545)
+
+val Branco = Color(0xFFFCFCFC)
