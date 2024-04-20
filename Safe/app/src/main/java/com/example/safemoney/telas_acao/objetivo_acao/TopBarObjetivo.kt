@@ -1,4 +1,4 @@
-package com.example.safemoney.telas_acao.despesa_acao
+package com.example.safemoney.telas_acao.objetivo_acao
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -11,21 +11,25 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.safemoney.R
 import com.example.safemoney.ui.theme.Branco
 import com.example.safemoney.ui.theme.TelaAcaoTypography
 import com.example.safemoney.ui.theme.VerdeEscuro
 
 @Preview
 @Composable
-fun TopBarDespesaPreview() {
-    TopBarDespesa()
+fun TopBarObjetivoPreview() {
+    TopBarObjetivo(text = "Novo Objetivo")
 }
 
 @Composable
-fun TopBarDespesa(
-    modifier: Modifier = Modifier
+fun TopBarObjetivo(
+    modifier: Modifier = Modifier,
+    text: String
 ) {
     Row (
         modifier = modifier
@@ -35,8 +39,9 @@ fun TopBarDespesa(
         horizontalArrangement = Arrangement.SpaceBetween
     ){
         Text(
-            text = "Nova Despesa",
-            style = TelaAcaoTypography.bodyLarge
+            text = text,
+            style = TelaAcaoTypography.bodyLarge,
+            fontFamily = FontFamily(Font(R.font.montserrat_semibold))
         )
 
         Icon(
