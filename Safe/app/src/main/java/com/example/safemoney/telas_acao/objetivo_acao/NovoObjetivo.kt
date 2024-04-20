@@ -1,5 +1,6 @@
-package com.example.safemoney.telas_acao.despesa_acao
+package com.example.safemoney.telas_acao.objetivo_acao
 
+import ValorMoedaInput
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -8,25 +9,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.safemoney.telas_acao.buttons.ButtonsRow
-import com.example.safemoney.telas_acao.buttons.SwitchButton
-import com.example.safemoney.telas_acao.inputs.DataInput
-import com.example.safemoney.telas_acao.inputs.DescricaoInput
-import com.example.safemoney.telas_acao.inputs.DropInput
-import com.example.safemoney.telas_acao.inputs.ValorInput
+import com.example.safemoney.telas_acao.objetivo_acao.inputs.DataObjetivoInput
+import com.example.safemoney.telas_acao.objetivo_acao.inputs.NameInput
+import com.example.safemoney.telas_acao.objetivo_acao.inputs.UrlInput
 
 @Preview
 @Composable
-fun DespesaScreenPreview() {
-    DespesaScreen()
+fun NovoObjetivoPreview(){
+    NovoObjetivo()
 }
 
 @Composable
-fun DespesaScreen(
+fun NovoObjetivo(
     modifier: Modifier = Modifier
-) {
+){
     Scaffold(
         topBar = {
-            TopBarDespesa()
+            TopBarObjetivo(text = "Novo Objetivo")
         }
     ) {contentPadding ->
         Column (
@@ -34,17 +33,15 @@ fun DespesaScreen(
                 .padding(contentPadding)
                 .padding(16.dp)
         ) {
-            ValorInput()
+            NameInput()
 
-            DataInput()
+            DataObjetivoInput(label = "Data Início")
 
-            DescricaoInput()
+            DataObjetivoInput(label = "Data de Término")
 
-            DropInput()
+            UrlInput()
 
-            DropInput()
-
-            SwitchButton()
+            ValorMoedaInput()
 
             ButtonsRow()
         }
