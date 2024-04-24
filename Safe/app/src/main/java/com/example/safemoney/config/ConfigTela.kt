@@ -1,5 +1,6 @@
 package com.example.safemoney.config
 
+import DeletarLogin
 import android.os.Bundle
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -44,6 +45,7 @@ fun ConfigScreen(navController: NavController) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
+    val showDialog = remember { mutableStateOf(false) }
 
     val textFieldModifier = Modifier
         .fillMaxWidth(0.8f)
@@ -74,7 +76,9 @@ fun ConfigScreen(navController: NavController) {
                 modifier = Modifier.padding(start = 16.dp)
             )
             Button(
-                onClick = {},
+                onClick = {
+                    showDialog.value = true
+                },
                 contentPadding = PaddingValues(horizontal = 7.dp, vertical = 0.dp),
                 modifier = Modifier.padding(
                     end = 16.dp,
@@ -271,6 +275,18 @@ fun ConfigScreen(navController: NavController) {
                 )
             }
         }
+
+        if (showDialog.value) {
+            DeletarLogin(
+                onConfirm = {
+                    showDialog.value = false
+                },
+                onDismiss = {
+                    showDialog.value = false
+                }
+            )
+        }
+
         Spacer(modifier = Modifier.weight(1f))
         FooterBar(navController = navController)
     }

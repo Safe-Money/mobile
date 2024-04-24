@@ -1,86 +1,58 @@
 package com.example.safemoney
 
-import MainPainel
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavController
+import androidx.compose.runtime.remember
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.safemoney.cadastro.CadastroScreen
-import com.example.safemoney.cartoes.Cartoes
-import com.example.safemoney.config.ConfigScreen
-import com.example.safemoney.cartoes.MainCartao
-
+import com.example.safemoney.di.appModule
 import com.example.safemoney.login.LoginScreen1
-import com.example.safemoney.menu.Menu
-import com.example.safemoney.menu.Options
-
-
-import com.example.safemoney.painel.ThreeContainersWithList
-
-import com.example.safemoney.planejamento.LancamentosScreen2
-import com.example.safemoney.planejamento.Planejamento
-import com.example.safemoney.splash.SplashScreen
-import com.example.safemoney.ui.theme.SafeMoneyTheme
-import com.example.tela_objetivos.ObjetivoScreen
+import com.example.safemoney.viewmodel.CadastroViewModel
+import org.koin.android.ext.android.inject
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.context.startKoin
+import org.koin.core.logger.Level
+import org.koin.android.ext.koin.androidApplication
+import org.koin.android.ext.koin.androidLogger
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
+import org.koin.dsl.module
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        startKoin {
+            androidLogger(Level.ERROR)
+            androidContext(this@MainActivity)
+            modules(appModule)
+        }
+
         setContent {
             val navController = rememberNavController()
-
-
-            SafeMoneyApp(navController = navController)
+            val cadastroViewModel: CadastroViewModel by inject()
+            SafeMoneyApp(navController = navController, cadastroViewModel = cadastroViewModel)
         }
     }
 }
 
 @Composable
-fun SafeMoneyApp(navController: NavHostController) {
-
+fun SafeMoneyApp(navController: NavHostController, cadastroViewModel: CadastroViewModel) {
     NavHost(navController = navController, startDestination = "cadastro") {
-        composable("painel") {
-            MainPainel(navController = navController)
-        }
-
-        composable("planejamento") {
-            Planejamento(navController = navController)
-        }
-
-        composable("menu") {
-            Menu(navController = navController)
-        }
-
-        composable("configuracoes") {
-            ConfigScreen(navController = navController)
-        }
-
-        composable("lancamentos") {
-            LancamentosScreen2(navController = navController)
-        }
-
         composable("cadastro") {
-            CadastroScreen(navController = navController)
+            println("cheguei")
+            CadastroScreen(navController = navController, cadastroViewModel = cadastroViewModel)
         }
-
-        composable("cartoes") {
-            MainCartao(navController = navController)
-        }
-        composable("objetivo") {
-            ObjetivoScreen(navController = navController)
-        }
-
         composable("login") {
-            LoginScreen1(navController = navController)
+            LoginScreen1(navController = navController, cadastroViewModel = cadastroViewModel)
         }
-
-
-
     }
-
 }

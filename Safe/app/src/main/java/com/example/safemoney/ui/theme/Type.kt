@@ -48,7 +48,7 @@ val CardTypography = Typography(
 
 val TelaAcaoTypography = Typography(
     bodyLarge = TextStyle(
-        fontFamily = FontFamily.Default,
+        fontFamily = FontFamily(Font(R.font.montserrat)),
         fontWeight = FontWeight.Medium,
         fontSize = 16.sp,
         lineHeight = 24.sp,

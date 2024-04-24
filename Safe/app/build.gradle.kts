@@ -50,6 +50,7 @@ android {
 }
 
 dependencies {
+    implementation("io.insert-koin:koin-android:3.5.0")
     implementation("androidx.compose.material3:material3:1.2.0-alpha02")
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
@@ -68,7 +69,24 @@ dependencies {
     androidTestImplementation(platform("androidx.compose:compose-bom:2023.08.00"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
+    implementation ("androidx.constraintlayout:constraintlayout:2.0.0-alpha4")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
+    implementation("androidx.compose.runtime:runtime-livedata:1.6.5")
+
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+    implementation("io.coil-kt:coil-compose:2.6.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0")
+
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
+    implementation("androidx.compose.runtime:runtime-livedata:1.6.5")
+
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+    implementation("io.coil-kt:coil-compose:2.6.0")
     val nav_version = "2.7.7"
 
     // Java language implementation
@@ -90,4 +108,5 @@ dependencies {
 
     implementation ("androidx.navigation:navigation-compose:2.4.0-alpha10")
 
+    implementation ("com.github.f0ris.sweetalert:library:1.6.2")
 }

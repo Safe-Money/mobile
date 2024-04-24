@@ -22,7 +22,5 @@ val VerdeClaro = Color(0xFF98D389)
 val VerdePercent = Color(0xFF08632D)
 val VerdeEscuro = Color(0xFF08632D)
 val VerdeFocus = Color(0xFF3ABA6F)
-
 val Vermelho = Color(0xFFFF4545)
-
 val Branco = Color(0xFFFCFCFC)
