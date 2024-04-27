@@ -1,6 +1,8 @@
 package com.example.safemoney.login
 
 
+import LoginViewModel
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -24,6 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,14 +43,15 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.safemoney.R
 import com.example.safemoney.viewmodel.CadastroViewModel
+import kotlinx.coroutines.launch
 
 @Composable
 
-fun LoginScreen1(navController: NavController,cadastroViewModel: CadastroViewModel = viewModel()) {
+fun LoginScreen1(navController: NavController, loginViewModel: LoginViewModel = viewModel()) {
     MaterialTheme {
-
-        var username by remember { mutableStateOf("") }
-        var password by remember { mutableStateOf("") }
+        val coroutineScope = rememberCoroutineScope()
+        var email by remember { mutableStateOf("") }
+        var senha by remember { mutableStateOf("") }
 
         Column(
             modifier = Modifier
@@ -90,7 +94,7 @@ fun LoginScreen1(navController: NavController,cadastroViewModel: CadastroViewMod
             OutlinedTextField(
                 modifier = textFieldModifier,
 
-                value = username,
+                value = email,
                 shape = RoundedCornerShape(7.dp),
                 colors = TextFieldDefaults.colors(
                     unfocusedContainerColor = Color.Transparent,
@@ -101,7 +105,7 @@ fun LoginScreen1(navController: NavController,cadastroViewModel: CadastroViewMod
                 ),
 
                 onValueChange = {
-                    username = it
+                    email = it
                 },
                 label = {
                     Text("E-mail",
@@ -122,7 +126,7 @@ fun LoginScreen1(navController: NavController,cadastroViewModel: CadastroViewMod
 
             OutlinedTextField(
                 modifier = textFieldModifier,
-                value = password,
+                value = senha,
                 shape = RoundedCornerShape(7.dp),
                 colors = TextFieldDefaults.colors(
                     unfocusedContainerColor = Color.Transparent,
@@ -134,7 +138,7 @@ fun LoginScreen1(navController: NavController,cadastroViewModel: CadastroViewMod
 
                     ),
                 onValueChange = {
-                    password = it
+                    senha = it
                 },
                 label = {
                     Text("Senha",
@@ -177,7 +181,18 @@ fun LoginScreen1(navController: NavController,cadastroViewModel: CadastroViewMod
 
             Button(
                 onClick = {
-                    navController.navigate("painel")
+                    coroutineScope.launch {
+                        Log.d("LoginScreen", "Botão 'Login' clicado")
+                        val cadastroSucesso = loginViewModel.fazerLogin(email, senha)
+                        Log.d("LoginScreen", "Cadastro realizado com sucesso: $cadastroSucesso top")
+                        if (cadastroSucesso) {
+                            Log.d("LoginScreen", "Gabigol para tela de login")
+                            navController.navigate("config")
+
+                        } else {
+                            Log.d("LoginScreen", "Erro ao cadastrar usuário mosquei")
+                        }
+                    }
                 },
                 modifier = Modifier
                     .fillMaxWidth(0.8f)

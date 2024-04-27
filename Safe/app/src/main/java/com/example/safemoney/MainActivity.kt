@@ -1,5 +1,9 @@
 package com.example.safemoney
 
+
+
+import LoginViewModel
+import UsuarioViewModel
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -10,6 +14,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.safemoney.cadastro.CadastroScreen
+import com.example.safemoney.config.ConfigScreen
 import com.example.safemoney.di.appModule
 import com.example.safemoney.login.LoginScreen1
 import com.example.safemoney.viewmodel.CadastroViewModel
@@ -39,20 +44,25 @@ class MainActivity : ComponentActivity() {
         setContent {
             val navController = rememberNavController()
             val cadastroViewModel: CadastroViewModel by inject()
-            SafeMoneyApp(navController = navController, cadastroViewModel = cadastroViewModel)
+            val loginViewModel: LoginViewModel by inject()
+            val usuarioViewModel: UsuarioViewModel by inject()
+            SafeMoneyApp(navController = navController, cadastroViewModel = cadastroViewModel, loginViewModel = loginViewModel, usuarioViewModel = usuarioViewModel)
         }
     }
 }
 
 @Composable
-fun SafeMoneyApp(navController: NavHostController, cadastroViewModel: CadastroViewModel) {
+fun SafeMoneyApp(navController: NavHostController, cadastroViewModel: CadastroViewModel, loginViewModel: LoginViewModel, usuarioViewModel: UsuarioViewModel) {
     NavHost(navController = navController, startDestination = "cadastro") {
         composable("cadastro") {
             println("cheguei")
             CadastroScreen(navController = navController, cadastroViewModel = cadastroViewModel)
         }
         composable("login") {
-            LoginScreen1(navController = navController, cadastroViewModel = cadastroViewModel)
+            LoginScreen1(navController = navController, loginViewModel = loginViewModel)
+        }
+        composable("config") {
+            ConfigScreen(navController = navController,loginViewModel = loginViewModel )
         }
     }
 }

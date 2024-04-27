@@ -23,4 +23,6 @@ class CadastroViewModel(private val cadastrarRepository: ICadastrarRepository) :
         }
         return cadastroSucesso
     }
+
+
 }

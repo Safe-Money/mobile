@@ -1,6 +1,8 @@
 package com.example.safemoney.config
 
 import DeletarLogin
+import LoginViewModel
+import UsuarioViewModel
 import android.os.Bundle
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -35,17 +37,19 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.safemoney.FooterBar
 import com.example.safemoney.R
-import com.example.safemoney.ui.theme.SafeMoneyTheme
 
 
 
 @Composable
-fun ConfigScreen(navController: NavController) {
-    var name by remember { mutableStateOf("") }
+fun ConfigScreen(navController: NavController, loginViewModel: LoginViewModel) {
+    var name by remember { mutableStateOf(" Nome não encontrado") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
     val showDialog = remember { mutableStateOf(false) }
+    val nomeUsuario = loginViewModel.getNome() ?: "Nome não encontrado"
+    val emailUsuario = loginViewModel.getEmail() ?: "Email não encontrado"
+
 
     val textFieldModifier = Modifier
         .fillMaxWidth(0.8f)
@@ -75,6 +79,7 @@ fun ConfigScreen(navController: NavController) {
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(start = 16.dp)
             )
+
             Button(
                 onClick = {
                     showDialog.value = true
@@ -130,7 +135,7 @@ fun ConfigScreen(navController: NavController) {
 
         OutlinedTextField(
             modifier = textFieldModifier,
-            value = name,
+            value = nomeUsuario,
             onValueChange = { name = it },
             shape = RoundedCornerShape(7.dp),
             colors = TextFieldDefaults.colors(
@@ -142,7 +147,7 @@ fun ConfigScreen(navController: NavController) {
             ),
             label = {
                 Text(
-                    "Nome",
+                    "nome",
                     fontFamily = FontFamily(Font(R.font.montserrat)),
                     fontSize = 12.sp
                 )
@@ -153,7 +158,7 @@ fun ConfigScreen(navController: NavController) {
 
         OutlinedTextField(
             modifier = textFieldModifier,
-            value = email,
+            value = emailUsuario,
             onValueChange = { email = it },
             shape = RoundedCornerShape(7.dp),
             colors = TextFieldDefaults.colors(
@@ -276,16 +281,7 @@ fun ConfigScreen(navController: NavController) {
             }
         }
 
-        if (showDialog.value) {
-            DeletarLogin(
-                onConfirm = {
-                    showDialog.value = false
-                },
-                onDismiss = {
-                    showDialog.value = false
-                }
-            )
-        }
+
 
         Spacer(modifier = Modifier.weight(1f))
         FooterBar(navController = navController)
@@ -296,5 +292,5 @@ fun ConfigScreen(navController: NavController) {
 @Composable
 fun ConfigScreenPreview() {
     val navController = rememberNavController()
-    ConfigScreen(navController = navController)
+
 }
