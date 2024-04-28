@@ -1,5 +1,6 @@
 package com.example.safemoney.painel
 
+import UserConta
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -60,15 +61,9 @@ import com.example.safemoney.FooterBar
 import com.example.safemoney.R
 
 @Composable
-fun ThreeContainersWithList(navController: NavController) {
+fun ThreeContainersWithList(navController: NavController, listaContas: List<UserConta>) {
 
-    val listaContas = listOf(
-        ContaBancaria(R.drawable.bradesco, "Banco A", 5000.00),
-        ContaBancaria(R.drawable.santander, "Banco B", -3200.00),
-        ContaBancaria(R.drawable.itau, "Banco C", 8500.00),
-        ContaBancaria(R.drawable.santander, "Banco D", 8500.00)
-        // Adicione mais contas conforme necessário
-    )
+
     val listaCartao = listOf(
         CartaoBancario(R.drawable.elo, "Banco A", 5000.00, 5000.00),
         CartaoBancario(R.drawable.logo_visa, "Banco B", 3200.00, 5000.00),
@@ -282,8 +277,8 @@ fun ThreeContainersWithList(navController: NavController) {
                 ) {
                     items(listaContas) { conta ->
                         ContasTableRow(
-                            imagemResId = conta.imagemResId,
-                            nomeBanco = conta.nomeBanco,
+
+                            nomeBanco = conta.nome,
                             saldo = conta.saldo
                         )
                     }
@@ -470,7 +465,7 @@ data class TransacaoBancaria(
 
 @Composable
 fun ContasTableRow(
-    @DrawableRes imagemResId: Int,
+
     nomeBanco: String,
     saldo: Double
 ) {
@@ -490,11 +485,7 @@ fun ContasTableRow(
                 .size(25.dp)
                 .clip(CircleShape)
         ) {
-            Image(
-                painter = painterResource(id = imagemResId),
-                contentDescription = null,
-                modifier = Modifier.fillMaxSize()
-            )
+
         }
 
         Spacer(modifier = Modifier.width(8.dp))

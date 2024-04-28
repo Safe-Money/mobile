@@ -4,6 +4,7 @@ package com.example.safemoney.login
 import LoginViewModel
 import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -187,7 +188,7 @@ fun LoginScreen1(navController: NavController, loginViewModel: LoginViewModel = 
                         Log.d("LoginScreen", "Cadastro realizado com sucesso: $cadastroSucesso top")
                         if (cadastroSucesso) {
                             Log.d("LoginScreen", "Gabigol para tela de login")
-                            navController.navigate("config")
+                            navController.navigate("painel")
 
                         } else {
                             Log.d("LoginScreen", "Erro ao cadastrar usuário mosquei")
@@ -226,8 +227,14 @@ fun LoginScreen1(navController: NavController, loginViewModel: LoginViewModel = 
                     color = Color(0xFF08632D),
                     fontFamily = FontFamily(Font(R.font.montserrat)),
                     fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier.padding(start = 4.dp),
-                    fontSize = 12.sp
+                    modifier = Modifier
+                        .padding(start = 4.dp)
+                        .clickable {
+                            navController.navigate("cadastro")
+
+                        },
+                    fontSize = 12.sp,
+
                 )
             }
         }

@@ -7,6 +7,7 @@ import Date1
 import android.util.Log
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
@@ -248,11 +249,15 @@ fun CadastroScreen(navController: NavController, cadastroViewModel: CadastroView
                     fontFamily = FontFamily(Font(R.font.montserrat)),
                     fontSize = 12.sp,
                     fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier.padding(start = 4.dp),
+                    modifier = Modifier
+                        .padding(start = 4.dp)
+                        .clickable {
 
-                    )
+                                navController.navigate("login")
 
+                        },
 
+                )
             }
 
 

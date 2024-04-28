@@ -36,12 +36,15 @@ import com.example.safemoney.ui.theme.VerdeEscuro
 @Preview
 @Composable
 fun ButtonsRowPreview() {
-    ButtonsRow()
+
 }
 
 @Composable
 fun ButtonsRow(
-    modifier : Modifier = Modifier
+    modifier : Modifier = Modifier,
+
+    onAddButtonClick: () -> Unit,
+
 ) {
     Row (
         modifier = modifier
@@ -93,7 +96,7 @@ fun ButtonsRow(
         )
 
         Button(
-            onClick = { /*TODO*/ },
+            onClick = {onAddButtonClick() },
             colors = ButtonDefaults.buttonColors(VerdeEscuro)
         ) {
             Text(text = "Adicionar")

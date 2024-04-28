@@ -47,7 +47,7 @@ fun DespesaScreen(
 
             SwitchButton()
 
-            ButtonsRow()
+
         }
     }
 }

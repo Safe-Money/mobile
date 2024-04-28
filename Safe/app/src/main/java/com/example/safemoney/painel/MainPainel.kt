@@ -1,3 +1,4 @@
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -18,10 +19,15 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.safemoney.FooterBar
@@ -31,17 +37,22 @@ import com.example.safemoney.ui.theme.SafeMoneyTheme
 import com.example.safemoney.ui.theme.Vermelho
 
 @Composable
-fun MainPainel(modifier: Modifier = Modifier, navController: NavController) {
+fun MainPainel(modifier: Modifier = Modifier, navController: NavController, contaViewModel: ContaViewModel) {
+
+    val sharedPreferences = LocalContext.current.getSharedPreferences("user_session", Context.MODE_PRIVATE)
+    val userId = sharedPreferences.getInt("id", -1)
+    val listaContas by contaViewModel.listarContas(userId).observeAsState(emptyList())
+
+
+    LaunchedEffect(Unit) {
+        if (listaContas.isEmpty()) {
+            contaViewModel.listarContas(userId)
+        }
+    }
     Scaffold(
         bottomBar = { FooterBar(navController) }
     ) {
-        ThreeContainersWithList(navController = navController)
+        ThreeContainersWithList(navController = navController,  listaContas = listaContas)
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun MainPainelPreview() {
-    val navController = rememberNavController()
-    MainPainel(navController = navController)
-}

@@ -47,7 +47,7 @@ fun ReceitaScreen(
 
             SwitchButton()
 
-            ButtonsRow()
+
         }
     }
 }
