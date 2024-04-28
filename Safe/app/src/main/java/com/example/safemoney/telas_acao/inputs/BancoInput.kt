@@ -48,12 +48,12 @@ fun BancoInput(
 
 
     val context = LocalContext.current
-    val coffeeDrinks = arrayOf("Bradesco", "Itau", "Santander")
+    val coffeeDrinks = arrayOf("Selecione","bradesco", "Itau", "Santander")
     var expanded by remember { mutableStateOf(false) }
     var selectedText by remember { mutableStateOf(coffeeDrinks[0]) }
 
     val bankLogos = mapOf(
-        "Bradesco" to R.drawable.bradesco,
+        "bradesco" to R.drawable.bradesco,
         "Itau" to R.drawable.itau,
         "Santander" to R.drawable.santander
 

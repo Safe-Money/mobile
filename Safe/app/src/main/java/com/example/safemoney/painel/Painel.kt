@@ -1,13 +1,16 @@
 package com.example.safemoney.painel
 
+import ContaViewModel
 import UserConta
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -38,6 +41,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.currentCompositionLocalContext
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -60,9 +67,50 @@ import com.example.a4adsb_29_02.BarGraph
 import com.example.safemoney.FooterBar
 import com.example.safemoney.R
 
-@Composable
-fun ThreeContainersWithList(navController: NavController, listaContas: List<UserConta>) {
+data class ContaBancaria(
+    @DrawableRes val imagemResId: Int,
+    val nomeBanco: String,
+    val saldo: Double,
+    val tipo : String
+)
 
+data class CartaoBancario(
+    @DrawableRes val imagemResId: Int,
+    val nomeBanco: String,
+    val fatura: Double,
+    val disponivel: Double
+)
+data class TransacaoBancaria(
+    @DrawableRes val imagemResId: Int,
+    val nomeTransacao: String,
+    val data: String,
+    val valor: Double
+)
+
+@Composable
+fun ThreeContainersWithList(navController: NavController, contaViewModel: ContaViewModel) {
+
+
+
+    val (listaContas, setListaContas) = remember { mutableStateOf(emptyList<UserConta>()) }
+    val bancoImageMap = mapOf(
+        "bradesco" to R.drawable.bradesco,
+        "Itau" to R.drawable.itau,
+        "Santander" to R.drawable.santander
+
+    )
+
+
+    contaViewModel.contasLiveData.observeAsState().value?.let { listaContas ->
+        setListaContas(listaContas)
+    }
+
+
+    Log.d("ThreeContainersWithList", "Composable chamado")
+
+    fun getBancoImageResId(nomeBanco: String): Int {
+        return bancoImageMap[nomeBanco] ?: R.drawable.safemoney2
+    }
 
     val listaCartao = listOf(
         CartaoBancario(R.drawable.elo, "Banco A", 5000.00, 5000.00),
@@ -267,17 +315,27 @@ fun ThreeContainersWithList(navController: NavController, listaContas: List<User
         // Adicionando um espaçador para ocupar espaço na parte superior
         item { Spacer(modifier = Modifier.height(20.dp)) }
 
+
+
+
         // Adicionando conteúdo da parte branca
         item {
-            Container("Contas", 10) {
+
+
+
+            Container("Contas",navController, 10) {
                 LazyColumn(
                     modifier = Modifier
                         .height(175.dp)
                         .fillMaxWidth()
-                ) {
+
+                )
+
+
+                {
                     items(listaContas) { conta ->
                         ContasTableRow(
-
+                            imagemResId = getBancoImageResId(conta.banco),
                             nomeBanco = conta.nome,
                             saldo = conta.saldo
                         )
@@ -444,28 +502,13 @@ fun ThreeContainersWithList(navController: NavController, listaContas: List<User
     }
 }
 
-data class ContaBancaria(
-    @DrawableRes val imagemResId: Int,
-    val nomeBanco: String,
-    val saldo: Double
-)
-data class CartaoBancario(
-    @DrawableRes val imagemResId: Int,
-    val nomeBanco: String,
-    val fatura: Double,
-    val disponivel: Double
-)
 
-data class TransacaoBancaria(
-    @DrawableRes val imagemResId: Int,
-    val nomeTransacao: String,
-    val data: String,
-    val valor: Double
-)
+
+
 
 @Composable
 fun ContasTableRow(
-
+    @DrawableRes imagemResId: Int,
     nomeBanco: String,
     saldo: Double
 ) {
@@ -485,7 +528,11 @@ fun ContasTableRow(
                 .size(25.dp)
                 .clip(CircleShape)
         ) {
-
+            Image(
+                painter = painterResource(id = imagemResId),
+                contentDescription = null,
+                modifier = Modifier.fillMaxSize()
+            )
         }
 
         Spacer(modifier = Modifier.width(8.dp))
@@ -500,14 +547,10 @@ fun ContasTableRow(
                 fontFamily = FontFamily(Font(R.font.montserrat)),
                 color = Color(0XFF030303)
             )
-            Text(
-                text = "Vencimento 01/10",
-                style = TextStyle(
-                    fontSize = 8.sp,
-                    fontFamily = FontFamily(Font(R.font.montserrat)),
-                ),
-                color = Color(0XFF565656)
-            )
+
+
+
+
         }
 
         Spacer(modifier = Modifier.width(8.dp))
@@ -537,7 +580,7 @@ fun CartoesTableRow(
     fatura:Double,
     disponivel: Double
 ) {
-
+    println("imageResId: $imagemResId")
     val textColor = if (fatura > 0) Color.Green else Color.Red
 
     Row(
@@ -695,7 +738,10 @@ fun TransacaoTableRow(
 
 
 @Composable
-fun Container(title: String, distancia: Int, content: @Composable (() -> Unit)? = null) {
+fun Container( title: String, navController: NavController, distancia: Int, content: @Composable (() -> Unit)? = null) {
+
+
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -723,7 +769,25 @@ fun Container(title: String, distancia: Int, content: @Composable (() -> Unit)? 
                     .weight(0.4f)
                     .padding(8.dp)
                     .align(Alignment.Top)
+
             )
+            Text(
+                text = "Nova Conta >",
+                style = TextStyle(
+                    fontWeight = FontWeight.Normal,
+                    fontFamily = FontFamily(Font(R.font.montserrat)),
+                    fontSize = 12.sp
+                ),
+                textAlign = TextAlign.End,
+                modifier = Modifier
+                    .weight(0.2f)
+                    .padding(8.dp)
+                    .align(Alignment.Top)
+                    .clickable {
+                        navController.navigate("addConta")
+                    },
+            )
+
         }
         Row(
             modifier = Modifier
@@ -737,6 +801,7 @@ fun Container(title: String, distancia: Int, content: @Composable (() -> Unit)? 
                     .weight(0.7f)
 
             )
+
             Text(
                 text = "saldo",
                 color = Color(0XFFA7A7A7),
@@ -748,6 +813,8 @@ fun Container(title: String, distancia: Int, content: @Composable (() -> Unit)? 
                 modifier = Modifier
                     .weight(0.3f)
             )
+
+
         }
         content?.invoke()
     }

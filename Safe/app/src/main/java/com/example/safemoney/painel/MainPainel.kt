@@ -9,11 +9,13 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -35,24 +37,33 @@ import com.example.safemoney.TopBar
 import com.example.safemoney.painel.ThreeContainersWithList
 import com.example.safemoney.ui.theme.SafeMoneyTheme
 import com.example.safemoney.ui.theme.Vermelho
-
 @Composable
 fun MainPainel(modifier: Modifier = Modifier, navController: NavController, contaViewModel: ContaViewModel) {
-
     val sharedPreferences = LocalContext.current.getSharedPreferences("user_session", Context.MODE_PRIVATE)
     val userId = sharedPreferences.getInt("id", -1)
-    val listaContas by contaViewModel.listarContas(userId).observeAsState(emptyList())
+
+
+    val listaContas by contaViewModel.contasLiveData.observeAsState(initial = emptyList())
 
 
     LaunchedEffect(Unit) {
-        if (listaContas.isEmpty()) {
-            contaViewModel.listarContas(userId)
-        }
+        contaViewModel.listarContas(userId)
     }
+
+
     Scaffold(
         bottomBar = { FooterBar(navController) }
     ) {
-        ThreeContainersWithList(navController = navController,  listaContas = listaContas)
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.Center
+        ) {
+            // Lista as contas
+            ThreeContainersWithList(navController = navController, contaViewModel = contaViewModel)
+
+
+        }
     }
 }
-

@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -50,6 +51,9 @@ fun ContaScreen(
     var saldo by remember { mutableStateOf(0.0) }
     var banco by remember { mutableStateOf("") }
 
+
+
+
     Scaffold(
         topBar = {
             TopBarConta()
@@ -81,6 +85,7 @@ fun ContaScreen(
             )
 
             ButtonsRow(
+                navController = navController,
                 onAddButtonClick = {
                     val userId = loginViewModel.getId()
                     val usuario = FkUsuario(id = userId)
@@ -95,11 +100,15 @@ fun ContaScreen(
                         saldo = saldo.toDouble(),
                         fkUsuario = usuario
                     )
-
                     coroutineScope.launch {
                         contaViewModel.cadastrarConta(novaConta)
                     }
+                    navController.navigate("painel")
                 },
+
+                onCancelButtonClick = {
+                    navController.navigate("painel")
+                }
 
             )
         }

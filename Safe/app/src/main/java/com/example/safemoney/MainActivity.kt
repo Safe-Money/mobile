@@ -86,7 +86,7 @@ fun SafeMoneyApp(navController: NavHostController, cadastroViewModel: CadastroVi
             ContaScreen(navController = navController, contaViewModel = contaViewModel,  loginViewModel = loginViewModel )
         }
         composable("painel") {
-            ThreeContainersWithList(navController = navController, listaContas = listaContas)
+            ThreeContainersWithList(navController = navController,contaViewModel = contaViewModel )
         }
         composable("menu") {
             Menu(navController = navController)
