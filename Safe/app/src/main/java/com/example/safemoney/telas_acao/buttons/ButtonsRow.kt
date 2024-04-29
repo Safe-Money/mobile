@@ -47,6 +47,7 @@ fun ButtonsRow(
         modifier = modifier
             .fillMaxWidth()
             .background(Branco),
+
         horizontalArrangement = Arrangement.End
     ) {
         Button(
