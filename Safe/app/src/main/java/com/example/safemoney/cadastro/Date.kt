@@ -103,7 +103,7 @@ fun Date1(
             ),
             label = {
                 Text(
-                    text = "Data",
+                    text = "Data de Nascimento",
                     fontFamily = FontFamily(Font(R.font.montserrat)),
                     fontSize = 12.sp
                 )

@@ -66,6 +66,12 @@ import androidx.navigation.compose.rememberNavController
 import com.example.a4adsb_29_02.BarGraph
 import com.example.safemoney.FooterBar
 import com.example.safemoney.R
+import com.example.safemoney.model.Cartao
+import com.example.safemoney.model.CartaoGet
+import com.example.safemoney.viewmodel.CartaoViewModel
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 data class ContaBancaria(
     @DrawableRes val imagemResId: Int,
@@ -77,8 +83,8 @@ data class ContaBancaria(
 data class CartaoBancario(
     @DrawableRes val imagemResId: Int,
     val nomeBanco: String,
-    val fatura: Double,
-    val disponivel: Double
+    val fatura: Int,
+    val disponivel: Int
 )
 data class TransacaoBancaria(
     @DrawableRes val imagemResId: Int,
@@ -88,11 +94,15 @@ data class TransacaoBancaria(
 )
 
 @Composable
-fun ThreeContainersWithList(navController: NavController, contaViewModel: ContaViewModel) {
+fun ThreeContainersWithList(navController: NavController, contaViewModel: ContaViewModel,  cartaoViewModel: CartaoViewModel) {
+
 
 
 
     val (listaContas, setListaContas) = remember { mutableStateOf(emptyList<UserConta>()) }
+
+    val (listaCartao, setListaCartao) = remember { mutableStateOf(emptyList<CartaoGet>()) }
+
     val bancoImageMap = mapOf(
         "bradesco" to R.drawable.bradesco,
         "Itau" to R.drawable.itau,
@@ -100,9 +110,24 @@ fun ThreeContainersWithList(navController: NavController, contaViewModel: ContaV
 
     )
 
+    val bandeiraImageMap = mapOf(
+        "visa" to R.mipmap.visa,
+        "mastercard" to R.mipmap.mastercard,
+        "elo" to R.mipmap.elo
+    )
+
+    fun getBandeiraImageResId(nomeBandeira: String): Int {
+        return bandeiraImageMap[nomeBandeira.toLowerCase()] ?: R.drawable.safemoney2
+    }
+
+
 
     contaViewModel.contasLiveData.observeAsState().value?.let { listaContas ->
         setListaContas(listaContas)
+    }
+
+    cartaoViewModel.cartaoLiveData.observeAsState().value?.let { listaCartao ->
+        setListaCartao(listaCartao)
     }
 
 
@@ -112,12 +137,7 @@ fun ThreeContainersWithList(navController: NavController, contaViewModel: ContaV
         return bancoImageMap[nomeBanco] ?: R.drawable.safemoney2
     }
 
-    val listaCartao = listOf(
-        CartaoBancario(R.drawable.elo, "Banco A", 5000.00, 5000.00),
-        CartaoBancario(R.drawable.logo_visa, "Banco B", 3200.00, 5000.00),
-        CartaoBancario(R.drawable.logo_mastercard, "Banco C", 8500.00, 5000.00)
-        // Adicione mais contas conforme necessário
-    )
+
 
     val listaTransacao = listOf(
         TransacaoBancaria(R.drawable.saude, "Shopping", "01/10", 5000.00),
@@ -146,7 +166,7 @@ fun ThreeContainersWithList(navController: NavController, contaViewModel: ContaV
                 Surface(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(220.dp),
+                        .height(200.dp),
                     color = Color(0xFF08632D)
                 ) {
                     // Row para posicionar elementos à esquerda, no centro e à direita
@@ -345,7 +365,7 @@ fun ThreeContainersWithList(navController: NavController, contaViewModel: ContaV
         }
 
         item {
-            Container2("Cartões", 60) {
+            Container2("Cartões", navController,60) {
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -353,13 +373,21 @@ fun ThreeContainersWithList(navController: NavController, contaViewModel: ContaV
                     ,
                     contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
                 ) {
-                    items(listaCartao) { conta ->
-                        CartoesTableRow(
-                            imagemResId = conta.imagemResId,
-                            nomeBanco = conta.nomeBanco,
-                            fatura = conta.fatura,
-                            disponivel = conta.disponivel,
-                        )
+                    items(listaCartao) { cartao ->
+                        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.getDefault())
+                        val dataVencimento = LocalDate.parse(cartao.vencimento, formatter)
+                        val vencimentoFormatado = dataVencimento.format(DateTimeFormatter.ofPattern("dd/MM", Locale.getDefault()))
+                            CartoesTableRow(
+                                imagemResId = getBandeiraImageResId(cartao.bandeira.toLowerCase()),
+                                nomeBanco = cartao.nome,
+                                fatura = cartao.limite,
+                                disponivel = cartao.limite,
+                                vencimento = vencimentoFormatado
+
+                            )
+
+
+
                     }
                 }
             }
@@ -577,11 +605,13 @@ fun ContasTableRow(
 fun CartoesTableRow(
     @DrawableRes imagemResId: Int,
     nomeBanco: String,
-    fatura:Double,
-    disponivel: Double
+    fatura:  Int,
+    disponivel: Int,
+    vencimento: String
+
+
 ) {
     println("imageResId: $imagemResId")
-    val textColor = if (fatura > 0) Color.Green else Color.Red
 
     Row(
         modifier = Modifier
@@ -616,8 +646,9 @@ fun CartoesTableRow(
                 fontFamily = FontFamily(Font(R.font.montserrat)),
                 color = Color(0XFF030303)
             )
+
             Text(
-                text = "Vencimento 01/10",
+                text = "Vencimento: ${vencimento}",
                 style = TextStyle(
                     fontSize = 8.sp,
                     fontFamily = FontFamily(Font(R.font.montserrat)),
@@ -629,14 +660,19 @@ fun CartoesTableRow(
         Spacer(modifier = Modifier.width(8.dp))
 
         // Parte 3: fatura
+
         Text(
             text = "R$ $fatura",
-            style = MaterialTheme.typography.bodyMedium,
-            fontFamily = FontFamily(Font(R.font.montserrat)),
-            color = textColor,
+            color = Color(0XFFA7A7A7),
+            style = TextStyle(
+                fontSize = 12.sp,
+                fontFamily = FontFamily(Font(R.font.montserrat)),
+            ),
             textAlign = TextAlign.Center,
-            modifier = Modifier.weight(0.3f)
+            modifier = Modifier
+                .weight(0.3f)
         )
+
         Spacer(modifier = Modifier.width(8.dp))
 
         // Parte 3: disponivel
@@ -821,7 +857,7 @@ fun Container( title: String, navController: NavController, distancia: Int, cont
 }
 
 @Composable
-fun Container2(title: String, distancia: Int, content: @Composable (() -> Unit)? = null) {
+fun Container2(title: String, navController: NavController, distancia: Int, content: @Composable (() -> Unit)? = null) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -829,7 +865,7 @@ fun Container2(title: String, distancia: Int, content: @Composable (() -> Unit)?
     ) {
         Row() {
             Image(
-                painter = painterResource(id = R.drawable.container_logo), // Substitua pelo recurso de imagem adequado
+                painter = painterResource(id = R.drawable.container_logo),
                 contentDescription = null,
                 modifier = Modifier
                     .size(40.dp)
@@ -861,6 +897,9 @@ fun Container2(title: String, distancia: Int, content: @Composable (() -> Unit)?
                     .weight(0.2f)
                     .padding(8.dp)
                     .align(Alignment.Top)
+                    .clickable {
+                    navController.navigate("telaCartao")
+                },
             )
         }
         Row(
@@ -911,7 +950,7 @@ fun Container3(title: String, distancia: Int, content: @Composable (() -> Unit)?
     ) {
         Row() {
             Image(
-                painter = painterResource(id = R.drawable.container_logo), // Substitua pelo recurso
+                painter = painterResource(id = R.drawable.container_logo),
                 contentDescription = null,
                 modifier = Modifier
                     .size(40.dp)

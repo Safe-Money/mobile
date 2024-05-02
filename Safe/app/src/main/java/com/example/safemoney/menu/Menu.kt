@@ -1,6 +1,8 @@
 package com.example.safemoney.menu
 
+import LoginViewModel
 import android.graphics.BitmapFactory
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -35,13 +37,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.safemoney.FooterBar
 import com.example.safemoney.R
 import com.example.safemoney.ui.theme.Cinza
 
+
 @Composable
-fun Menu(navController: NavController) {
+fun Menu(navController: NavController,
+         loginViewModel: LoginViewModel){
     Column(
         horizontalAlignment =
         Alignment.CenterHorizontally,
@@ -66,8 +71,8 @@ fun Menu(navController: NavController) {
             Spacer(modifier = Modifier.width(20.dp))
 
             Text(
-                text = "Evelyn Hugo",
-                fontFamily = FontFamily(Font(R.font.montserrat_bold)),
+                text = loginViewModel.getNome() ?: "",
+                fontFamily = FontFamily(Font(R.font.montserrat_semibold)),
                 fontSize = 25.sp,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -78,7 +83,7 @@ fun Menu(navController: NavController) {
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        Options(navController)
+        Options(navController = navController, loginViewModel = loginViewModel)
 
         Spacer(modifier = Modifier.weight(1f))
 
@@ -105,7 +110,8 @@ val menuOptions = listOf(
     }
 )
 @Composable
-fun Options(navController: NavController) {
+fun Options(navController: NavController,
+            loginViewModel: LoginViewModel) {
     LazyColumn(
         contentPadding = PaddingValues(
             vertical = 40.dp,
@@ -120,8 +126,10 @@ fun Options(navController: NavController) {
                         when (menuOption.label) {
                             "Planejamentos" -> navController.navigate("planejamento")
                             "Objetivos" -> navController.navigate("objetivo")
-                            "Configurações" -> navController.navigate("configuracoes")
-                            "Sair" -> navController.navigate("login")
+                            "Configurações" -> navController.navigate("config")
+                            " Sair" -> navController.navigate("login")
+
+
                         }
                     },
                 verticalAlignment = Alignment.CenterVertically

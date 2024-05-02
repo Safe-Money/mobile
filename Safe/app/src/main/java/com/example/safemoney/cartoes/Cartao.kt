@@ -14,10 +14,14 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -31,19 +35,26 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
 import androidx.compose.ui.unit.sp
 import com.example.safemoney.R
+import com.example.safemoney.model.Cartao
+import com.example.safemoney.model.CartaoGet
+import com.example.safemoney.painel.CartoesTableRow
 import com.example.safemoney.ui.theme.CardTypography
-
-@Preview
-@Composable
-fun CartaoPreview() {
-    Cartao(numeroCartao = "0805")
-}
+import com.example.safemoney.viewmodel.CartaoViewModel
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 @Composable
 fun Cartao(
     modifier: Modifier = Modifier,
-    numeroCartao: String,
+    cartao: CartaoGet
 ) {
+    val bandeiraImageMap = mapOf(
+        "visa" to R.mipmap.logo_visa5,
+        "mastercard" to R.mipmap.mastercard,
+        "elo" to R.mipmap.elo_branco
+    )
+
 
     Box(
         modifier = modifier
@@ -56,109 +67,103 @@ fun Cartao(
             painter = painterResource(id = R.drawable.image_card),
             contentDescription = null,
             contentScale = ContentScale.Crop,
-            modifier = modifier
+            modifier = Modifier
                 .widthIn(min = 300.dp)
                 .fillMaxHeight()
         )
 
         Column (
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp, 24.dp),
             verticalArrangement = Arrangement.SpaceBetween
-        ){
+        ) {
             Row(
-                modifier = modifier
-                    .fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.logo_visa5),
+                    painter = painterResource(id = bandeiraImageMap[cartao.bandeira.toLowerCase()] ?: R.drawable.safemoney2),
                     contentDescription = null,
-                    modifier = modifier
-                        .width(40.dp)
+                    modifier = Modifier.width(40.dp)
                 )
 
-                Row (
-                    modifier = modifier.width(90.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
+                Column (
+                    modifier = Modifier.width(90.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
                         text = "Limite:",
                         style = CardTypography.bodySmall
                     )
-
                     Text(
-                        text = "2.000,00",
+                        text = cartao.limite.toString(),
                         style = CardTypography.bodyLarge
                     )
                 }
-
             }
 
             Column(
-                modifier = modifier
-                    .height(40.dp),
+                modifier = Modifier.height(40.dp),
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
                 Row(
-                    modifier = modifier
-                        .fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "****  $numeroCartao",
+                        text = "",
                         style = CardTypography.bodyLarge
                     )
-
                     Row(
-                        modifier = modifier.width(100.dp),
+                        modifier = Modifier.width(100.dp),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text(
                             text = "Fechamento:",
                             style = CardTypography.bodySmall
                         )
+                        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.getDefault())
+                        val dataFechamento = LocalDate.parse(cartao.fechamento, formatter)
 
+                        val fechamentoFormatado = dataFechamento.format(DateTimeFormatter.ofPattern("dd/MM", Locale.getDefault()))
                         Text(
-                            text = "21/10",
+                            text = fechamentoFormatado,
                             style = CardTypography.bodyLarge
                         )
                     }
-
                 }
-
                 Row(
-                    modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "Apelido do cartão",
+                        text = cartao.nome,
                         style = CardTypography.bodyLarge
                     )
-
-                    Row (
-                        modifier = modifier.width(100.dp),
+                    Row(
+                        modifier = Modifier.width(100.dp),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text(
                             text = "Vencimento:",
                             style = CardTypography.bodySmall
                         )
+                        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.getDefault())
+                        val dataVencimento = LocalDate.parse(cartao.vencimento, formatter)
 
+                        val vencimentoFormatado = dataVencimento.format(DateTimeFormatter.ofPattern("dd/MM", Locale.getDefault()))
                         Text(
-                            text = "29/10",
+                            text = vencimentoFormatado,
                             style = CardTypography.bodyLarge
                         )
                     }
-
                 }
             }
-
         }
     }
 }

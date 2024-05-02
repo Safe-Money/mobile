@@ -4,8 +4,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.safemoney.repositorio.CartaoRepository
 import com.example.safemoney.repositorio.IContaRepository
 import com.example.safemoney.repositorio.ILoginRepository
+import com.example.safemoney.viewmodel.CartaoViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -15,6 +17,8 @@ class ContaViewModel(
     private val contaRepository: IContaRepository
 ) : ViewModel() {
     val contasState: MutableState<List<UserConta>> = mutableStateOf(emptyList())
+
+
 
     private val _contasLiveData = MutableLiveData<List<UserConta>>()
     val contasLiveData: LiveData<List<UserConta>> = _contasLiveData
@@ -32,6 +36,7 @@ class ContaViewModel(
                     cadastroSucesso.value = true
                     Log.d("ContaViewModel", "Conta cadastrada com sucesso!")
                     listarContas(conta.fkUsuario.id)
+
                 } else {
                     Log.e("ContaViewModel", "Erro ao cadastrar a conta")
                 }
@@ -48,6 +53,7 @@ class ContaViewModel(
                 if (response.isSuccessful) {
                     _contasLiveData.postValue(response.body())
                     Log.e("ContaViewModel", "listar as contas $response")
+                    
 
                 } else {
                     val erro = response.errorBody()?.string() ?: "Erro desconhecido"

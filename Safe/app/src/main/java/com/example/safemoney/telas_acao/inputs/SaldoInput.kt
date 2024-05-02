@@ -34,12 +34,11 @@ fun SaldoInputPreview() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SaldoInput(
-    value: Double,
+    value: String,
     onValueChange: (Double) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var valor by remember { mutableStateOf(value.toString()) }
-
+    var valorText by remember { mutableStateOf(value) }
     var color by remember { mutableStateOf(CinzaAcao) }
 
     Column(
@@ -54,10 +53,16 @@ fun SaldoInput(
             color = color
         )
         TextField(
-            value = valor,
+            value = valorText,
             onValueChange = {
-                valor = it
-                onValueChange(it.toDouble())
+                valorText = it
+                // Tenta converter o texto para Double
+                val doubleValue = it.toDoubleOrNull()
+                if (doubleValue != null) {
+                    onValueChange(doubleValue)
+                } else {
+
+                }
             },
             colors = TextFieldDefaults.textFieldColors(
                 containerColor = Branco,

@@ -1,5 +1,3 @@
-package com.example.safemoney.telas_acao.inputs
-
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -27,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import com.example.safemoney.ui.theme.Branco
 import com.example.safemoney.ui.theme.CinzaAcao
 import com.example.safemoney.ui.theme.TelaAcaoTypography
+import com.example.safemoney.ui.theme.Verde
 import com.example.safemoney.ui.theme.VerdeEscuro
 import com.example.safemoney.ui.theme.VerdeFocus
 import java.text.SimpleDateFormat
@@ -34,18 +33,15 @@ import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
 
-@Preview
-@Composable
-fun DataFechamentoInputPreview() {
-    DataFechamentoInput()
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DataFechamentoInput(
-    modifier : Modifier = Modifier
+    modifier: Modifier = Modifier,
+    value: Long,
+    onValueChange: (Long) -> Unit,
 ) {
-    var color by remember{
+    var color by remember {
         mutableStateOf(CinzaAcao)
     }
 
@@ -54,16 +50,13 @@ fun DataFechamentoInput(
         mutableStateOf(false)
     }
     val datePickerState = rememberDatePickerState()
-    var selectedDate by remember {
-        mutableStateOf("")
-    }
 
-    Column (
+    Column(
         modifier = modifier
             .fillMaxWidth()
             .height(90.dp)
             .background(Branco)
-    ){
+    ) {
         Text(
             text = "Data Fechamento",
             style = TelaAcaoTypography.bodySmall,
@@ -76,10 +69,9 @@ fun DataFechamentoInput(
                 confirmButton = {
                     Button(
                         onClick = {
-                            datePickerState
-                                .selectedDateMillis?.let { millis ->
-                                    selectedDate = millis.toBrazilianDateFormat()
-                                }
+                            datePickerState.selectedDateMillis?.let { millis ->
+                                onValueChange(millis)
+                            }
                             showDatePickerDialog = false
                         },
                         colors = ButtonDefaults.buttonColors(VerdeEscuro)
@@ -90,8 +82,10 @@ fun DataFechamentoInput(
                 DatePicker(state = datePickerState)
             }
         }
+
+        val formattedDate = value.toBrazilianDateFormat()
         TextField(
-            value = selectedDate,
+            value = formattedDate,
             onValueChange = {},
             Modifier
                 .fillMaxWidth()
@@ -102,25 +96,25 @@ fun DataFechamentoInput(
                     }
                 }
                 .onFocusChanged {
-                    color = if (it.isFocused) VerdeFocus else CinzaAcao
+                    color = if (it.isFocused) Verde else CinzaAcao
                 },
             colors = TextFieldDefaults.textFieldColors(
                 containerColor = Branco,
-                focusedIndicatorColor = VerdeFocus,
+                focusedIndicatorColor = Verde,
                 unfocusedIndicatorColor = CinzaAcao,
             )
         )
     }
 }
 
-fun Long.toBrazilianDateFormat2(
-    pattern: String = "dd/MM/yyyy"
-): String {
+fun Long.toBrazilianDateFormat(): String {
     val date = Date(this)
-    val formatter = SimpleDateFormat(
-        pattern, Locale("pt-br")
-    ).apply {
-        timeZone = TimeZone.getTimeZone("GMT")
-    }
+    val formatter = SimpleDateFormat("dd/MM/yyyy", Locale("pt-br"))
+    return formatter.format(date)
+}
+
+fun Long.toDatabaseDateFormat(): String {
+    val date = Date(this)
+    val formatter = SimpleDateFormat("yyyy-MM-dd", Locale("pt-br"))
     return formatter.format(date)
 }

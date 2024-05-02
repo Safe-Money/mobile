@@ -9,7 +9,10 @@ import Usuario
 import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -25,7 +28,6 @@ import androidx.navigation.NavController
 import com.example.safemoney.telas_acao.buttons.ButtonsRow
 import com.example.safemoney.telas_acao.inputs.ApelidoInput
 import com.example.safemoney.telas_acao.inputs.BancoInput
-import com.example.safemoney.telas_acao.inputs.DataFechamentoInput
 import com.example.safemoney.telas_acao.inputs.DataVencimentoInput
 import com.example.safemoney.telas_acao.inputs.LimiteInput
 import com.example.safemoney.telas_acao.inputs.SaldoInput
@@ -45,14 +47,16 @@ fun ContaScreen(
     modifier: Modifier = Modifier,
     navController: NavController
 ) {
+    var mostrarSnackbarErrado by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
     var apelido by remember { mutableStateOf("") }
     var tipoConta by remember { mutableStateOf(0) }
     var saldo by remember { mutableStateOf(0.0) }
     var banco by remember { mutableStateOf("") }
 
+    val userId = loginViewModel.getId() ?: -1
 
-
+    val cadastroSucesso by contaViewModel.cadastroSucesso
 
     Scaffold(
         topBar = {
@@ -75,7 +79,7 @@ fun ContaScreen(
             )
 
             SaldoInput(
-                value = saldo,
+                value = saldo.toString(),
                 onValueChange = { saldo = it }
             )
 
@@ -87,7 +91,6 @@ fun ContaScreen(
             ButtonsRow(
                 navController = navController,
                 onAddButtonClick = {
-                    val userId = loginViewModel.getId()
                     val usuario = FkUsuario(id = userId)
                     Log.d("ContaScreen", "Apelido: $apelido")
                     Log.d("ContaScreen", "Tipo de Conta: $tipoConta")
@@ -109,8 +112,11 @@ fun ContaScreen(
                 onCancelButtonClick = {
                     navController.navigate("painel")
                 }
-
             )
         }
     }
+
+
+
+
 }

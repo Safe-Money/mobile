@@ -35,15 +35,11 @@ fun DespesaScreen(
                 .padding(contentPadding)
                 .padding(16.dp)
         ) {
-            ValorInput()
 
-            DataInput()
 
             DescricaoInput()
 
-            DropInput()
 
-            DropInput()
 
             SwitchButton()
 

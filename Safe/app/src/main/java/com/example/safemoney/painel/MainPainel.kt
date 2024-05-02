@@ -33,37 +33,32 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.safemoney.FooterBar
-import com.example.safemoney.TopBar
+
 import com.example.safemoney.painel.ThreeContainersWithList
 import com.example.safemoney.ui.theme.SafeMoneyTheme
 import com.example.safemoney.ui.theme.Vermelho
+import com.example.safemoney.viewmodel.CartaoViewModel
+
 @Composable
-fun MainPainel(modifier: Modifier = Modifier, navController: NavController, contaViewModel: ContaViewModel) {
+fun MainPainel(modifier: Modifier = Modifier, navController: NavController, contaViewModel: ContaViewModel, cartaoViewModel: CartaoViewModel) {
     val sharedPreferences = LocalContext.current.getSharedPreferences("user_session", Context.MODE_PRIVATE)
     val userId = sharedPreferences.getInt("id", -1)
 
-
     val listaContas by contaViewModel.contasLiveData.observeAsState(initial = emptyList())
-
 
     LaunchedEffect(Unit) {
         contaViewModel.listarContas(userId)
     }
-
 
     Scaffold(
         bottomBar = { FooterBar(navController) }
     ) {
         Column(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
+                .fillMaxSize(),
             verticalArrangement = Arrangement.Center
         ) {
-            // Lista as contas
-            ThreeContainersWithList(navController = navController, contaViewModel = contaViewModel)
-
-
+            ThreeContainersWithList(navController = navController, contaViewModel = contaViewModel, cartaoViewModel = cartaoViewModel)
         }
     }
 }

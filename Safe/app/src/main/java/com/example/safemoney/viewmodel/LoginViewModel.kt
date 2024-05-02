@@ -1,18 +1,25 @@
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.safemoney.repositorio.ILoginRepository
+import com.example.safemoney.viewmodel.CartaoViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class LoginViewModel(
     private val loginRepository: ILoginRepository,
+
     private val context: Context
 ) : ViewModel() {
 
     private val sharedPreferences: SharedPreferences by lazy {
         context.getSharedPreferences("user_session", Context.MODE_PRIVATE)
     }
+
+    private val _loginResult = MutableLiveData<Boolean>()
+    val loginResult: LiveData<Boolean> = _loginResult
 
     suspend fun fazerLogin(email: String, senha: String): Boolean {
         val response = loginRepository.loginUsuario(email, senha)
@@ -22,7 +29,7 @@ class LoginViewModel(
             val email = response.body()?.email ?: ""
             val id = response.body()?.id ?: -1
 
-
+            _loginResult.value = response.isSuccessful
             salvarDetalhesUsuario(token, nome, id, email)
 
             true

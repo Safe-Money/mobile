@@ -22,24 +22,18 @@ import androidx.compose.ui.unit.sp
 import com.example.safemoney.ui.theme.Branco
 import com.example.safemoney.ui.theme.CinzaAcao
 import com.example.safemoney.ui.theme.TelaAcaoTypography
+import com.example.safemoney.ui.theme.Verde
 import com.example.safemoney.ui.theme.VerdeFocus
 
-@Preview
-@Composable
-fun LimiteInputPreview() {
-    LimiteInput()
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LimiteInput(
     modifier: Modifier = Modifier,
+    value: String,
+    onValueChange: (String) -> Unit,
 ) {
-    var valor by remember{
-        mutableStateOf("")
-    }
-
-    var color by remember{
+    var color by remember {
         mutableStateOf(CinzaAcao)
     }
 
@@ -55,23 +49,20 @@ fun LimiteInput(
             color = color
         )
         TextField(
-            value = valor,
-            onValueChange = {
-                valor = it
-            },
+            value = value.toString(),
+            onValueChange = onValueChange,
             colors = TextFieldDefaults.textFieldColors(
                 containerColor = Branco,
-                focusedIndicatorColor = VerdeFocus,
+                focusedIndicatorColor = Verde,
                 unfocusedIndicatorColor = CinzaAcao,
             ),
             modifier = modifier
                 .fillMaxWidth()
                 .onFocusChanged {
-                    color = if (it.isFocused) VerdeFocus else CinzaAcao
+                    color = if (it.isFocused) Verde else CinzaAcao
                 }
                 .height(50.dp),
-            textStyle = TextStyle(fontSize = 20.sp),
+            textStyle = TextStyle(fontSize = 12.sp),
         )
     }
-
 }

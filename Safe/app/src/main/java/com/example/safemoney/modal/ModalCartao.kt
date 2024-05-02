@@ -187,7 +187,7 @@ fun DeletarCartão(
 @Composable
 fun PreviewDeletarCartão() {
     val showDialog = remember { mutableStateOf(true) }
-    val meuCartao = Cartao(nome = "Cartão ", icone = R.drawable.visa)
+    val meuCartao = Cartao(nome = "Cartão ", icone = R.drawable.bradesco)
 
     if (showDialog.value) {
         DeletarCartão(

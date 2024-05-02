@@ -23,22 +23,37 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.safemoney.model.Cartao
+import com.example.safemoney.model.CartaoGet
 import com.example.safemoney.ui.theme.CinzaDivisor
 import com.example.safemoney.ui.theme.CinzaLetra
 import com.example.safemoney.ui.theme.VerdeClaro
 
-@Preview(
-    showBackground = true,
-)
-@Composable
-fun CartaoRowPreview() {
-    CartaoRow()
+
+
+
+
+fun CartaoGet.toCartao(): Cartao {
+    return Cartao(
+        nome = this.nome,
+        bandeira = this.bandeira,
+        limite = this.limite,
+        dataVencimento = this.vencimento,
+        dataFechamento = this.fechamento,
+        conta = this.conta
+    )
 }
 
 @Composable
 fun CartaoRow(
-    modifier: Modifier = Modifier
-) {
+    modifier: Modifier = Modifier,
+    cartoes: List<CartaoGet>,
+)
+
+
+
+
+{
     Column {
 
         Spacer(modifier = modifier.height(30.dp))
@@ -49,13 +64,12 @@ fun CartaoRow(
             contentPadding = PaddingValues(
                 horizontal = 64.dp
             )
-        ) {
-            items(Cartoes.getMockList()) { cartao ->
-                Cartao(
-                    numeroCartao = cartao.numeroCartao
-                )
+        )
+            {
+                items(cartoes) { cartao ->
+                    Cartao(cartao = cartao)
+                }
             }
-        }
 
         Row(
             modifier = modifier

@@ -24,23 +24,29 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Snackbar
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.safemoney.R
+import com.example.safemoney.ui.theme.Verde
 import com.example.safemoney.viewmodel.CadastroViewModel
 import kotlinx.coroutines.launch
 
-
 @Composable
 fun CadastroScreen(navController: NavController, cadastroViewModel: CadastroViewModel = viewModel()) {
-
-
+    var mostrarSnackbarErrado by remember { mutableStateOf(false) }
+    var senhaVisivel by remember { mutableStateOf(false) }
+    var confirmSenhaVisivel by remember { mutableStateOf(false) }
 
     MaterialTheme {
         val coroutineScope = rememberCoroutineScope()
@@ -61,8 +67,7 @@ fun CadastroScreen(navController: NavController, cadastroViewModel: CadastroView
                 .padding(start = 16.dp, top = 20.dp, end = 16.dp, bottom = 16.dp),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
-        )
-        {
+        ) {
             Spacer(modifier = Modifier.height(20.dp))
             Image(
                 painter = painterResource(id = R.drawable.safemoney2),
@@ -91,7 +96,6 @@ fun CadastroScreen(navController: NavController, cadastroViewModel: CadastroView
                 onValueChange = {
                     nome = it
                 },
-
                 shape = RoundedCornerShape(7.dp),
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = Color.Transparent,
@@ -101,9 +105,11 @@ fun CadastroScreen(navController: NavController, cadastroViewModel: CadastroView
                     focusedLabelColor = Color(0XFF08632D),
                 ),
                 label = {
-                    Text("Nome",
+                    Text(
+                        "Nome",
                         fontFamily = FontFamily(Font(R.font.montserrat)),
-                        fontSize = 12.sp)
+                        fontSize = 12.sp
+                    )
                 }
             )
 
@@ -115,8 +121,6 @@ fun CadastroScreen(navController: NavController, cadastroViewModel: CadastroView
                     dtNascimento = selectedDate
                 }
             )
-
-
 
             Spacer(modifier = Modifier.height(15.dp))
 
@@ -138,8 +142,8 @@ fun CadastroScreen(navController: NavController, cadastroViewModel: CadastroView
                     Text(
                         "E-mail",
                         fontFamily = FontFamily(Font(R.font.montserrat)),
-                        fontSize = 12.sp)
-
+                        fontSize = 12.sp
+                    )
                 }
             )
 
@@ -160,14 +164,29 @@ fun CadastroScreen(navController: NavController, cadastroViewModel: CadastroView
                     focusedLabelColor = Color(0XFF08632D),
                 ),
                 label = {
-                    Text("Senha",
+                    Text(
+                        "Senha",
                         fontFamily = FontFamily(Font(R.font.montserrat)),
-                        fontSize = 12.sp)
-
+                        fontSize = 12.sp
+                    )
                 },
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Password
-                )
+                ),
+                visualTransformation = if (senhaVisivel) VisualTransformation.None else PasswordVisualTransformation(),
+                trailingIcon = {
+                    IconButton(
+                        onClick = { senhaVisivel = !senhaVisivel }
+                    ) {
+                        Icon(
+                            painter = if (senhaVisivel) painterResource(id = R.drawable.olho_aberto) else painterResource(
+                                id = R.drawable.olho_fechado
+                            ),
+                            contentDescription = "",
+                            modifier = Modifier.size(20.dp)
+                        )
+                    }
+                }
             )
 
             Spacer(modifier = Modifier.height(15.dp))
@@ -190,16 +209,29 @@ fun CadastroScreen(navController: NavController, cadastroViewModel: CadastroView
                     Text(
                         "Confirmar Senha",
                         fontFamily = FontFamily(Font(R.font.montserrat)),
-                        fontSize = 12.sp)
-
+                        fontSize = 12.sp
+                    )
                 },
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Password
-                )
+                ),
+                visualTransformation = if (confirmSenhaVisivel) VisualTransformation.None else PasswordVisualTransformation(),
+                trailingIcon = {
+                    IconButton(
+                        onClick = { confirmSenhaVisivel = !confirmSenhaVisivel }
+                    ) {
+                        Icon(
+                            painter = if (confirmSenhaVisivel) painterResource(id = R.drawable.olho_aberto) else painterResource(
+                                id = R.drawable.olho_fechado
+                            ),
+                            contentDescription = "",
+                            modifier = Modifier.size(20.dp)
+                        )
+                    }
+                }
             )
 
             Spacer(modifier = Modifier.height(40.dp))
-
 
             Button(
                 onClick = {
@@ -211,6 +243,7 @@ fun CadastroScreen(navController: NavController, cadastroViewModel: CadastroView
                             Log.d("CadastroScreen", "Gabigol para tela de login")
                             navController.navigate("login")
                         } else {
+                            mostrarSnackbarErrado = true
                             Log.d("CadastroScreen", "Erro ao cadastrar usuário mosquei")
                         }
                     }
@@ -229,7 +262,6 @@ fun CadastroScreen(navController: NavController, cadastroViewModel: CadastroView
                     fontSize = 15.sp
                 )
             }
-
 
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -252,27 +284,17 @@ fun CadastroScreen(navController: NavController, cadastroViewModel: CadastroView
                     modifier = Modifier
                         .padding(start = 4.dp)
                         .clickable {
-
-                                navController.navigate("login")
-
-                        },
-
+                            navController.navigate("login")
+                        }
                 )
             }
-
-
         }
-
-
     }
 }
-
-
 
 @Preview(showBackground = true)
 @Composable
 fun CadastroScreenPreview() {
     val navController = rememberNavController()
-
     CadastroScreen(navController = navController)
 }

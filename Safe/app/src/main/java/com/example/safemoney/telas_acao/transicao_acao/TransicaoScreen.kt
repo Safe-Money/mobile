@@ -37,11 +37,11 @@ fun TransicaoScreen(
         ) {
             ContaRemetenteInput()
 
-            ValorInput()
+
 
             DescricaoInput()
 
-            DropInput()
+
 
 
         }

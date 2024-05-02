@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import com.example.safemoney.ui.theme.Branco
 import com.example.safemoney.ui.theme.CinzaAcao
 import com.example.safemoney.ui.theme.TelaAcaoTypography
+import com.example.safemoney.ui.theme.Verde
 import com.example.safemoney.ui.theme.VerdeEscuro
 import com.example.safemoney.ui.theme.VerdeFocus
 import java.text.SimpleDateFormat
@@ -37,16 +38,15 @@ import java.util.Locale
 import java.util.TimeZone
 
 
-@Preview
-@Composable
-fun DataInputPreview() {
-    DataInput()
-}
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DataInput(
-    modifier : Modifier = Modifier
+    modifier : Modifier = Modifier,
+    value: Long,
+    onValueChange: (Long) -> Unit,
+
 ) {
     var color by remember{
         mutableStateOf(CinzaAcao)
@@ -93,8 +93,9 @@ fun DataInput(
                 DatePicker(state = datePickerState)
             }
         }
+        val formattedDate = value.toBrazilianDateFormat17()
         TextField(
-            value = selectedDate,
+            value = formattedDate,
             onValueChange = {},
             androidx.compose.ui.Modifier
                 .fillMaxWidth()
@@ -105,25 +106,25 @@ fun DataInput(
                     }
                 }
                 .onFocusChanged {
-                    color = if (it.isFocused) VerdeFocus else CinzaAcao
+                    color = if (it.isFocused) Verde else CinzaAcao
                 },
             colors = TextFieldDefaults.textFieldColors(
                 containerColor = Branco,
-                focusedIndicatorColor = VerdeFocus,
+                focusedIndicatorColor = Verde,
                 unfocusedIndicatorColor = CinzaAcao,
             )
         )
     }
 }
 
-fun Long.toBrazilianDateFormat(
-    pattern: String = "dd/MM/yyyy"
-): String {
+fun Long.toBrazilianDateFormat17(): String {
     val date = Date(this)
-    val formatter = SimpleDateFormat(
-        pattern, Locale("pt-br")
-    ).apply {
-        timeZone = TimeZone.getTimeZone("GMT")
-    }
+    val formatter = SimpleDateFormat("dd/MM/yyyy", Locale("pt-br"))
+    return formatter.format(date)
+}
+
+fun Long.toDatabaseDateFormat17(): String {
+    val date = Date(this)
+    val formatter = SimpleDateFormat("yyyy-MM-dd", Locale("pt-br"))
     return formatter.format(date)
 }

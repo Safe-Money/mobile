@@ -17,21 +17,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.safemoney.ui.theme.Branco
 import com.example.safemoney.ui.theme.CinzaAcao
 import com.example.safemoney.ui.theme.TelaAcaoTypography
+import com.example.safemoney.ui.theme.Verde
 import com.example.safemoney.ui.theme.VerdeFocus
 
-@Preview
-@Composable
-fun UltimosQuatroInputPreview() {
-    UltimosQuatroInput()
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun UltimosQuatroInput(
-    modifier : Modifier = Modifier
+fun NomeCard(
+    modifier : Modifier = Modifier,
+    value: String,
+    onValueChange: (String) -> Unit,
 ) {
     var valor by remember{
         mutableStateOf("")
@@ -48,24 +47,23 @@ fun UltimosQuatroInput(
             .background(Branco)
     ) {
         Text(
-            text = "últimos 4 Dígitos",
+            text = "Apelido",
             style = TelaAcaoTypography.bodySmall,
-            color = color
+            color = color,
+
         )
         TextField(
-            value = valor,
-            onValueChange = {
-                valor = it
-            },
+            value = value,
+            onValueChange = onValueChange,
             colors = TextFieldDefaults.textFieldColors(
                 containerColor = Branco,
-                focusedIndicatorColor = VerdeFocus,
+                focusedIndicatorColor = Verde,
                 unfocusedIndicatorColor = CinzaAcao,
             ),
             modifier = modifier
                 .fillMaxWidth()
                 .onFocusChanged {
-                    color = if (it.isFocused) VerdeFocus else CinzaAcao
+                    color = if (it.isFocused) Verde else CinzaAcao
                 }
         )
     }

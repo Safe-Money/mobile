@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.safemoney.telas_acao.buttons.ButtonsRow
 import com.example.safemoney.telas_acao.buttons.SwitchButton
 import com.example.safemoney.telas_acao.inputs.DataInput
@@ -16,15 +17,13 @@ import com.example.safemoney.telas_acao.inputs.DescricaoInput
 import com.example.safemoney.telas_acao.inputs.DropInput
 import com.example.safemoney.telas_acao.inputs.ValorInput
 
-@Preview
-@Composable
-fun PlanoScreenPreview() {
-    PlanoScreen()
-}
+
+
 
 @Composable
 fun PlanoScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navController: NavController
 ) {
     Scaffold(
         topBar = {
@@ -36,9 +35,8 @@ fun PlanoScreen(
                 .padding(contentPadding)
                 .padding(16.dp)
         ) {
-            DropInput()
 
-            ValorInput()
+
 
 
         }
