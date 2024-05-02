@@ -35,14 +35,11 @@ val appModule: Module = module {
     single { CartaoRepository() }
     single { UsuarioViewModel() }
 
-
-
     viewModel { CadastroViewModel(get()) }
     viewModel { LancamentoViewModel(get()) }
     viewModel { ContaViewModel(get()) }
     viewModel { CategoriaViewModel(get()) }
     viewModel { LoginViewModel(get(), get()) }
     viewModel { CartaoViewModel(get(), get()) }
-
 
 }
