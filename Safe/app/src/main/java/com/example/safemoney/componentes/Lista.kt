@@ -1,5 +1,6 @@
 package com.example.safemoney.componentes
 
+import LancamentosGet
 import android.os.Bundle
 import com.example.safemoney.R
 import androidx.activity.ComponentActivity
@@ -34,10 +35,9 @@ import com.example.safemoney.ui.theme.SafeMoneyTheme
 
 
 
-    data class Lancamento(val local: String, val tipo: String, val nomeConta: String, val valor: String)
 
 @Composable
-fun Lista(lancamentos: List<Lancamento>) {
+fun Lista(lancamentos: List<LancamentosGet>) {
     Column(
         modifier = Modifier.padding(horizontal = 10.dp)
     ) {
@@ -63,7 +63,7 @@ fun getIconResourceId(local: String): Int {
 }
 
 @Composable
-fun LancamentoItem(lancamento: Lancamento) {
+fun LancamentoItem(lancamento: LancamentosGet, ) {
     Surface(
         shape = RoundedCornerShape(8.dp),
         color = Color.Transparent,
@@ -81,15 +81,14 @@ fun LancamentoItem(lancamento: Lancamento) {
                     .clip(CircleShape)
 
             ) {
+                val iconResourceId = getIconResourceId(lancamento.nome)
                 Image(
-                    painter = painterResource(id = getIconResourceId(lancamento.local)),
+                    painter = painterResource(id = iconResourceId),
                     contentDescription = null,
                     modifier = Modifier
                         .size(30.dp)
                         .clip(CircleShape)
                 )
-
-
             }
 
             Column(
@@ -98,15 +97,14 @@ fun LancamentoItem(lancamento: Lancamento) {
                     .weight(0.1f)
             ) {
                 Text(
-                    text = lancamento.local,
+                    text = lancamento.nome,
                     fontFamily = FontFamily(Font(R.font.montserrat)),
                     fontSize = 11.sp,
                     fontWeight = FontWeight(100),
                     color = CinzaClaro
-
                 )
                 Text(
-                    text = lancamento.tipo,
+                    text = lancamento.nome,
                     fontFamily = FontFamily(Font(R.font.montserrat)),
                     fontSize = 8.sp,
                     color = Color.Gray
@@ -120,7 +118,7 @@ fun LancamentoItem(lancamento: Lancamento) {
 
             ) {
                 Text(
-                    text = lancamento.nomeConta,
+                    text = lancamento.nome,
                     fontFamily = FontFamily(Font(R.font.montserrat)),
                     fontSize = 10.sp,
                     textAlign = TextAlign.Center,
@@ -133,11 +131,11 @@ fun LancamentoItem(lancamento: Lancamento) {
                 modifier = Modifier.align(Alignment.CenterVertically)
             ) {
                 Text(
-                    text = lancamento.valor,
+                    text = lancamento.valor.toString(),
                     fontFamily = FontFamily(Font(R.font.montserrat)),
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 9.sp,
-                    color = if (lancamento.tipo == "Débito") Color.Black else Color.Black,
+                    color = if (lancamento.nome == "Débito") Color.Black else Color.Black,
                     modifier = Modifier.padding(start = 8.dp)
                 )
             }

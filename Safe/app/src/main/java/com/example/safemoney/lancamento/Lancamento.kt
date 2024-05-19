@@ -32,7 +32,8 @@ import com.example.safemoney.FooterBar
 import com.example.safemoney.R
 import com.example.safemoney.componentes.BotaoMes
 import com.example.safemoney.componentes.BotoesSwitch
-import com.example.safemoney.componentes.Lancamento
+
+
 import com.example.safemoney.componentes.Lista
 
 @Composable
@@ -49,34 +50,9 @@ fun LancamentosScreen2(navController: NavController, lancamentoViewModel: Lancam
         lancamentoViewModel.listarLancamentos(userId)
     }
 
-    val listaBox1 = listOf(
-        Lancamento(
-            local = "Shopping",
-            tipo = "Débito",
-            nomeConta = "Conta Corrente",
-            valor = "- R\$ 150,00"
-        ),
-        Lancamento(
-            local = "Medico",
-            tipo = "Tipo 1",
-            nomeConta = "Conta 1",
-            valor = "R\$ 100,00"
-        ),
-        Lancamento(
-            local = "Academia",
-            tipo = "Tipo 1",
-            nomeConta = "Conta 1",
-            valor = "R\$ 100,00"
-        ),
-        Lancamento(
-            local = "Academia",
-            tipo = "Tipo 1",
-            nomeConta = "Conta 1",
-            valor = "R\$ 100,00"
-        ),
 
 
-        )
+
 
 
     Surface(
@@ -178,7 +154,7 @@ fun LancamentosScreen2(navController: NavController, lancamentoViewModel: Lancam
                         color = Color.Black,
                         modifier = Modifier.padding(16.dp)
                     )
-                    Lista(lancamentos = listaBox1)
+                    Lista(lancamentos = lancamentosState)
                 }
 
                 item {
@@ -189,7 +165,7 @@ fun LancamentosScreen2(navController: NavController, lancamentoViewModel: Lancam
                         color = Color.Black,
                         modifier = Modifier.padding(16.dp)
                     )
-                    Lista(lancamentos = listaBox1)
+                    Lista(lancamentos = lancamentosState)
                 }
                 item {
                     Text(
@@ -199,7 +175,7 @@ fun LancamentosScreen2(navController: NavController, lancamentoViewModel: Lancam
                         color = Color.Black,
                         modifier = Modifier.padding(16.dp)
                     )
-                    Lista(lancamentos = listaBox1)
+                    Lista(lancamentos = lancamentosState)
                 }
 
                 item {
@@ -210,7 +186,7 @@ fun LancamentosScreen2(navController: NavController, lancamentoViewModel: Lancam
                         color = Color.Black,
                         modifier = Modifier.padding(16.dp)
                     )
-                    Lista(lancamentos = listaBox1)
+                    Lista(lancamentos = lancamentosState)
                 }
 
                 item {
@@ -221,7 +197,7 @@ fun LancamentosScreen2(navController: NavController, lancamentoViewModel: Lancam
                         color = Color.Black,
                         modifier = Modifier.padding(16.dp)
                     )
-                    Lista(lancamentos = listaBox1)
+                    Lista(lancamentos = lancamentosState)
 
                 }
 
@@ -246,5 +222,4 @@ fun LancamentosScreen2(navController: NavController, lancamentoViewModel: Lancam
         }
     }
 }
-
 

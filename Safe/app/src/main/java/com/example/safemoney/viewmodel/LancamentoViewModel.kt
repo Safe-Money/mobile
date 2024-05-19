@@ -33,28 +33,28 @@ class LancamentoViewModel(private val lancamentoRepository: ILancamentoRepositor
         get() = _lancamentos
 
 
-    fun listarLancamentos(userId: Int): LiveData<List<LancamentosGet>> {
+    fun listarLancamentos(contaId: Int): LiveData<List<LancamentosGet>> {
         CoroutineScope(Dispatchers.IO + coroutineExceptionHandler).launch {
             try {
-                val response = lancamentoRepository.listarLancamentos(userId)
+                val response = lancamentoRepository.listarLancamentos(contaId)
                 if (response.isSuccessful) {
                     _lancamentos.postValue(response.body())
                     val lancamentos = response.body()
-                    Log.e("lancamentosViewModel", "listar lancamentos $response $lancamentos")
-                    lancamentos?.forEach { lancamentos ->
-                        Log.d("lancamentosViewModel", "${lancamentos}")
+                    Log.e("lancamentosViewModel", "listar lancamentos $response $lancamentos lista de lança")
+                    lancamentos?.forEach { lancamento ->
+                        Log.d("lancamentosViewModel", "${lancamento}")
                     }
-
                 } else {
                     val erro = response.errorBody()?.string() ?: "Erro desconhecido"
                     Log.e("lancamentosViewModel", "Erro ao listar lancamentos $erro")
                 }
             } catch (e: Exception) {
-                Log.e("lancamentosViewModel", "Erro ao listar cartões", e)
+                Log.e("lancamentosViewModel", "Erro ao listar lancamentos", e)
             }
         }
         return lancamentos
     }
+
 
 
     fun cadastrarLancamentoFixo(lancamentos: Lancamentos) {

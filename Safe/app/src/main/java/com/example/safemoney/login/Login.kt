@@ -231,14 +231,14 @@ fun LoginScreen1(navController: NavController, loginViewModel: LoginViewModel = 
                     coroutineScope.launch {
                         Log.d("LoginScreen", "Botão 'Login' clicado")
                         val cadastroSucesso = loginViewModel.fazerLogin(email, senha)
-                        Log.d("LoginScreen", "Cadastro realizado com sucesso: $cadastroSucesso top")
+                        Log.d("LoginScreen", "Login realizado com sucesso: $cadastroSucesso top")
                         if (cadastroSucesso) {
-                            Log.d("LoginScreen", "Gabigol para tela de login")
+                            Log.d("LoginScreen", "Gabigol para tela de painel")
                             navController.navigate("painel")
 
                         } else {
                             mostrarSnackbarErrado = true
-                            Log.d("LoginScreen", "Erro ao cadastrar usuário mosquei")
+                            Log.d("LoginScreen", "Erro ao logar usuário mosquei")
                         }
                     }
                 },

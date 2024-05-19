@@ -6,6 +6,7 @@ import ICadastrarRepository
 import LancamentoViewModel
 import LoginRepository
 import LoginViewModel
+import ObjetivoViewModel
 import UsuarioViewModel
 import com.example.safemoney.repositorio.CartaoRepository
 import com.example.safemoney.repositorio.CategoriaRepository
@@ -16,7 +17,9 @@ import com.example.safemoney.repositorio.ICategoriaRepository
 import com.example.safemoney.repositorio.IContaRepository
 import com.example.safemoney.repositorio.ILancamentoRepository
 import com.example.safemoney.repositorio.ILoginRepository
+import com.example.safemoney.repositorio.IObjetivoRepository
 import com.example.safemoney.repositorio.LancamentoRepository
+import com.example.safemoney.repositorio.ObjetivoRepository
 import com.example.safemoney.viewmodel.CadastroViewModel
 import com.example.safemoney.viewmodel.CategoriaViewModel
 
@@ -32,10 +35,12 @@ val appModule: Module = module {
     single<IContaRepository> { ContaRepository() }
     single<ILancamentoRepository> { LancamentoRepository() }
     single<ICategoriaRepository> { CategoriaRepository() }
+    single { ObjetivoRepository() }
     single { CartaoRepository() }
     single { UsuarioViewModel() }
 
     viewModel { CadastroViewModel(get()) }
+    viewModel { ObjetivoViewModel(get(), get()) }
     viewModel { LancamentoViewModel(get()) }
     viewModel { ContaViewModel(get()) }
     viewModel { CategoriaViewModel(get()) }

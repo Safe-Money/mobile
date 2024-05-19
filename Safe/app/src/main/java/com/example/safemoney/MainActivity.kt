@@ -4,6 +4,7 @@ import ContaViewModel
 import LancamentoViewModel
 import LoginViewModel
 import MainPainel
+import ObjetivoViewModel
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -20,10 +21,12 @@ import com.example.safemoney.di.appModule
 import com.example.safemoney.login.LoginScreen1
 import com.example.safemoney.menu.Menu
 import com.example.safemoney.planejamento.LancamentosScreen2
+import com.example.safemoney.planejamento.Planejamento
 import com.example.safemoney.telas_acao.cartao_acao.CartaoScreen
 import com.example.safemoney.telas_acao.conta_acao.ContaScreen
 import com.example.safemoney.telas_acao.despesa_acao.PlanoScreen
 import com.example.safemoney.telas_acao.lancamentos_acao.LancamentosScreen
+import com.example.safemoney.telas_acao.objetivo_acao.ObjetivoAddScreen
 import com.example.safemoney.viewmodel.CadastroViewModel
 import com.example.safemoney.viewmodel.CartaoViewModel
 import com.example.safemoney.viewmodel.CategoriaViewModel
@@ -135,17 +138,38 @@ fun SafeMoneyApp() {
         composable("lancamentos") {
             val lancamentoViewModel: LancamentoViewModel = getViewModel()
             val loginViewModel: LoginViewModel = getViewModel()
+            val contaViewModel: ContaViewModel = getViewModel()
+            val userId = loginViewModel.getId()
+            val listaContas by contaViewModel.listarContas(userId)
+                .observeAsState(initial = emptyList())
             LancamentosScreen2(
                 navController = navController,
                 lancamentoViewModel = lancamentoViewModel,
-                loginViewModel = loginViewModel
+                loginViewModel = loginViewModel,
+
             )
         }
         composable("planejamento") {
-            PlanoScreen(navController = navController)
+            Planejamento(navController = navController)
         }
+
+        composable("addPlanejamento") {
+            val categoriaViewModel: CategoriaViewModel = getViewModel()
+            val listaCategorias by categoriaViewModel.listarCategorias()
+                .observeAsState(initial = emptyList())
+            PlanoScreen(navController = navController, categorias = listaCategorias,)
+        }
+
+        composable("addObjetivos") {
+            val loginViewModel: LoginViewModel = getViewModel()
+            val objetivoViewModel : ObjetivoViewModel = getViewModel()
+            ObjetivoAddScreen(navController = navController,  loginViewModel = loginViewModel, objetivoViewModel = objetivoViewModel)
+        }
+
+
         composable("objetivo") {
-            ObjetivoScreen(navController = navController)
+            val objetivoViewModel : ObjetivoViewModel = getViewModel()
+            ObjetivoScreen(navController = navController, objetivoViewModel = objetivoViewModel)
         }
     }
 }

@@ -11,5 +11,5 @@ interface LancamentoService {
     suspend fun cadastrarLancamento(@Body lancamento: Lancamentos)
 
     @GET("lancamento-fixo/buscar-fixos/{id}")
-    suspend fun listarLancamento(@Path("id") userId: Int): Response<List<LancamentosGet>>
+    suspend fun listarLancamento(@Path("id") contaId: Int): Response<List<LancamentosGet>>
 }

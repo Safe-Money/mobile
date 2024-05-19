@@ -108,7 +108,7 @@ fun CartaoScreen(
                             userId = userId ?: 0
                         )
                     }
-                    navController.navigate("painel")
+                    navController.navigate("telaCartao")
                 },
                 onCancelButtonClick = { navController.navigate("telaCartao") }
             )

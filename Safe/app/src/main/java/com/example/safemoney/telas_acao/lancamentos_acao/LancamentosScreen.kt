@@ -8,6 +8,7 @@ import LoginViewModel
 import TipoTransacao
 import UserConta
 import Usuario1
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -19,7 +20,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.safemoney.componentes.Lancamento
 import com.example.safemoney.model.Categoria
 
 import com.example.safemoney.telas_acao.buttons.ButtonsRow
@@ -54,9 +54,6 @@ fun LancamentosScreen(
     val contaSelecionadaId = remember { mutableStateOf<Int?>(null) }
 
 
-    LaunchedEffect(Unit) {
-        categoriaViewModel.listarCategorias()
-    }
 
 
     Scaffold(
@@ -102,7 +99,10 @@ fun LancamentosScreen(
 
             ButtonsRow(
                 navController = navController,
+
                 onAddButtonClick = {
+
+
                     val valorString = valor.value.trim()
                     val valorNumerico = if (valorString.isNotEmpty()) {
                         valorString.toDoubleOrNull() ?: 0.0
@@ -119,6 +119,7 @@ fun LancamentosScreen(
                         fkTipoTransacao = TipoTransacao(id = 5),
                         fkCategoria = Categoria1(id = categoriaSelecionadaId.value!!)
                     )
+
 
                     lancamentoViewModel.cadastrarLancamentoFixo(lancamento)
                     navController.navigate("lancamentos")

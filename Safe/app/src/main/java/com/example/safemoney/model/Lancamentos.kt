@@ -21,12 +21,12 @@ data class TipoTransacao(
 )
 
 data class Categoria1(
-    val id: Int
+    val id: Int,
+    val nome: String? = null
 )
-
 data class LancamentosGet(
     val nome: String,
     val valor: Double,
     val data: String,
-    val fkCategoria: Categoria1
+    val fkCategoria: Categoria1? = null
 )

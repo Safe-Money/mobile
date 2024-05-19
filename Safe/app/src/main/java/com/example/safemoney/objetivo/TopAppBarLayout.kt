@@ -6,6 +6,7 @@ import android.widget.Space
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,6 +25,7 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -37,19 +39,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.safemoney.R
 import com.example.safemoney.ui.theme.Branco
 
 
-@Preview
-@Composable
-fun TopBarPreview() {
-    TopBar()
-}
+
 
 @Composable
 fun TopBar(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navController : NavController,
 ) {
 
     Column {
@@ -95,11 +95,16 @@ fun TopBar(
                     modifier = modifier.width(8.dp)
                 )
 
-                Icon(
-                    imageVector = Icons.Default.AddCircle,
-                    contentDescription = "Add",
-                    modifier = Modifier.padding(13.dp)
-                )            }
+                IconButton(
+                    onClick = { navController.navigate("addObjetivos") },
+                    modifier = Modifier.size(24.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.AddCircle,
+                        contentDescription = null
+                    )
+                }
+            }
         }
 
         Divider(

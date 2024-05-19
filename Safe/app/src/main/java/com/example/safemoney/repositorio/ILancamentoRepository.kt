@@ -9,7 +9,7 @@ import retrofit2.Response
 interface ILancamentoRepository {
 
     suspend fun cadastrarLancamento(lancamento: Lancamentos)
-    suspend fun listarLancamentos(userId: Int): Response<List<LancamentosGet>>
+    suspend fun listarLancamentos(contaId: Int): Response<List<LancamentosGet>>
 
     }
 

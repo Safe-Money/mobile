@@ -22,6 +22,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -49,14 +50,15 @@ import com.example.safemoney.ui.theme.Verde
 fun Planejamento(navController: NavController) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize() ,
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(50.dp)
                 .shadow(elevation = 1.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
                 text = "Planejamento",
@@ -65,14 +67,18 @@ fun Planejamento(navController: NavController) {
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(10.dp)
             )
+            IconButton(
+                onClick = { navController.navigate("addPlanejamento") },
+                modifier = Modifier.size(24.dp) .padding( end = 5.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.AddCircle,
+                    contentDescription = "Add",
 
-            Icon(
-                imageVector = Icons.Default.AddCircle,
-                contentDescription = "Add",
-                modifier = Modifier.padding(13.dp)
-            )
+
+                )
+            }
         }
-
 
         Spacer(modifier = Modifier.height(20.dp))
 

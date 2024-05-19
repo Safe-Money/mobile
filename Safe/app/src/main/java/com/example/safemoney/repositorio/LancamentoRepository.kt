@@ -19,8 +19,8 @@ class LancamentoRepository: ILancamentoRepository {
         lancamentoService.cadastrarLancamento(lancamento)
     }
 
-    override suspend fun listarLancamentos(userId: Int): Response<List<LancamentosGet>> {
-        return lancamentoService.listarLancamento(userId)
+    override suspend fun listarLancamentos(contaId: Int): Response<List<LancamentosGet>> {
+        return lancamentoService.listarLancamento(contaId)
     }
 
 
