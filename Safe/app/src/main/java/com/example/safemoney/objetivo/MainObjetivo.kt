@@ -38,7 +38,7 @@ fun ObjetivoScreen(
     ) {
         Column {
             TopBar(navController = navController)
-            Content(objetivos = objetivos)
+            Content(objetivos = objetivos,navController = navController )
         }
         FooterBar(navController)
     }

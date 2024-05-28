@@ -3,101 +3,61 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.safemoney.model.CartaoGet
-
 import com.example.safemoney.repositorio.ILancamentoRepository
 import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-
 import kotlinx.coroutines.launch
-
 
 class LancamentoViewModel(private val lancamentoRepository: ILancamentoRepository) : ViewModel() {
 
     private val coroutineExceptionHandler = CoroutineExceptionHandler { _, exception ->
-        Log.e("lancamentosViewModel", "Erro ao cadastrar a lancamento", exception)
+        Log.e("LancamentoViewModel", "Erro ao cadastrar a lançamento", exception)
+        _errorEvent.postValue("Erro ao cadastrar lançamento: ${exception.message}")
     }
 
-
     private val _successEvent = MutableLiveData<Boolean>()
-    val successEvent: LiveData<Boolean>
-        get() = _successEvent
+    val successEvent: LiveData<Boolean> get() = _successEvent
 
     private val _errorEvent = MutableLiveData<String>()
-    val errorEvent: LiveData<String>
-        get() = _errorEvent
+    val errorEvent: LiveData<String> get() = _errorEvent
 
-    private val _lancamentos = MutableLiveData<List<LancamentosGet>>()
-    val lancamentos: LiveData<List<LancamentosGet>>
-        get() = _lancamentos
+    private val _lancamentos = MutableLiveData<List<LancamentosGet>>(emptyList())
+    val lancamentos: LiveData<List<LancamentosGet>> get() = _lancamentos
 
-
-    fun listarLancamentos(contaId: Int): LiveData<List<LancamentosGet>> {
-        CoroutineScope(Dispatchers.IO + coroutineExceptionHandler).launch {
+    fun listarLancamentos(contaId: Int) {
+        viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
             try {
                 val response = lancamentoRepository.listarLancamentos(contaId)
                 if (response.isSuccessful) {
-                    _lancamentos.postValue(response.body())
-                    val lancamentos = response.body()
-                    Log.e("lancamentosViewModel", "listar lancamentos $response $lancamentos lista de lança")
-                    lancamentos?.forEach { lancamento ->
-                        Log.d("lancamentosViewModel", "${lancamento}")
+                    val novosLancamentos = response.body() ?: emptyList()
+                    val listaAtualizada = (_lancamentos.value ?: emptyList()) + novosLancamentos
+                    _lancamentos.postValue(listaAtualizada)
+                    novosLancamentos.forEach { lancamento ->
+                        Log.d("LancamentoViewModel", lancamento.toString())
                     }
                 } else {
                     val erro = response.errorBody()?.string() ?: "Erro desconhecido"
-                    Log.e("lancamentosViewModel", "Erro ao listar lancamentos $erro")
+                    Log.e("LancamentoViewModel", "Erro ao listar lançamentos: $erro")
+                    _errorEvent.postValue("Erro ao listar lançamentos: $erro")
                 }
             } catch (e: Exception) {
-                Log.e("lancamentosViewModel", "Erro ao listar lancamentos", e)
+                Log.e("LancamentoViewModel", "Erro ao listar lançamentos", e)
+                _errorEvent.postValue("Erro ao listar lançamentos: ${e.message}")
             }
         }
-        return lancamentos
     }
-
-
 
     fun cadastrarLancamentoFixo(lancamentos: Lancamentos) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
             try {
-
-                Log.e("LancamentoViewModel", "Enviando lancamento: $lancamentos")
-
+                Log.d("LancamentoViewModel", "Enviando lançamento: $lancamentos")
                 lancamentoRepository.cadastrarLancamento(lancamentos)
-
-                _successEvent.value = true
+                _successEvent.postValue(true)
+                listarLancamentos(lancamentos.fkConta.id)
             } catch (e: Exception) {
-
-                Log.e("LancamentoViewModel", "Enviando lancamento: ${e.message}")
-
-                _errorEvent.value = "Erro ao cadastrar lancamento: ${e.message}"
+                Log.e("LancamentoViewModel", "Erro ao cadastrar lançamento", e)
+                _errorEvent.postValue("Erro ao cadastrar lançamento: ${e.message}")
             }
         }
     }
-
-
-
-
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

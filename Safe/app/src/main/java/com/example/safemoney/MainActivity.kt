@@ -11,9 +11,11 @@ import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.safemoney.cadastro.CadastroScreen
 import com.example.safemoney.cartoes.MainCartao
 import com.example.safemoney.config.ConfigScreen
@@ -26,7 +28,9 @@ import com.example.safemoney.telas_acao.cartao_acao.CartaoScreen
 import com.example.safemoney.telas_acao.conta_acao.ContaScreen
 import com.example.safemoney.telas_acao.despesa_acao.PlanoScreen
 import com.example.safemoney.telas_acao.lancamentos_acao.LancamentosScreen
+import com.example.safemoney.telas_acao.objetivo_acao.AddMoneyScreen
 import com.example.safemoney.telas_acao.objetivo_acao.ObjetivoAddScreen
+import com.example.safemoney.telas_acao.objetivo_acao.ObjetivoEDIT
 import com.example.safemoney.viewmodel.CadastroViewModel
 import com.example.safemoney.viewmodel.CartaoViewModel
 import com.example.safemoney.viewmodel.CategoriaViewModel
@@ -146,6 +150,7 @@ fun SafeMoneyApp() {
                 navController = navController,
                 lancamentoViewModel = lancamentoViewModel,
                 loginViewModel = loginViewModel,
+                contaViewModel = contaViewModel
 
             )
         }
@@ -164,6 +169,28 @@ fun SafeMoneyApp() {
             val loginViewModel: LoginViewModel = getViewModel()
             val objetivoViewModel : ObjetivoViewModel = getViewModel()
             ObjetivoAddScreen(navController = navController,  loginViewModel = loginViewModel, objetivoViewModel = objetivoViewModel)
+        }
+
+        composable("editObjetivos") {
+            val loginViewModel: LoginViewModel = getViewModel()
+            val objetivoViewModel : ObjetivoViewModel = getViewModel()
+            ObjetivoEDIT(navController = navController,  loginViewModel = loginViewModel, objetivoViewModel = objetivoViewModel)
+        }
+
+        composable(
+            route = "addMoney/{objetivoId}",
+            arguments = listOf(navArgument("objetivoId") { type = NavType.IntType })
+        ) { backStackEntry ->
+            val loginViewModel: LoginViewModel = getViewModel()
+            val objetivoViewModel: ObjetivoViewModel = getViewModel()
+            val objetivoId = backStackEntry.arguments?.getInt("objetivoId") ?: -1
+
+            AddMoneyScreen(
+                navController = navController,
+                loginViewModel = loginViewModel,
+                objetivoViewModel = objetivoViewModel,
+                objetivoId = objetivoId
+            )
         }
 
 

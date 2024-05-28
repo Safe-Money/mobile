@@ -1,68 +1,87 @@
 package com.example.safemoney.planejamento
 
+import ContaViewModel
 import LancamentoViewModel
-import LancamentosGet
 import LoginViewModel
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
-import androidx.compose.material3.Divider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.safemoney.FooterBar
 import com.example.safemoney.R
 import com.example.safemoney.componentes.BotaoMes
 import com.example.safemoney.componentes.BotoesSwitch
-
-
 import com.example.safemoney.componentes.Lista
+import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 @Composable
-fun LancamentosScreen2(navController: NavController, lancamentoViewModel: LancamentoViewModel, loginViewModel: LoginViewModel) {
-
-
+fun LancamentosScreen2(
+    navController: NavController,
+    lancamentoViewModel: LancamentoViewModel,
+    loginViewModel: LoginViewModel,
+    contaViewModel: ContaViewModel
+) {
     val userId = loginViewModel.getId()
-
-
     val lancamentosState by lancamentoViewModel.lancamentos.observeAsState(listOf())
 
-
     LaunchedEffect(Unit) {
-        lancamentoViewModel.listarLancamentos(userId)
+        val contasDoUsuario = contaViewModel.idConta(userId)
+        contasDoUsuario.forEach { contaId ->
+            lancamentoViewModel.listarLancamentos(contaId)
+            Log.d("LancamentosScreen2", "Chamando listarLancamentos para idConta: $contaId")
+        }
     }
 
+    val months = listOf(
+        "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+        "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+    )
+    val currentMonthIndex = remember { mutableStateOf(LocalDate.now().monthValue - 1) }
+    val scope = rememberCoroutineScope()
 
+    val formatter = DateTimeFormatter.ofPattern("EEEE, dd", Locale("pt", "BR"))
 
+    // Filtrar lançamentos pelo mês atual
+    val lancamentosDoMesAtual = lancamentosState.filter { lancamento ->
+        val lancamentoDate = LocalDate.parse(lancamento.data)
+        lancamentoDate.monthValue == currentMonthIndex.value + 1
+    }
 
-
+    val groupedLancamentos = lancamentosDoMesAtual.groupBy { lancamento ->
+        val parsedDate = LocalDate.parse(lancamento.data)
+        val formattedDate = parsedDate.format(formatter)
+        formattedDate.replaceFirstChar { it.uppercaseChar() }
+    }
 
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = Color.White
     ) {
         Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Top,
-            horizontalAlignment = Alignment.CenterHorizontally
+            modifier = Modifier.fillMaxSize()
         ) {
 
             Spacer(modifier = Modifier.height(10.dp))
@@ -76,9 +95,7 @@ fun LancamentosScreen2(navController: NavController, lancamentoViewModel: Lancam
                     fontFamily = FontFamily(Font(R.font.montserrat)),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier
-                        .padding(start = 16.dp)
-
+                    modifier = Modifier.padding(start = 16.dp)
                 )
 
                 IconButton(
@@ -121,12 +138,16 @@ fun LancamentosScreen2(navController: NavController, lancamentoViewModel: Lancam
                     .padding(start = 16.dp)
             ) {
                 BotaoMes(
-                    mesAtual = "Fevereiro",
+                    mesAtual = months[currentMonthIndex.value],
                     onClickPrevious = {
-                        println("")
+                        if (currentMonthIndex.value > 0) {
+                            currentMonthIndex.value -= 1
+                        }
                     },
                     onClickNext = {
-                        println("")
+                        if (currentMonthIndex.value < months.size - 1) {
+                            currentMonthIndex.value += 1
+                        }
                     }
                 )
             }
@@ -139,87 +160,29 @@ fun LancamentosScreen2(navController: NavController, lancamentoViewModel: Lancam
 
             Spacer(modifier = Modifier.height(10.dp))
 
+            // Parte dentro do LazyColumn
             LazyColumn(
-                modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            )
-
-
-            {
-                item {
-                    Text(
-                        text = "Hoje",
-                        fontFamily = FontFamily(Font(R.font.montserrat)),
-                        fontSize = 15.sp,
-                        color = Color.Black,
-                        modifier = Modifier.padding(16.dp)
-                    )
-                    Lista(lancamentos = lancamentosState)
-                }
-
-                item {
-                    Text(
-                        text = "Segunda, 17",
-                        fontFamily = FontFamily(Font(R.font.montserrat)),
-                        fontSize = 15.sp,
-                        color = Color.Black,
-                        modifier = Modifier.padding(16.dp)
-                    )
-                    Lista(lancamentos = lancamentosState)
-                }
-                item {
-                    Text(
-                        text = "Domingo, 16",
-                        fontFamily = FontFamily(Font(R.font.montserrat)),
-                        fontSize = 15.sp,
-                        color = Color.Black,
-                        modifier = Modifier.padding(16.dp)
-                    )
-                    Lista(lancamentos = lancamentosState)
-                }
-
-                item {
-                    Text(
-                        text = "Sabado, 15",
-                        fontFamily = FontFamily(Font(R.font.montserrat)),
-                        fontSize = 15.sp,
-                        color = Color.Black,
-                        modifier = Modifier.padding(16.dp)
-                    )
-                    Lista(lancamentos = lancamentosState)
-                }
-
-                item {
-                    Text(
-                        text = "Sexta, 14",
-                        fontFamily = FontFamily(Font(R.font.montserrat)),
-                        fontSize = 15.sp,
-                        color = Color.Black,
-                        modifier = Modifier.padding(16.dp)
-                    )
-                    Lista(lancamentos = lancamentosState)
-
-                }
-
-                itemsIndexed(lancamentosState) { index, lancamento ->
-                    Text(
-                        text = lancamento.data,
-                        fontFamily = FontFamily(Font(R.font.montserrat)),
-                        fontSize = 15.sp,
-                        color = Color.Black,
-                        modifier = Modifier.padding(16.dp)
-                    )
-                    LancamentosGet(
-                        nome = lancamento.nome,
-                        data = lancamento.data,
-                        valor = lancamento.valor,
-                        fkCategoria = lancamento.fkCategoria
-                    )
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+            ) {
+                groupedLancamentos.forEach { (data, lancamentos) ->
+                    item {
+                        Text(
+                            text = data,
+                            fontFamily = FontFamily(Font(R.font.montserrat)),
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            modifier = Modifier.padding(start = 13.dp, top = 20.dp, bottom = 20.dp)
+                        )
+                    }
+                    items(lancamentos) { lancamento ->
+                        Lista(lancamentos = listOf(lancamento))
+                    }
                 }
             }
-            FooterBar(navController)
 
+            FooterBar(navController)
         }
     }
 }
-

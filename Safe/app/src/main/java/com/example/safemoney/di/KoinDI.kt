@@ -8,6 +8,8 @@ import LoginRepository
 import LoginViewModel
 import ObjetivoViewModel
 import UsuarioViewModel
+import android.content.Context
+import android.content.SharedPreferences
 import com.example.safemoney.repositorio.CartaoRepository
 import com.example.safemoney.repositorio.CategoriaRepository
 import com.example.safemoney.viewmodel.CartaoViewModel
@@ -22,6 +24,7 @@ import com.example.safemoney.repositorio.LancamentoRepository
 import com.example.safemoney.repositorio.ObjetivoRepository
 import com.example.safemoney.viewmodel.CadastroViewModel
 import com.example.safemoney.viewmodel.CategoriaViewModel
+import org.koin.android.ext.koin.androidContext
 
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
@@ -31,6 +34,7 @@ import org.koin.dsl.module
 
 val appModule: Module = module {
     single<ICadastrarRepository> { CadastrarRepository() }
+
     single<ILoginRepository> { LoginRepository() }
     single<IContaRepository> { ContaRepository() }
     single<ILancamentoRepository> { LancamentoRepository() }

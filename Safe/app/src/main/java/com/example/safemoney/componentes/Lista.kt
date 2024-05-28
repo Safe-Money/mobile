@@ -2,6 +2,7 @@ package com.example.safemoney.componentes
 
 import LancamentosGet
 import android.os.Bundle
+import android.util.Log
 import com.example.safemoney.R
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -36,12 +37,14 @@ import com.example.safemoney.ui.theme.SafeMoneyTheme
 
 
 
+
 @Composable
 fun Lista(lancamentos: List<LancamentosGet>) {
+    Log.d("Lista", "Total de lançamentos: ${lancamentos.size}")
     Column(
         modifier = Modifier.padding(horizontal = 10.dp)
     ) {
-        lancamentos.take(4).forEach { lancamento ->
+        lancamentos.forEach { lancamento ->
             LancamentoItem(lancamento = lancamento)
             Divider(
                 color = Color(0xFFCDCDCD),
@@ -55,15 +58,15 @@ fun Lista(lancamentos: List<LancamentosGet>) {
 
 fun getIconResourceId(local: String): Int {
     return when (local) {
-        "Medico" -> R.drawable.icon___saude
-        "Academia" -> R.drawable.icon___academia
-        "Shopping" -> R.drawable.icon___shopping
+        "saude" -> R.drawable.icon___saude
+        "academia" -> R.drawable.icon___academia
+        "lazer" -> R.drawable.icon___shopping
         else -> R.drawable.logo
     }
 }
 
 @Composable
-fun LancamentoItem(lancamento: LancamentosGet, ) {
+fun LancamentoItem(lancamento: LancamentosGet) {
     Surface(
         shape = RoundedCornerShape(8.dp),
         color = Color.Transparent,
@@ -81,14 +84,15 @@ fun LancamentoItem(lancamento: LancamentosGet, ) {
                     .clip(CircleShape)
 
             ) {
-                val iconResourceId = getIconResourceId(lancamento.nome)
                 Image(
-                    painter = painterResource(id = iconResourceId),
+                    painter = painterResource(id = getIconResourceId(lancamento.fkCategoria?.nome ?: "")),
                     contentDescription = null,
                     modifier = Modifier
                         .size(30.dp)
                         .clip(CircleShape)
                 )
+
+
             }
 
             Column(
@@ -102,9 +106,10 @@ fun LancamentoItem(lancamento: LancamentosGet, ) {
                     fontSize = 11.sp,
                     fontWeight = FontWeight(100),
                     color = CinzaClaro
+
                 )
                 Text(
-                    text = lancamento.nome,
+                    text = lancamento.data,
                     fontFamily = FontFamily(Font(R.font.montserrat)),
                     fontSize = 8.sp,
                     color = Color.Gray
@@ -118,7 +123,7 @@ fun LancamentoItem(lancamento: LancamentosGet, ) {
 
             ) {
                 Text(
-                    text = lancamento.nome,
+                    text = lancamento.fkConta?.nome ?: "",
                     fontFamily = FontFamily(Font(R.font.montserrat)),
                     fontSize = 10.sp,
                     textAlign = TextAlign.Center,
@@ -131,12 +136,11 @@ fun LancamentoItem(lancamento: LancamentosGet, ) {
                 modifier = Modifier.align(Alignment.CenterVertically)
             ) {
                 Text(
-                    text = lancamento.valor.toString(),
+                    text = "R$ ${lancamento.valor}",
                     fontFamily = FontFamily(Font(R.font.montserrat)),
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 9.sp,
-                    color = if (lancamento.nome == "Débito") Color.Black else Color.Black,
-                    modifier = Modifier.padding(start = 8.dp)
+                    fontSize = 12.sp,
+                    textAlign = TextAlign.Center,
+                    color = Color.Black
                 )
             }
         }

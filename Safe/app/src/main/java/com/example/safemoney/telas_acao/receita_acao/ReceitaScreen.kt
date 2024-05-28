@@ -36,10 +36,7 @@ fun ReceitaScreen(
                 .padding(16.dp)
         ) {
 
-
             DescricaoInput()
-
-
 
             SwitchButton()
 

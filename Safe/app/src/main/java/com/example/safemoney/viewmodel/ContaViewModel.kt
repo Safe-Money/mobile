@@ -1,3 +1,4 @@
+import android.content.SharedPreferences
 import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -14,10 +15,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class ContaViewModel(
-    private val contaRepository: IContaRepository
+    private val contaRepository: IContaRepository,
+
 ) : ViewModel() {
     val contasState: MutableState<List<UserConta>> = mutableStateOf(emptyList())
-
 
 
     private val _contasLiveData = MutableLiveData<List<UserConta>>()
@@ -28,6 +29,11 @@ class ContaViewModel(
         Log.e("ContaViewModel", "Erro ao cadastrar a conta", exception)
     }
 
+
+
+
+
+
     fun cadastrarConta(conta: UserConta) {
         CoroutineScope(Dispatchers.IO + coroutineExceptionHandler).launch {
             try {
@@ -36,6 +42,7 @@ class ContaViewModel(
                     cadastroSucesso.value = true
                     Log.d("ContaViewModel", "Conta cadastrada com sucesso!")
                     listarContas(conta.fkUsuario.id)
+                    idConta(conta.fkUsuario.id)
 
                 } else {
                     Log.e("ContaViewModel", "Erro ao cadastrar a conta")
@@ -47,13 +54,14 @@ class ContaViewModel(
     }
 
     fun listarContas(userId: Int): LiveData<List<UserConta>> {
+
         CoroutineScope(Dispatchers.IO + coroutineExceptionHandler).launch {
             try {
                 val response = contaRepository.listarContas(userId)
                 if (response.isSuccessful) {
                     _contasLiveData.postValue(response.body())
                     Log.e("ContaViewModel", "listar as contas $response")
-                    
+
 
                 } else {
                     val erro = response.errorBody()?.string() ?: "Erro desconhecido"
@@ -65,6 +73,27 @@ class ContaViewModel(
         }
         return contasLiveData
     }
+
+    suspend fun idConta(userId: Int): List<Int> {
+        try {
+            val response = contaRepository.listarContas(userId)
+            if (response.isSuccessful) {
+                _contasLiveData.postValue(response.body())
+
+                return response.body()?.map { it.id ?: -1 } ?: emptyList()            } else {
+                val erro = response.errorBody()?.string() ?: "Erro desconhecido"
+                Log.e("ContaViewModel", "Erro ao listar as contas $erro")
+            }
+        } catch (e: Exception) {
+            Log.e("ContaViewModel", "Erro ao listar as contas", e)
+        }
+        return emptyList()
+    }
+
+
 }
+
+
+
 
 

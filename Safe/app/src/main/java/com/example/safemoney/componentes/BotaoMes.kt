@@ -19,6 +19,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,8 +31,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.safemoney.R
 import com.example.safemoney.ui.theme.Verde
-
-
 
 @Composable
 fun BotaoMes(
@@ -56,9 +56,7 @@ fun BotaoMes(
             Spacer(modifier = Modifier.width(28.dp))
 
             Button(
-                onClick = {
-                    print("")
-                },
+                onClick = { /* No action needed here */ },
                 colors = ButtonDefaults.buttonColors(Verde),
                 modifier = Modifier
                     .width(130.dp)
@@ -70,9 +68,7 @@ fun BotaoMes(
                     color = Color.White,
                     fontFamily = FontFamily(Font(R.font.montserrat)),
                     fontSize = 15.sp,
-
-                    )
-
+                )
             }
 
             Spacer(modifier = Modifier.width(28.dp))

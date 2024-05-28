@@ -1,6 +1,7 @@
 package com.example.safemoney.model
 
 data class Objetivos(
+    val id: Int? = null,
     val nome: String,
     val urlImagem: String,
     val dataInicio: String,
@@ -11,6 +12,11 @@ data class Objetivos(
     val valorFinal: Double,
     val fkUsuario: FkUsuario12
 )
+
+
+
+
+
 
 data class FkUsuario12(
     val id: Int

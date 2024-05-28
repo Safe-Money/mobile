@@ -24,9 +24,19 @@ data class Categoria1(
     val id: Int,
     val nome: String? = null
 )
+
+data class fkCont1(
+    val id: Int,
+    val nome: String,
+    val banco: String,
+
+)
+
+
 data class LancamentosGet(
     val nome: String,
     val valor: Double,
     val data: String,
-    val fkCategoria: Categoria1? = null
+    val fkCategoria: Categoria1? = null,
+    val fkConta: fkCont1? = null
 )

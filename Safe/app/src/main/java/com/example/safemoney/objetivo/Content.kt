@@ -1,6 +1,7 @@
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,6 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
+import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
 import com.example.safemoney.R
 import com.example.safemoney.model.Objetivos
@@ -46,10 +48,9 @@ fun Content(
     moneyImage: Int = R.drawable.money,
     editImage: Int = R.drawable.edit,
     paris: Int = R.drawable.paris,
-
+    navController: NavController,
     modifier: Modifier = Modifier
 ) {
-
     objetivos.forEach { objetivo ->
         Box(
             modifier = modifier
@@ -108,7 +109,6 @@ fun Content(
                         )
                     }
 
-
                     LinearProgressIndicator(
                         modifier = Modifier
                             .width(180.dp)
@@ -117,7 +117,6 @@ fun Content(
                         color = VerdeClaro,
                         progress = (objetivo.valorInvestido / objetivo.valorFinal).toFloat()
                     )
-
 
                     val inicioSplit = objetivo.dataInicio.split("-")
                     val terminoSplit = objetivo.dataTermino.split("-")
@@ -142,21 +141,25 @@ fun Content(
                         contentDescription = null,
                         modifier = Modifier
                             .size(15.dp)
+                            .clickable {
+                                navController.navigate("addMoney/${objetivo.id}")
+                            }
                     )
-
                 }
                 Column(
                     modifier = Modifier
                         .width(100.dp)
                         .padding(start = 3.dp)
-
                 ) {
-
                     Image(
                         painter = painterResource(id = editImage),
                         contentDescription = null,
                         modifier = Modifier.size(18.dp)
+                            .clickable {
+                                navController.navigate("editObjetivos")
+                            }
                     )
+
 
                     Spacer(modifier = Modifier.height(4.dp))
 
@@ -167,7 +170,6 @@ fun Content(
                             .size(21.dp)
                     )
                 }
-
             }
         }
     }

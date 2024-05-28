@@ -46,7 +46,6 @@ fun DataInput(
     modifier : Modifier = Modifier,
     value: Long,
     onValueChange: (Long) -> Unit,
-
 ) {
     var color by remember{
         mutableStateOf(CinzaAcao)
@@ -58,7 +57,7 @@ fun DataInput(
     }
     val datePickerState = rememberDatePickerState()
     var selectedDate by remember {
-        mutableStateOf("")
+        mutableStateOf(value)
     }
 
     Column (
@@ -81,7 +80,8 @@ fun DataInput(
                         onClick = {
                             datePickerState
                                 .selectedDateMillis?.let { millis ->
-                                    selectedDate = millis.toBrazilianDateFormat()
+                                    selectedDate = millis
+                                    onValueChange(millis)
                                 }
                             showDatePickerDialog = false
                         },
@@ -93,7 +93,7 @@ fun DataInput(
                 DatePicker(state = datePickerState)
             }
         }
-        val formattedDate = value.toBrazilianDateFormat17()
+        val formattedDate = selectedDate.toBrazilianDateFormat17()
         TextField(
             value = formattedDate,
             onValueChange = {},
