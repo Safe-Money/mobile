@@ -22,20 +22,13 @@ import com.example.safemoney.ui.theme.CinzaAcao
 import com.example.safemoney.ui.theme.TelaAcaoTypography
 import com.example.safemoney.ui.theme.VerdeFocus
 
-@Preview
-@Composable
-fun DescricaoInputPreview() {
-    DescricaoInput()
-}
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DescricaoInput(
-    modifier : Modifier = Modifier
+    modifier : Modifier = Modifier,
+    valor: String,
+    onValueChange: (String) -> Unit
 ) {
-    var valor by remember{
-        mutableStateOf("")
-    }
 
     var color by remember{
         mutableStateOf(CinzaAcao)
@@ -55,7 +48,7 @@ fun DescricaoInput(
         TextField(
             value = valor,
             onValueChange = {
-                valor = it
+                onValueChange(it)
             },
             colors = TextFieldDefaults.textFieldColors(
                 containerColor = Branco,

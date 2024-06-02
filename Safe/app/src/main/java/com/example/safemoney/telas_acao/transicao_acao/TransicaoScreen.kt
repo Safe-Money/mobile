@@ -39,7 +39,7 @@ fun TransicaoScreen(
 
 
 
-            DescricaoInput()
+            // DescricaoInput()
 
 
 

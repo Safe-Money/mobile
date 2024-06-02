@@ -1,9 +1,16 @@
 package com.example.safemoney.planejamento
 
-import androidx.annotation.DrawableRes
+import Usuario
+import Usuario1
+import com.example.safemoney.model.Categoria
+import java.time.LocalDate
+import java.util.Date
 
-class Item (categoria: Int, gasto: Double, planejado: Double){
-    val categoria: Int = categoria
-    val gasto: Double = gasto
-    val planejado: Double = planejado
-}
+data class PlanejamentoItem(
+    val id: Int?,
+    val valorPlanejado: Double,
+    val totalGasto: Double?,
+    val data: String,
+    val usuario: Usuario1,
+    val categoria: Categoria
+)

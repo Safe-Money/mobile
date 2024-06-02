@@ -101,7 +101,7 @@ fun ButtonsRow(
             onClick = { onAddButtonClick() },
             colors = ButtonDefaults.buttonColors(VerdeEscuro)
         ) {
-            Text(text = "Adicionar")
+            Text(text = "Salvar")
         }
     }
 }

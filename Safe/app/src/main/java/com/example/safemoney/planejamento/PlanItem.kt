@@ -1,6 +1,8 @@
 package com.example.safemoney.planejamento
 
+import DeletarPlano
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -35,18 +37,36 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.example.safemoney.telas_acao.despesa_acao.EditarPlano
 import com.example.safemoney.ui.theme.Cinza
 import com.example.safemoney.ui.theme.Verde
 import com.example.safemoney.ui.theme.VerdeClaro
 import com.example.safemoney.ui.theme.VerdePercent
+import com.example.safemoney.viewmodel.PlanejamentoViewModel
+import org.koin.androidx.compose.getViewModel
 
 @Composable
-fun PlanItem(i: Item){
+fun PlanItem(i: PlanejamentoItem, planejamentoViewModel: PlanejamentoViewModel = getViewModel(), navController: NavController){
+    val modalExcluir = remember { mutableStateOf<Boolean?>(false) }
+    val modalEditar = remember { mutableStateOf<Boolean?>(false) }
+;
     Box(modifier = Modifier
         .fillMaxWidth()
         .padding(horizontal = 2.dp, vertical = 5.dp)
     )
     {
+        val image = when(i.categoria.nome){
+            "saúde" -> painterResource(id = R.drawable.saude)
+            "alimentacao" -> painterResource(id = R.drawable.alimentacao)
+            "lazer" -> painterResource(id = R.drawable.game)
+            "gym" -> painterResource(id = R.drawable.icon___academia)
+            "pet" -> painterResource(id = R.drawable.pet)
+            "vestuario" -> painterResource(id = R.drawable.icon___shopping)
+            "economia" -> painterResource(id = R.drawable.economia)
+            "transporte" -> painterResource(id = R.drawable.onibus_escolar)
+            else -> painterResource(id = R.drawable.excluir)
+        }
 
         Row (modifier = Modifier
             .fillMaxWidth()
@@ -54,14 +74,15 @@ fun PlanItem(i: Item){
             .height(45.dp),
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ){
-
             Image(
-                painter = painterResource(id = i.categoria),
+                painter = image,
                 contentDescription = "Categoria",
                 modifier = Modifier.padding(top = 8.dp, end = 5.dp)
             )
 
-            Text(text = "R$ "+ String.format("%.2f", i.gasto),
+            val mostrarGasto =  if (i.totalGasto != null) i.totalGasto else 0.0
+
+            Text(text = "R$ "+ String.format("%.2f", mostrarGasto),
                 fontSize = 10.sp,
                 fontFamily = FontFamily(Font(R.font.montserrat)),
                 modifier = Modifier
@@ -70,7 +91,7 @@ fun PlanItem(i: Item){
                     .width(60.dp)
             )
 
-            val progresso = (i.gasto / i.planejado)
+            val progresso = if (i.totalGasto != null) i.totalGasto / i.valorPlanejado else 0.0
 
             Column (
                 modifier = Modifier
@@ -95,7 +116,7 @@ fun PlanItem(i: Item){
                 )
             }
 
-            Text(text = "R$ "+ String.format("%.2f", i.planejado),
+            Text(text = "R$ "+ String.format("%.2f", i.valorPlanejado),
                 fontSize = 10.sp,
                 fontFamily = FontFamily(Font(R.font.montserrat)),
                 modifier = Modifier
@@ -117,6 +138,9 @@ fun PlanItem(i: Item){
                     modifier = Modifier
                         .size(14.dp)
                         .align(Alignment.CenterHorizontally)
+                        .clickable {
+                            modalEditar.value = true
+                        }
                 )
 
                 Image(
@@ -125,18 +149,43 @@ fun PlanItem(i: Item){
                     modifier = Modifier
                         .size(26.dp)
                         .align(Alignment.CenterHorizontally)
+                        .clickable {
+                            modalExcluir.value = true
+                        }
                 )
             }
 
+
+
+        }
+
+        if (modalExcluir.value!!) {
+            DeletarPlano(
+                plano = i,
+                image = image,
+                onConfirm = {
+                    planejamentoViewModel.excluirPlanejamento(i.id!!)
+                    modalExcluir.value = false
+                    navController.navigate("planejamento")
+                },
+                onDismiss = {
+                    modalExcluir.value = false
+                }
+            )
+        }
+
+        if(modalEditar.value!!){
+            navController.navigate("editarPlanejamento/${i.id}")
         }
     }
-
 }
 
-val itemTeste = Item(R.drawable.saude, 10.0, 100.0)
 
-@Preview(showBackground = true)
+
+/*@Preview(showBackground = true)
 @Composable
 fun planItemPreview(){
     PlanItem(i = itemTeste)
 }
+
+ */

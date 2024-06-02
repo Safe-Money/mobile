@@ -267,6 +267,9 @@ fun ThreeContainersWithList(navController: NavController, contaViewModel: ContaV
                                     .zIndex(1f)
                                     .padding(horizontal = 3.dp)
                                     .align(Alignment.CenterHorizontally)
+                                    .clickable {
+                                        navController.navigate("addReceita")
+                                    }
                             )
                             Text(
                                 text = "Receita",

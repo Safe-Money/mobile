@@ -1,5 +1,6 @@
 package com.example.safemoney.planejamento
 
+import LoginViewModel
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,6 +26,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -36,6 +42,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.safemoney.FooterBar
@@ -45,12 +52,27 @@ import com.example.safemoney.splash.SplashScreen
 import com.example.safemoney.ui.theme.Cinza
 import com.example.safemoney.ui.theme.SafeMoneyTheme
 import com.example.safemoney.ui.theme.Verde
+import com.example.safemoney.viewmodel.CategoriaViewModel
+import com.example.safemoney.viewmodel.PlanejamentoViewModel
 
 @Composable
-fun Planejamento(navController: NavController) {
+fun Planejamento(
+    navController: NavController,
+    loginViewModel: LoginViewModel = viewModel(),
+    planejamentoViewModel: PlanejamentoViewModel = viewModel(),
+    modifier: Modifier = Modifier
+) {
+
+    val userId = loginViewModel.getId() ?: -1
+    val planejamentosState by planejamentoViewModel.planejamentos.observeAsState(listOf())
+
+    LaunchedEffect(Unit) {
+        planejamentoViewModel.getPorIdUser(userId)
+    }
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxSize() ,
+        modifier = modifier.fillMaxSize() ,
     ) {
         Row(
             modifier = Modifier
@@ -69,7 +91,9 @@ fun Planejamento(navController: NavController) {
             )
             IconButton(
                 onClick = { navController.navigate("addPlanejamento") },
-                modifier = Modifier.size(24.dp) .padding( end = 5.dp)
+                modifier = Modifier
+                    .size(24.dp)
+                    .padding(end = 5.dp)
             ) {
                 Icon(
                     imageVector = Icons.Default.AddCircle,
@@ -144,17 +168,16 @@ fun Planejamento(navController: NavController) {
 
         Spacer(Modifier.height(15.dp))
 
-        LazyColumn(
+       LazyColumn(
             contentPadding = PaddingValues(vertical = 10.dp),
             modifier = Modifier.fillMaxWidth(0.8f),
         ) {
-            items(planejamentos) { planejamento ->
+            items(planejamentosState) { planejamento ->
                 Row(
                     modifier = Modifier.fillParentMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
-                    PlanItem(i = planejamento)
-
+                    PlanItem(i = planejamento, navController = navController)
                 }
             }
         }
@@ -167,15 +190,6 @@ fun Planejamento(navController: NavController) {
 
 
 }
-
-val planejamentos = listOf(
-    Item(R.drawable.icon___saude, 10.0, 100.0),
-    Item(R.drawable.icon___academia, 45.0, 300.0),
-    Item(R.drawable.icon___shopping, 250.0, 2000.0),
-    Item(R.drawable.icon___saude, 250.0, 2000.0),
-    Item(R.drawable.icon___shopping, 250.0, 2000.0),
-    Item(R.drawable.icon___academia, 250.0, 2000.0)
-)
 
 @Preview(showBackground = true)
 @Composable

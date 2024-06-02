@@ -29,7 +29,7 @@ import com.example.safemoney.telas_acao.inputs.ContaVinculadaInput
 import com.example.safemoney.telas_acao.inputs.DataInput
 import com.example.safemoney.telas_acao.inputs.DropInput
 import com.example.safemoney.telas_acao.inputs.ValorInput
-import com.example.safemoney.telas_acao.inputs.toDatabaseDateFormat17
+import com.example.safemoney.telas_acao.inputs.toBrazilianDateFormat17
 import com.example.safemoney.viewmodel.CartaoViewModel
 import com.example.safemoney.viewmodel.CategoriaViewModel
 
@@ -113,7 +113,7 @@ fun LancamentosScreen(
                     val lancamento = Lancamentos(
                         nome = apelido.value,
                         valor = valorNumerico,
-                        data = data.value.toDatabaseDateFormat17(),
+                        data = data.value.toBrazilianDateFormat17(),
                         fkConta = Conta1(id = contaSelecionadaId.value!!),
                         fkUsuario = Usuario1(id = userId),
                         fkTipoTransacao = TipoTransacao(id = 5),

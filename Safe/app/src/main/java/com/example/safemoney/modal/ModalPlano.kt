@@ -22,25 +22,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.example.safemoney.R
+import com.example.safemoney.planejamento.PlanejamentoItem
 import com.example.safemoney.ui.theme.Cinza
 import com.example.safemoney.ui.theme.Vermelho
 
 
-
-data class Plano(
-    val nome: String,
-    @DrawableRes
-    val icone: Int
-)
-
 @Composable
 fun DeletarPlano(
-    plano: Plano,
+    plano: PlanejamentoItem,
+    image: Painter,
     onConfirm: () -> Unit,
     onDismiss: () -> Unit
 ) {
-
-
 
     Dialog(
         onDismissRequest = { onDismiss() }
@@ -121,7 +114,7 @@ fun DeletarPlano(
                 ){
 
                     Image(
-                        painter = painterResource(plano.icone),
+                        painter = image,
                         contentDescription = "Cartão Image",
                         modifier = Modifier
                             .size(20.dp)
@@ -130,9 +123,8 @@ fun DeletarPlano(
 
                     Spacer(modifier = Modifier.width(10.dp))
                     Text(
-                        text = plano.nome,
+                        text = plano.categoria.nome,
                         fontFamily = FontFamily(Font(R.font.montserrat)),
-
                         fontSize = 14.sp,
                         color = Color.Black,
                     )
@@ -183,7 +175,7 @@ fun DeletarPlano(
 
 
 
-@Preview
+/*@Preview
 @Composable
 
 fun PreviewDeletarPlano() {
@@ -198,3 +190,4 @@ fun PreviewDeletarPlano() {
         )
     }
 }
+*/

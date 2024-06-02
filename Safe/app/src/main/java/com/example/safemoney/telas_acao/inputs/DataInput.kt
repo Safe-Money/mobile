@@ -80,7 +80,10 @@ fun DataInput(
                         onClick = {
                             datePickerState
                                 .selectedDateMillis?.let { millis ->
+<<<<<<< Updated upstream
                                     selectedDate = millis
+=======
+>>>>>>> Stashed changes
                                     onValueChange(millis)
                                 }
                             showDatePickerDialog = false
@@ -97,7 +100,7 @@ fun DataInput(
         TextField(
             value = formattedDate,
             onValueChange = {},
-            androidx.compose.ui.Modifier
+            Modifier
                 .fillMaxWidth()
                 .onFocusEvent {
                     if (it.isFocused) {
@@ -120,11 +123,5 @@ fun DataInput(
 fun Long.toBrazilianDateFormat17(): String {
     val date = Date(this)
     val formatter = SimpleDateFormat("dd/MM/yyyy", Locale("pt-br"))
-    return formatter.format(date)
-}
-
-fun Long.toDatabaseDateFormat17(): String {
-    val date = Date(this)
-    val formatter = SimpleDateFormat("yyyy-MM-dd", Locale("pt-br"))
     return formatter.format(date)
 }

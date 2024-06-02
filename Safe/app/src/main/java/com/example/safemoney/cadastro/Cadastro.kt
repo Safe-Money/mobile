@@ -1,8 +1,5 @@
 package com.example.safemoney.cadastro
 
-
-
-
 import Date1
 import android.util.Log
 import androidx.lifecycle.viewmodel.compose.viewModel

@@ -20,9 +20,6 @@ import retrofit2.Response
 class CategoriaViewModel(private val categoriaRepository: ICategoriaRepository) : ViewModel() {
 
 
-
-
-
     private val _categoriaLiveData = MutableLiveData<List<Categoria>>()
     val contasLiveData: LiveData<List<Categoria>> = _categoriaLiveData
     private val coroutineExceptionHandler = CoroutineExceptionHandler { _, exception ->

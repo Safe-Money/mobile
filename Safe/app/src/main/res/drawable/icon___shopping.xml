@@ -10,7 +10,7 @@
     <clip-path
         android:pathData="M5.143,3.857h7.714v9h-7.714z"/>
     <path
-        android:pathData="M12.507,12.525H5.494L6.303,6.432H11.697L12.507,12.525Z"
+        android:pathData="M12.506,12.525H5.493L6.303,6.432H11.697L12.506,12.525Z"
         android:strokeWidth="0.5"
         android:fillColor="#00000000"
         android:fillType="evenOdd"

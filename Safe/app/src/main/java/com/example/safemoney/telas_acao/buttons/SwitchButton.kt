@@ -14,16 +14,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.safemoney.ui.theme.Branco
-
-@Preview
-@Composable
-fun SwitchButtonPreview() {
-    SwitchButton()
-}
-
 @Composable
 fun SwitchButton(
-    modifier : Modifier = Modifier
+    modifier : Modifier = Modifier,
+    bol: Boolean,
+    onChange: (Boolean) -> Unit
 ) {
     var checked by remember { mutableStateOf(false) }
 
@@ -33,9 +28,9 @@ fun SwitchButton(
             .background(Branco)
     ){
         Switch(
-            checked = checked,
+            checked = bol,
             onCheckedChange = {
-                checked = it
+                onChange(it)
             },
             colors = SwitchDefaults.colors(
                 checkedThumbColor = Color(0xFF3ABA6F),

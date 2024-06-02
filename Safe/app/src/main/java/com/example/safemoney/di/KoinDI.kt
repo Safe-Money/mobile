@@ -20,17 +20,25 @@ import com.example.safemoney.repositorio.IContaRepository
 import com.example.safemoney.repositorio.ILancamentoRepository
 import com.example.safemoney.repositorio.ILoginRepository
 import com.example.safemoney.repositorio.IObjetivoRepository
+import com.example.safemoney.repositorio.IPlanejamentoRepository
+import com.example.safemoney.repositorio.ITransacaoRepository
 import com.example.safemoney.repositorio.LancamentoRepository
 import com.example.safemoney.repositorio.ObjetivoRepository
+import com.example.safemoney.repositorio.PlanejamentoRepository
+import com.example.safemoney.repositorio.TransacaoRepository
 import com.example.safemoney.viewmodel.CadastroViewModel
 import com.example.safemoney.viewmodel.CategoriaViewModel
+<<<<<<< Updated upstream
 import org.koin.android.ext.koin.androidContext
+=======
+import com.example.safemoney.viewmodel.PlanejamentoViewModel
+import com.example.safemoney.viewmodel.TransacaoViewModel
+>>>>>>> Stashed changes
 
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
 import org.koin.core.scope.get
 import org.koin.dsl.module
-
 
 val appModule: Module = module {
     single<ICadastrarRepository> { CadastrarRepository() }
@@ -42,6 +50,8 @@ val appModule: Module = module {
     single { ObjetivoRepository() }
     single { CartaoRepository() }
     single { UsuarioViewModel() }
+    single<IPlanejamentoRepository> { PlanejamentoRepository() }
+    single<ITransacaoRepository> { TransacaoRepository() }
 
     viewModel { CadastroViewModel(get()) }
     viewModel { ObjetivoViewModel(get(), get()) }
@@ -50,5 +60,7 @@ val appModule: Module = module {
     viewModel { CategoriaViewModel(get()) }
     viewModel { LoginViewModel(get(), get()) }
     viewModel { CartaoViewModel(get(), get()) }
+    viewModel { PlanejamentoViewModel(get())}
+    viewModel { TransacaoViewModel(get()) }
 
 }

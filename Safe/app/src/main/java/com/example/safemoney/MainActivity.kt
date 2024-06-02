@@ -6,9 +6,11 @@ import LoginViewModel
 import MainPainel
 import ObjetivoViewModel
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.navigation.NavType
@@ -26,7 +28,9 @@ import com.example.safemoney.planejamento.LancamentosScreen2
 import com.example.safemoney.planejamento.Planejamento
 import com.example.safemoney.telas_acao.cartao_acao.CartaoScreen
 import com.example.safemoney.telas_acao.conta_acao.ContaScreen
+import com.example.safemoney.telas_acao.despesa_acao.EditarPlano
 import com.example.safemoney.telas_acao.despesa_acao.PlanoScreen
+import com.example.safemoney.telas_acao.despesa_acao.ReceitaScreen
 import com.example.safemoney.telas_acao.lancamentos_acao.LancamentosScreen
 import com.example.safemoney.telas_acao.objetivo_acao.AddMoneyScreen
 import com.example.safemoney.telas_acao.objetivo_acao.ObjetivoAddScreen
@@ -34,12 +38,15 @@ import com.example.safemoney.telas_acao.objetivo_acao.ObjetivoEDIT
 import com.example.safemoney.viewmodel.CadastroViewModel
 import com.example.safemoney.viewmodel.CartaoViewModel
 import com.example.safemoney.viewmodel.CategoriaViewModel
+import com.example.safemoney.viewmodel.PlanejamentoViewModel
+import com.example.safemoney.viewmodel.TransacaoViewModel
 import com.example.tela_objetivos.ObjetivoScreen
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.androidx.compose.getViewModel
 import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
+import org.w3c.dom.Text
 
 class MainActivity : ComponentActivity() {
 
@@ -136,6 +143,25 @@ fun SafeMoneyApp() {
             )
         }
 
+        composable("addReceita"){
+            val categoriaViewModel: CategoriaViewModel = getViewModel()
+            val contaViewModel: ContaViewModel = getViewModel()
+            val loginViewModel: LoginViewModel = getViewModel()
+            val transacaoViewModel: TransacaoViewModel = getViewModel()
+            val listaCategorias by categoriaViewModel.listarCategorias()
+                .observeAsState(initial = emptyList())
+            val userId = loginViewModel.getId()
+            val listaContas by contaViewModel.listarContas(userId)
+                .observeAsState(initial = emptyList())
+
+            ReceitaScreen(
+                navController = navController,
+                transacaoViewModel = transacaoViewModel,
+                categorias = listaCategorias,
+                contas = listaContas
+            )
+        }
+
         composable("topCartao") {
             TopBar1(navController = navController)
         }
@@ -155,15 +181,54 @@ fun SafeMoneyApp() {
             )
         }
         composable("planejamento") {
-            Planejamento(navController = navController)
+            val loginViewModel: LoginViewModel = getViewModel()
+            val planejamentoViewModel: PlanejamentoViewModel = getViewModel()
+            Planejamento(navController = navController, loginViewModel = loginViewModel, planejamentoViewModel = planejamentoViewModel)
         }
 
         composable("addPlanejamento") {
             val categoriaViewModel: CategoriaViewModel = getViewModel()
             val listaCategorias by categoriaViewModel.listarCategorias()
                 .observeAsState(initial = emptyList())
-            PlanoScreen(navController = navController, categorias = listaCategorias,)
+            val loginViewModel: LoginViewModel = getViewModel()
+            val planejamentoViewModel: PlanejamentoViewModel = getViewModel()
+            PlanoScreen(navController = navController, categorias = listaCategorias, loginViewModel = loginViewModel, planejamentoViewModel = planejamentoViewModel)
         }
+
+        composable("editarPlanejamento/{id}") { backStackEntry ->
+            val planejamentoId = backStackEntry.arguments?.getString("id")?.toIntOrNull()
+            Log.d("EditarPlanejamento", "Planejamento ID: $planejamentoId")
+
+            if (planejamentoId != null) {
+                val categoriaViewModel: CategoriaViewModel = getViewModel()
+                val listaCategorias by categoriaViewModel.listarCategorias().observeAsState(initial = emptyList())
+
+                val loginViewModel: LoginViewModel = getViewModel()
+                val planejamentoViewModel: PlanejamentoViewModel = getViewModel()
+
+                val planejamentoState by planejamentoViewModel.getPorId(planejamentoId).observeAsState()
+
+                if (planejamentoState == null) {
+                    Log.d("EditarPlanejamento", "Planejamento não encontrado ou ainda carregando")
+                } else {
+                    Log.d("EditarPlanejamento", "Planejamento: $planejamentoState")
+                    EditarPlano(
+                        navController = navController,
+                        categorias = listaCategorias,
+                        loginViewModel = loginViewModel,
+                        planejamentoViewModel = planejamentoViewModel,
+                        planejamento = planejamentoState!!
+                    )
+                }
+            } else {
+                Log.d("EditarPlanejamento", "ID inválido")
+            }
+        }
+
+
+
+
+
 
         composable("addObjetivos") {
             val loginViewModel: LoginViewModel = getViewModel()

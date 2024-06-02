@@ -40,7 +40,7 @@ import com.example.safemoney.telas_acao.inputs.DataInput
 import com.example.safemoney.telas_acao.inputs.DropInput
 import com.example.safemoney.telas_acao.inputs.ImagemInput
 import com.example.safemoney.telas_acao.inputs.ValorInput
-import com.example.safemoney.telas_acao.inputs.toDatabaseDateFormat17
+import com.example.safemoney.telas_acao.inputs.toBrazilianDateFormat17
 import com.example.safemoney.viewmodel.CartaoViewModel
 import com.example.safemoney.viewmodel.CategoriaViewModel
 
@@ -101,9 +101,9 @@ fun ObjetivoAddScreen(
                     val objetivo = Objetivos(
                         nome = apelido.value,
                         urlImagem = url.value,
-                        dataInicio = dataInicio.value.toDatabaseDateFormat17(),
-                        ultimoDeposito = dataInicio.value.toDatabaseDateFormat17(),
-                        dataTermino = dataFinal.value.toDatabaseDateFormat17(),
+                        dataInicio = dataInicio.value.toBrazilianDateFormat17(),
+                        ultimoDeposito = dataInicio.value.toBrazilianDateFormat17(),
+                        dataTermino = dataFinal.value.toBrazilianDateFormat17(),
                         concluida = 0,
                         valorInvestido = 0.0,
                         valorFinal = valor.value.toDoubleOrNull() ?: 0.0,
