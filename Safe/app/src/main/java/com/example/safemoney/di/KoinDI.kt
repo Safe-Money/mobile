@@ -28,12 +28,8 @@ import com.example.safemoney.repositorio.PlanejamentoRepository
 import com.example.safemoney.repositorio.TransacaoRepository
 import com.example.safemoney.viewmodel.CadastroViewModel
 import com.example.safemoney.viewmodel.CategoriaViewModel
-<<<<<<< Updated upstream
-import org.koin.android.ext.koin.androidContext
-=======
 import com.example.safemoney.viewmodel.PlanejamentoViewModel
 import com.example.safemoney.viewmodel.TransacaoViewModel
->>>>>>> Stashed changes
 
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module

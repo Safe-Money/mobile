@@ -80,10 +80,10 @@ fun DataInput(
                         onClick = {
                             datePickerState
                                 .selectedDateMillis?.let { millis ->
-<<<<<<< Updated upstream
+
                                     selectedDate = millis
-=======
->>>>>>> Stashed changes
+
+
                                     onValueChange(millis)
                                 }
                             showDatePickerDialog = false

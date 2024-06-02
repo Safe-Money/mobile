@@ -58,7 +58,7 @@ fun ContasInput(
             .background(Branco)
     ) {
         Text(
-            text = "Categoria",
+            text = "Conta Origem",
             style = TelaAcaoTypography.bodySmall,
             color = color
         )

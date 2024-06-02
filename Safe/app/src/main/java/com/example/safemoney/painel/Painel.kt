@@ -68,7 +68,9 @@ import com.example.safemoney.FooterBar
 import com.example.safemoney.R
 import com.example.safemoney.model.Cartao
 import com.example.safemoney.model.CartaoGet
+import com.example.safemoney.model.Transacao
 import com.example.safemoney.viewmodel.CartaoViewModel
+import com.example.safemoney.viewmodel.TransacaoViewModel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Locale
@@ -94,14 +96,14 @@ data class TransacaoBancaria(
 )
 
 @Composable
-fun ThreeContainersWithList(navController: NavController, contaViewModel: ContaViewModel,  cartaoViewModel: CartaoViewModel) {
+fun ThreeContainersWithList(navController: NavController, contaViewModel: ContaViewModel,  cartaoViewModel: CartaoViewModel, transacaoViewModel: TransacaoViewModel) {
 
 
 
 
     val (listaContas, setListaContas) = remember { mutableStateOf(emptyList<UserConta>()) }
-
     val (listaCartao, setListaCartao) = remember { mutableStateOf(emptyList<CartaoGet>()) }
+    val (listaTransacoes, setListaTransacoes) = remember { mutableStateOf(emptyList<Transacao>()) }
 
     val bancoImageMap = mapOf(
         "bradesco" to R.drawable.bradesco,
@@ -130,6 +132,10 @@ fun ThreeContainersWithList(navController: NavController, contaViewModel: ContaV
         setListaCartao(listaCartao)
     }
 
+    transacaoViewModel.transacoes.observeAsState().value?.let{ listaTransacoes ->
+        setListaTransacoes(listaTransacoes)
+    }
+
 
     Log.d("ThreeContainersWithList", "Composable chamado")
 
@@ -137,16 +143,6 @@ fun ThreeContainersWithList(navController: NavController, contaViewModel: ContaV
         return bancoImageMap[nomeBanco] ?: R.drawable.safemoney2
     }
 
-
-
-    val listaTransacao = listOf(
-        TransacaoBancaria(R.drawable.saude, "Shopping", "01/10", 5000.00),
-        TransacaoBancaria(R.drawable.saude, "Academia", "01/11", 5000.00),
-        TransacaoBancaria(R.drawable.saude, "Farmácia", "04/12", 5000.00),
-        TransacaoBancaria(R.drawable.saude, "Amazon", "04/12", 5000.00) ,
-        TransacaoBancaria(R.drawable.saude, "Consulta", "04/12", 5000.00)
-        // Adicione mais contas conforme necessário
-    )
 
 
     val barColor1 = Color.Red
@@ -289,7 +285,10 @@ fun ThreeContainersWithList(navController: NavController, contaViewModel: ContaV
                                 modifier = Modifier
                                     .size(40.dp)
                                     .align(Alignment.CenterHorizontally)
-                                    .padding(horizontal = 3.dp) // Adapte o espaçamento conforme necessário
+                                    .padding(horizontal = 3.dp)
+                                    .clickable {
+                                        navController.navigate("addDespesa")
+                                    }
                             )
 
                             Text(
@@ -403,10 +402,21 @@ fun ThreeContainersWithList(navController: NavController, contaViewModel: ContaV
                         .height(250.dp)
                         .fillMaxWidth()
                 ) {
-                    items(listaTransacao.take(5)) { conta ->
+                    items(listaTransacoes.take(5)) { conta ->
+                        val image = when(conta.categoria.nome){
+                            "saúde" -> R.drawable.saude
+                            "alimentacao" -> R.drawable.alimentacao
+                            "lazer" -> R.drawable.game
+                            "gym" -> R.drawable.icon___academia
+                            "pet" -> R.drawable.pet
+                            "vestuario" -> R.drawable.icon___shopping
+                            "economia" -> R.drawable.economia
+                            "transporte" -> R.drawable.onibus_escolar
+                            else -> R.drawable.safemoney2
+                        }
                         TransacaoTableRow(
-                            imagemResId = conta.imagemResId,
-                            nomeTransacao = conta.nomeTransacao,
+                            imagemResId = image,
+                            nomeTransacao = conta.nome,
                             data = conta.data,
                             valor= conta.valor
                         )
@@ -745,9 +755,12 @@ fun TransacaoTableRow(
 
         Spacer(modifier = Modifier.width(8.dp))
 
-        // Parte 3: fatura
+        val dataFormatada = LocalDate.parse(data)
+        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+        val dataBR = formatter.format(dataFormatada)
+
         Text(
-            text = "R$ $data",
+            text = "${dataBR}",
             style = MaterialTheme.typography.bodyMedium,
             fontFamily = FontFamily(Font(R.font.montserrat)),
             color = Color(0xFF3A3A3A),
@@ -756,9 +769,9 @@ fun TransacaoTableRow(
         )
         Spacer(modifier = Modifier.width(8.dp))
 
-        // Parte 3: disponivel
+        val valorDouble = valor.toDouble()
         Text(
-            text = "R$ $valor",
+            text = String.format("R$ %.2f", valorDouble),
             style = MaterialTheme.typography.bodyMedium,
             fontFamily = FontFamily(Font(R.font.montserrat)),
             color = Color(0XFF3A3A3A),
@@ -901,8 +914,8 @@ fun Container2(title: String, navController: NavController, distancia: Int, cont
                     .padding(8.dp)
                     .align(Alignment.Top)
                     .clickable {
-                    navController.navigate("telaCartao")
-                },
+                        navController.navigate("telaCartao")
+                    },
             )
         }
         Row(

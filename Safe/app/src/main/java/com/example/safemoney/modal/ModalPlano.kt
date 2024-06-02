@@ -123,7 +123,7 @@ fun DeletarPlano(
 
                     Spacer(modifier = Modifier.width(10.dp))
                     Text(
-                        text = plano.categoria.nome,
+                        text = plano.categoria.nome!!,
                         fontFamily = FontFamily(Font(R.font.montserrat)),
                         fontSize = 14.sp,
                         color = Color.Black,

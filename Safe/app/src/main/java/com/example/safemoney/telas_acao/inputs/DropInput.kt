@@ -92,7 +92,7 @@ fun DropInput(
             ) {
                 categorias.forEach { categoria ->
                     DropdownMenuItem(
-                        text = { Text(text = categoria.nome) },
+                        text = { Text(text = categoria.nome!!) },
                         onClick = {
                             selectedCategoria = categoria
                             expanded = false

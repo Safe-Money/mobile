@@ -38,27 +38,30 @@ import com.example.safemoney.painel.ThreeContainersWithList
 import com.example.safemoney.ui.theme.SafeMoneyTheme
 import com.example.safemoney.ui.theme.Vermelho
 import com.example.safemoney.viewmodel.CartaoViewModel
+import com.example.safemoney.viewmodel.TransacaoViewModel
 
 @Composable
-fun MainPainel(modifier: Modifier = Modifier, navController: NavController, contaViewModel: ContaViewModel, cartaoViewModel: CartaoViewModel) {
+fun MainPainel(modifier: Modifier = Modifier, navController: NavController, contaViewModel: ContaViewModel, cartaoViewModel: CartaoViewModel, transacaoViewModel: TransacaoViewModel) {
     val sharedPreferences = LocalContext.current.getSharedPreferences("user_session", Context.MODE_PRIVATE)
     val userId = sharedPreferences.getInt("id", -1)
 
     val listaContas by contaViewModel.contasLiveData.observeAsState(initial = emptyList())
+    val listaTransacoes by transacaoViewModel.transacoes.observeAsState(initial = emptyList())
 
     LaunchedEffect(Unit) {
         contaViewModel.listarContas(userId)
+        transacaoViewModel.listarTransacoes(userId)
     }
 
     Scaffold(
         bottomBar = { FooterBar(navController) }
-    ) {
+    ) {it
         Column(
             modifier = Modifier
                 .fillMaxSize(),
             verticalArrangement = Arrangement.Center
         ) {
-            ThreeContainersWithList(navController = navController, contaViewModel = contaViewModel, cartaoViewModel = cartaoViewModel)
+            ThreeContainersWithList(navController = navController, contaViewModel = contaViewModel, cartaoViewModel = cartaoViewModel, transacaoViewModel = transacaoViewModel)
         }
     }
 }

@@ -28,6 +28,7 @@ import com.example.safemoney.planejamento.LancamentosScreen2
 import com.example.safemoney.planejamento.Planejamento
 import com.example.safemoney.telas_acao.cartao_acao.CartaoScreen
 import com.example.safemoney.telas_acao.conta_acao.ContaScreen
+import com.example.safemoney.telas_acao.despesa_acao.DespesaScreen
 import com.example.safemoney.telas_acao.despesa_acao.EditarPlano
 import com.example.safemoney.telas_acao.despesa_acao.PlanoScreen
 import com.example.safemoney.telas_acao.despesa_acao.ReceitaScreen
@@ -93,10 +94,13 @@ fun SafeMoneyApp() {
         composable("painel") {
             val contaViewModel: ContaViewModel = getViewModel()
             val cartaoViewModel: CartaoViewModel = getViewModel()
+            val transacaoViewModel: TransacaoViewModel = getViewModel()
+
             MainPainel(
                 navController = navController,
                 contaViewModel = contaViewModel,
-                cartaoViewModel = cartaoViewModel
+                cartaoViewModel = cartaoViewModel,
+                transacaoViewModel = transacaoViewModel
             )
         }
         composable("menu") {
@@ -155,6 +159,25 @@ fun SafeMoneyApp() {
                 .observeAsState(initial = emptyList())
 
             ReceitaScreen(
+                navController = navController,
+                transacaoViewModel = transacaoViewModel,
+                categorias = listaCategorias,
+                contas = listaContas
+            )
+        }
+
+        composable("addDespesa"){
+            val categoriaViewModel: CategoriaViewModel = getViewModel()
+            val contaViewModel: ContaViewModel = getViewModel()
+            val loginViewModel: LoginViewModel = getViewModel()
+            val transacaoViewModel: TransacaoViewModel = getViewModel()
+            val listaCategorias by categoriaViewModel.listarCategorias()
+                .observeAsState(initial = emptyList())
+            val userId = loginViewModel.getId()
+            val listaContas by contaViewModel.listarContas(userId)
+                .observeAsState(initial = emptyList())
+
+            DespesaScreen(
                 navController = navController,
                 transacaoViewModel = transacaoViewModel,
                 categorias = listaCategorias,
