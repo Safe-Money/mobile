@@ -40,6 +40,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.currentCompositionLocalContext
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -69,41 +70,41 @@ import com.example.safemoney.R
 import com.example.safemoney.model.Cartao
 import com.example.safemoney.model.CartaoGet
 import com.example.safemoney.model.Transacao
+import com.example.safemoney.ui.theme.VerdeEscuro
 import com.example.safemoney.viewmodel.CartaoViewModel
 import com.example.safemoney.viewmodel.TransacaoViewModel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
-data class ContaBancaria(
-    @DrawableRes val imagemResId: Int,
-    val nomeBanco: String,
-    val saldo: Double,
-    val tipo : String
-)
-
-data class CartaoBancario(
-    @DrawableRes val imagemResId: Int,
-    val nomeBanco: String,
-    val fatura: Int,
-    val disponivel: Int
-)
-data class TransacaoBancaria(
-    @DrawableRes val imagemResId: Int,
-    val nomeTransacao: String,
-    val data: String,
-    val valor: Double
-)
-
 @Composable
 fun ThreeContainersWithList(navController: NavController, contaViewModel: ContaViewModel,  cartaoViewModel: CartaoViewModel, transacaoViewModel: TransacaoViewModel) {
-
-
-
 
     val (listaContas, setListaContas) = remember { mutableStateOf(emptyList<UserConta>()) }
     val (listaCartao, setListaCartao) = remember { mutableStateOf(emptyList<CartaoGet>()) }
     val (listaTransacoes, setListaTransacoes) = remember { mutableStateOf(emptyList<Transacao>()) }
+
+    var balanco = 0.0
+    var receita = 0.0
+    var despesa = 0.0
+    var balancoPrevisao = 0.0
+
+    listaContas.forEach {
+        balanco += it.saldo
+    }
+
+    listaTransacoes.forEach {
+        if(it.tipo.id == 1 || it.tipo.id == 2 || it.tipo.id == 3){
+            despesa += it.valor
+        }else if(it.tipo.id == 4 || it.tipo.id == 5){
+            receita += it.valor
+        }
+
+        balancoPrevisao = receita - despesa
+    }
+
+
+
 
     val bancoImageMap = mapOf(
         "bradesco" to R.drawable.bradesco,
@@ -220,7 +221,7 @@ fun ThreeContainersWithList(navController: NavController, contaViewModel: ContaV
                             color = Color.White
                         )
                         Text(
-                            text = "R$ 10.000,00",
+                            text = String.format("R$ %.2f", balanco),
                             style = TextStyle(
                                 fontSize = 24.sp,
                                 fontWeight = FontWeight.Bold,
@@ -474,7 +475,7 @@ fun ThreeContainersWithList(navController: NavController, contaViewModel: ContaV
                             )
 
                             Text(
-                                text = "R$4.500,00",
+                                text = String.format("R$ %.2f", receita),
                                 style = TextStyle(
                                     fontSize = 12.sp,
                                 ),
@@ -500,7 +501,7 @@ fun ThreeContainersWithList(navController: NavController, contaViewModel: ContaV
                             )
 
                             Text(
-                                text = "R$4.500,00",
+                                text = String.format("R$ %.2f", despesa),
                                 style = TextStyle(
                                     fontSize = 12.sp,
                                 ),
@@ -526,7 +527,7 @@ fun ThreeContainersWithList(navController: NavController, contaViewModel: ContaV
                             )
 
                             Text(
-                                text = "R$4.500,00",
+                                text = String.format("R$ %.2f", balancoPrevisao),
                                 style = TextStyle(
                                     fontSize = 12.sp,
                                 ),
@@ -553,7 +554,7 @@ fun ContasTableRow(
     nomeBanco: String,
     saldo: Double
 ) {
-    val textColor = if (saldo > 0) Color.Green else Color.Red
+    val textColor = if (saldo > 0) VerdeEscuro else Color.Red
 
     Row(
         modifier = Modifier
@@ -598,7 +599,7 @@ fun ContasTableRow(
 
         // Parte 3: Saldo
         Text(
-            text = "R$ $saldo" ,
+            text = String.format("R$ %.2f", saldo),
             style = MaterialTheme.typography.bodyMedium,
             fontFamily = FontFamily(Font(R.font.montserrat)),
             color = textColor,
