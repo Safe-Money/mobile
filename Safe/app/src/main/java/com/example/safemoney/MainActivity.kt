@@ -124,7 +124,8 @@ fun SafeMoneyApp() {
 
         composable("telaCartao") {
             val cartaoViewModel: CartaoViewModel = getViewModel()
-            MainCartao(navController = navController, cartaoViewModel = cartaoViewModel)
+            val transacaoViewModel: TransacaoViewModel = getViewModel()
+            MainCartao(navController = navController, cartaoViewModel = cartaoViewModel, transacaoViewModel = transacaoViewModel)
         }
 
         composable("addLancamentos") {

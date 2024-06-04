@@ -1,5 +1,6 @@
 package com.example.safemoney.cartoes
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -13,25 +14,36 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-
 import androidx.compose.ui.tooling.preview.Preview
+
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.safemoney.R
+import com.example.safemoney.viewmodel.TransacaoViewModel
 
 @Preview(
-    showBackground = true
+    showBackground = true,
 )
 @Composable
-fun TransacaoPreview() {
-    Transacao(descricao = "Shopping")
+fun TransacaoCartaoPreview() {
+    TransacaoCartao(
+        imagemResId = R.drawable.saude,
+        nome = "Shopping",
+        data = "2024-03-91",
+        valor = 100000.0)
 }
 
 @Composable
-fun Transacao(
-    modifier : Modifier = Modifier,
-    descricao : String
+fun TransacaoCartao(
+//    descricao: String,
+    modifier: Modifier = Modifier,
+    @DrawableRes
+    imagemResId: Int,
+    nome: String,
+    data: String,
+    valor: Double
 ) {
+
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -47,7 +59,7 @@ fun Transacao(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
-                painter = painterResource(id = R.drawable.icon___shopping),
+                painter = painterResource(id = imagemResId),
                 contentDescription = null,
                 modifier = modifier
                     .height(22.dp)
@@ -55,7 +67,7 @@ fun Transacao(
             )
 
             Text(
-                text = "Shopping",
+                text = nome,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Light
             )
@@ -63,17 +75,18 @@ fun Transacao(
 
         Row(
             modifier = modifier
-                .width(140.dp),
+                .width(200.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
         ){
             Text(
-                text = "01/10",
+                text = data,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Light
             )
 
+            val valorDouble = valor.toDouble()
             Text(
-                text = "R$ 80,60",
+                text = String.format("R$ %.2f", valorDouble),
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Normal
             )

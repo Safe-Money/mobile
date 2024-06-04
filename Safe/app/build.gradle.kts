@@ -109,5 +109,4 @@ dependencies {
 
     implementation ("androidx.navigation:navigation-compose:2.4.0-alpha10")
 
-    implementation ("com.github.f0ris.sweetalert:library:1.6.2")
-}
+ }
