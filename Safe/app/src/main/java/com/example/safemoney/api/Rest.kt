@@ -5,7 +5,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object Rest {
 
-    private const val baseURL = "http://10.0.2.2:8080/api/"
+    private const val baseURL = "https://safemoney.ddns.net/api/"
     fun getInstance(): Retrofit {
         return Retrofit
             .Builder()

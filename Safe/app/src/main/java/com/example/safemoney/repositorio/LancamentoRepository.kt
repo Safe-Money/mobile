@@ -1,5 +1,6 @@
 package com.example.safemoney.repositorio
 
+import LancFixoTotal
 import LancamentoService
 import Lancamentos
 import LancamentosGet
@@ -23,6 +24,8 @@ class LancamentoRepository: ILancamentoRepository {
         return lancamentoService.listarLancamento(contaId)
     }
 
-
+    override suspend fun listarTotalFixos(idUser: Int): Response<LancFixoTotal> {
+        return lancamentoService.listarTotalFixos(idUser)
     }
 
+}

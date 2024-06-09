@@ -127,7 +127,7 @@ fun Options(navController: NavController,
                             "Planejamentos" -> navController.navigate("planejamento")
                             "Objetivos" -> navController.navigate("objetivo")
                             "Configurações" -> navController.navigate("config")
-                            " Sair" -> navController.navigate("login")
+                            "Sair" -> navController.navigate("login")
 
 
                         }

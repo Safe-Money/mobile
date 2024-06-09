@@ -33,7 +33,7 @@ import kotlin.math.round
 @Composable
 fun BarGraph(
     graphBarData: List<Float>,
-    xAxisScaleData: List<Int>,
+    xAxisScaleData: List<String>,
     barData_: List<Int>,
     height: Dp,
     roundType: BarType,
@@ -105,11 +105,11 @@ fun BarGraph(
             Canvas(modifier = Modifier.padding(bottom = 10.dp).fillMaxSize()) {
 
                 // Y-Axis Scale Text
-                val yAxisScaleText = (barData.max()) / 3f
+                val yAxisScaleText = (barData_.maxOrNull() ?: 0) / 3f
                 (0..3).forEach { i ->
                     drawContext.canvas.nativeCanvas.apply {
                         drawText(
-                            round(barData.min() + yAxisScaleText * i).toString(),
+                            round((barData_.minOrNull() ?: 0) + yAxisScaleText * i).toString(), // !! Ajustado para garantir valores mínimos e máximo
                             30f,
                             size.height - yAxisScaleSpacing - i * size.height / 3f,
                             textPaint
@@ -155,7 +155,7 @@ fun BarGraph(
                         mutableStateOf(false)
                     }
                     val graphBarHeight by animateFloatAsState(
-                        targetValue = if (animationTriggered) value else 0f,
+                        targetValue = if (animationTriggered) value / (barData_.maxOrNull()?.toFloat() ?: 1f) else 0f, // !! Ajustado para calcular altura proporcionalmente ao valor máximo
                         animationSpec = tween(
                             durationMillis = 1000,
                             delayMillis = 0
@@ -172,7 +172,7 @@ fun BarGraph(
                     ) {
 
                         // Cada gráfico
-                        val barColor = if (index % 2 == 0) barColor1 else barColor2  // Alternância entre as cores
+                        val barColor = if (index == 0) barColor1 else barColor2 // !! Receita em verde, Despesa em vermelho
                         Box(
                             modifier = Modifier
                                 .padding(bottom = 5.dp)
@@ -186,8 +186,8 @@ fun BarGraph(
                                 modifier = Modifier
                                     .clip(barShap)
                                     .fillMaxWidth()
-                                    .fillMaxHeight(graphBarHeight)
-                                    .background(barColor) // Usando a cor alternada
+                                    .fillMaxHeight(graphBarHeight) // !! Ajustado para usar a altura calculada proporcionalmente
+                                    .background(barColor) // Usando a cor definida
                             )
                         }
 
@@ -215,7 +215,7 @@ fun BarGraph(
                             // scale x-axis
                             Text(
                                 modifier = Modifier.padding(bottom = 3.dp),
-                                text = xAxisScaleData[index].toString(),
+                                text = xAxisScaleData[index],
                                 fontSize = 14.sp,
                                 fontWeight = FontWeight.Medium,
                                 textAlign = TextAlign.Center,

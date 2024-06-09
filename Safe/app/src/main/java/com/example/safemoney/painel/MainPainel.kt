@@ -41,7 +41,7 @@ import com.example.safemoney.viewmodel.CartaoViewModel
 import com.example.safemoney.viewmodel.TransacaoViewModel
 
 @Composable
-fun MainPainel(modifier: Modifier = Modifier, navController: NavController, contaViewModel: ContaViewModel, cartaoViewModel: CartaoViewModel, transacaoViewModel: TransacaoViewModel) {
+fun MainPainel(modifier: Modifier = Modifier, navController: NavController, contaViewModel: ContaViewModel, cartaoViewModel: CartaoViewModel, transacaoViewModel: TransacaoViewModel, lancamentoViewModel: LancamentoViewModel, lancFixoTotal: LancFixoTotal) {
     val sharedPreferences = LocalContext.current.getSharedPreferences("user_session", Context.MODE_PRIVATE)
     val userId = sharedPreferences.getInt("id", -1)
 
@@ -61,7 +61,7 @@ fun MainPainel(modifier: Modifier = Modifier, navController: NavController, cont
                 .fillMaxSize(),
             verticalArrangement = Arrangement.Center
         ) {
-            ThreeContainersWithList(navController = navController, contaViewModel = contaViewModel, cartaoViewModel = cartaoViewModel, transacaoViewModel = transacaoViewModel)
+            ThreeContainersWithList(navController = navController, contaViewModel = contaViewModel, cartaoViewModel = cartaoViewModel, transacaoViewModel = transacaoViewModel, lancamentoViewModel = lancamentoViewModel, lancFixoTotal = lancFixoTotal)
         }
     }
 }

@@ -40,3 +40,9 @@ data class LancamentosGet(
     val fkCategoria: Categoria1? = null,
     val fkConta: fkCont1? = null
 )
+
+data class LancFixoTotal(
+    val receita: Double,
+    val despesa: Double,
+    val saldo: Double
+)

@@ -1,6 +1,9 @@
 package com.example.safemoney.painel
 
 import ContaViewModel
+import LancFixoTotal
+import LancamentoViewModel
+import LoginViewModel
 import UserConta
 import android.os.Bundle
 import android.util.Log
@@ -78,11 +81,12 @@ import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 @Composable
-fun ThreeContainersWithList(navController: NavController, contaViewModel: ContaViewModel,  cartaoViewModel: CartaoViewModel, transacaoViewModel: TransacaoViewModel) {
+fun ThreeContainersWithList(navController: NavController, contaViewModel: ContaViewModel,  cartaoViewModel: CartaoViewModel, transacaoViewModel: TransacaoViewModel, lancamentoViewModel: LancamentoViewModel, lancFixoTotal: LancFixoTotal) {
 
     val (listaContas, setListaContas) = remember { mutableStateOf(emptyList<UserConta>()) }
     val (listaCartao, setListaCartao) = remember { mutableStateOf(emptyList<CartaoGet>()) }
     val (listaTransacoes, setListaTransacoes) = remember { mutableStateOf(emptyList<Transacao>()) }
+    val (lancFixoGrafico, setLancFixoGrafico) = remember { mutableStateOf(lancFixoTotal) }
 
     var balanco = 0.0
     var receita = 0.0
@@ -135,6 +139,10 @@ fun ThreeContainersWithList(navController: NavController, contaViewModel: ContaV
 
     transacaoViewModel.transacoes.observeAsState().value?.let{ listaTransacoes ->
         setListaTransacoes(listaTransacoes)
+    }
+
+    lancamentoViewModel.lancamentosFixGrafico.observeAsState().value?.let { lancFixoTotal ->
+        setLancFixoGrafico(lancFixoGrafico)
     }
 
 
@@ -405,14 +413,14 @@ fun ThreeContainersWithList(navController: NavController, contaViewModel: ContaV
                 ) {
                     items(listaTransacoes.take(5)) { conta ->
                         val image = when(conta.categoria.nome){
-                            "saúde" -> R.drawable.saude
-                            "alimentacao" -> R.drawable.alimentacao
-                            "lazer" -> R.drawable.game
-                            "gym" -> R.drawable.icon___academia
-                            "pet" -> R.drawable.pet
-                            "vestuario" -> R.drawable.icon___shopping
-                            "economia" -> R.drawable.economia
-                            "transporte" -> R.drawable.onibus_escolar
+                            "Saúde" -> R.drawable.saude
+                            "Alimentacao" -> R.drawable.alimentacao
+                            "Lazer" -> R.drawable.lazer
+                            "Gym" -> R.drawable.icon___academia
+                            "Pet" -> R.drawable.pet
+                            "Vestuario" -> R.drawable.icon___shopping
+                            "Economia" -> R.drawable.economia
+                            "Transporte" -> R.drawable.onibus_escolar
                             else -> R.drawable.safemoney2
                         }
                         TransacaoTableRow(
@@ -427,7 +435,8 @@ fun ThreeContainersWithList(navController: NavController, contaViewModel: ContaV
         }
 
         item {
-            Container4("Previsão final do mês", 60) {
+            Container4("Despesas/Receitas fixas", 60) {
+
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -438,9 +447,9 @@ fun ThreeContainersWithList(navController: NavController, contaViewModel: ContaV
                         modifier = Modifier.weight(1f)
                     ) {
                         BarGraph(
-                            graphBarData = listOf(0.8f, 0.5f),
-                            xAxisScaleData = listOf(1, 2),
-                            barData_ = listOf(0, 1500, 3000, 4500, 6000),
+                            graphBarData = listOf(lancFixoTotal.receita.toFloat(), lancFixoTotal.despesa.toFloat()),
+                            xAxisScaleData = listOf("Receita", "Despesa"),
+                            barData_ = listOf(0, 1000, 2000, 3000),
                             height = 150.dp,
                             roundType = BarType.TOP_CURVED,
                             barWidth = 30.dp,
@@ -475,7 +484,7 @@ fun ThreeContainersWithList(navController: NavController, contaViewModel: ContaV
                             )
 
                             Text(
-                                text = String.format("R$ %.2f", receita),
+                                text = String.format("R$ %.2f", lancFixoTotal.receita),
                                 style = TextStyle(
                                     fontSize = 12.sp,
                                 ),
@@ -501,7 +510,7 @@ fun ThreeContainersWithList(navController: NavController, contaViewModel: ContaV
                             )
 
                             Text(
-                                text = String.format("R$ %.2f", despesa),
+                                text = String.format("R$ %.2f", lancFixoTotal.despesa),
                                 style = TextStyle(
                                     fontSize = 12.sp,
                                 ),
@@ -527,7 +536,7 @@ fun ThreeContainersWithList(navController: NavController, contaViewModel: ContaV
                             )
 
                             Text(
-                                text = String.format("R$ %.2f", balancoPrevisao),
+                                text = String.format("R$ %.2f", lancFixoTotal.saldo),
                                 style = TextStyle(
                                     fontSize = 12.sp,
                                 ),
@@ -1075,8 +1084,4 @@ fun Container4(title: String, distancia: Int, content: @Composable (() -> Unit)?
 
     }
 
-
 }
-
-
-

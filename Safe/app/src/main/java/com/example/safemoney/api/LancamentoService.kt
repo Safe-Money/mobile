@@ -12,4 +12,7 @@ interface LancamentoService {
 
     @GET("lancamento-fixo/buscar-fixos/{id}")
     suspend fun listarLancamento(@Path("id") contaId: Int): Response<List<LancamentosGet>>
+
+    @GET("graficos/previsto/{id}")
+    suspend fun listarTotalFixos(@Path("id") userId: Int): Response<LancFixoTotal>
 }

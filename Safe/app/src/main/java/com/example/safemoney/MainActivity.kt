@@ -1,6 +1,7 @@
 package com.example.safemoney
 
 import ContaViewModel
+import LancFixoTotal
 import LancamentoViewModel
 import LoginViewModel
 import MainPainel
@@ -95,12 +96,19 @@ fun SafeMoneyApp() {
             val contaViewModel: ContaViewModel = getViewModel()
             val cartaoViewModel: CartaoViewModel = getViewModel()
             val transacaoViewModel: TransacaoViewModel = getViewModel()
+            val lancamentoViewModel: LancamentoViewModel = getViewModel()
+            val loginViewModel: LoginViewModel = getViewModel()
+            val userId = loginViewModel.getId()
+            val lancFixoGrafico by lancamentoViewModel.listarLancFixoGrafico(1)
+                .observeAsState(initial = LancFixoTotal(0.0,0.0,0.0))
 
             MainPainel(
                 navController = navController,
                 contaViewModel = contaViewModel,
                 cartaoViewModel = cartaoViewModel,
-                transacaoViewModel = transacaoViewModel
+                transacaoViewModel = transacaoViewModel,
+                lancamentoViewModel = lancamentoViewModel,
+                lancFixoTotal = lancFixoGrafico
             )
         }
         composable("menu") {
