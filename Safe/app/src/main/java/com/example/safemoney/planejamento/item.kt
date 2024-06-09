@@ -14,3 +14,11 @@ data class PlanejamentoItem(
     val usuario: Usuario1,
     val categoria: Categoria
 )
+
+data class PlanejamentoGet(
+    val idPlanejamento: Int,
+    val idCategoria: Int,
+    val nomeCategoria: String,
+    val totalGasto: Double,
+    val valorPlanejado: Double
+)

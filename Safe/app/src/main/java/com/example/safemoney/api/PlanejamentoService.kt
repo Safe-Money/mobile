@@ -1,5 +1,6 @@
 package com.example.safemoney.api
 
+import com.example.safemoney.planejamento.PlanejamentoGet
 import com.example.safemoney.planejamento.PlanejamentoItem
 import retrofit2.Response
 import retrofit2.http.Body
@@ -13,8 +14,8 @@ interface PlanejamentoService {
     @POST("planejamento/")
     suspend fun cadastrarPlanejamento(@Body planejamento: PlanejamentoItem)
 
-    @GET("planejamento/{id}")
-    suspend fun getPorIdUser(@Path("id") userId: Int): Response<List<PlanejamentoItem>>
+    @GET("planejamento/busca-gastos-categoria/{id}")
+    suspend fun getPorIdUser(@Path("id") userId: Int): Response<List<PlanejamentoGet>>
 
     @GET("planejamento/editar/{idPlanejamento}")
     suspend fun getPorId(@Path("idPlanejamento") idPlanejamento: Int): Response<PlanejamentoItem>

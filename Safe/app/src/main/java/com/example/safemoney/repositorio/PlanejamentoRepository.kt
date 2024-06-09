@@ -2,6 +2,7 @@ package com.example.safemoney.repositorio
 
 import com.example.cotacaomoedas4adsc.api.Rest
 import com.example.safemoney.api.PlanejamentoService
+import com.example.safemoney.planejamento.PlanejamentoGet
 import com.example.safemoney.planejamento.PlanejamentoItem
 import retrofit2.Response
 
@@ -15,7 +16,7 @@ class PlanejamentoRepository: IPlanejamentoRepository {
         planejamentoService.cadastrarPlanejamento(planejamento)
     }
 
-    override suspend fun getPorIdUser(id: Int): Response<List<PlanejamentoItem>> {
+    override suspend fun getPorIdUser(id: Int): Response<List<PlanejamentoGet>> {
         return planejamentoService.getPorIdUser(id)
     }
 

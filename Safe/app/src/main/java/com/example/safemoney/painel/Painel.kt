@@ -414,7 +414,7 @@ fun ThreeContainersWithList(navController: NavController, contaViewModel: ContaV
                     items(listaTransacoes.take(5)) { conta ->
                         val image = when(conta.categoria.nome){
                             "Saúde" -> R.drawable.saude
-                            "Alimentacao" -> R.drawable.alimentacao
+                            "Alimentação" -> R.drawable.alimentacao
                             "Lazer" -> R.drawable.lazer
                             "Gym" -> R.drawable.icon___academia
                             "Pet" -> R.drawable.pet

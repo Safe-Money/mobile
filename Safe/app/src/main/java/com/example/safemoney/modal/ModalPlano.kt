@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.example.safemoney.R
+import com.example.safemoney.planejamento.PlanejamentoGet
 import com.example.safemoney.planejamento.PlanejamentoItem
 import com.example.safemoney.ui.theme.Cinza
 import com.example.safemoney.ui.theme.Vermelho
@@ -29,7 +30,7 @@ import com.example.safemoney.ui.theme.Vermelho
 
 @Composable
 fun DeletarPlano(
-    plano: PlanejamentoItem,
+    plano: PlanejamentoGet,
     image: Painter,
     onConfirm: () -> Unit,
     onDismiss: () -> Unit
@@ -123,7 +124,7 @@ fun DeletarPlano(
 
                     Spacer(modifier = Modifier.width(10.dp))
                     Text(
-                        text = plano.categoria.nome!!,
+                        text = plano.nomeCategoria,
                         fontFamily = FontFamily(Font(R.font.montserrat)),
                         fontSize = 14.sp,
                         color = Color.Black,

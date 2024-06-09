@@ -1,6 +1,7 @@
 package com.example.safemoney.planejamento
 
 import DeletarPlano
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -47,25 +48,25 @@ import com.example.safemoney.viewmodel.PlanejamentoViewModel
 import org.koin.androidx.compose.getViewModel
 
 @Composable
-fun PlanItem(i: PlanejamentoItem, planejamentoViewModel: PlanejamentoViewModel = getViewModel(), navController: NavController){
+fun PlanItem(i: PlanejamentoGet, planejamentoViewModel: PlanejamentoViewModel = getViewModel(), navController: NavController){
     val modalExcluir = remember { mutableStateOf<Boolean?>(false) }
     val modalEditar = remember { mutableStateOf<Boolean?>(false) }
-;
+
     Box(modifier = Modifier
         .fillMaxWidth()
         .padding(horizontal = 2.dp, vertical = 5.dp)
     )
     {
-        val image = when(i.categoria.nome){
-            "saúde" -> painterResource(id = R.drawable.saude)
-            "alimentacao" -> painterResource(id = R.drawable.alimentacao)
-            "lazer" -> painterResource(id = R.drawable.game)
-            "gym" -> painterResource(id = R.drawable.icon___academia)
-            "pet" -> painterResource(id = R.drawable.pet)
-            "vestuario" -> painterResource(id = R.drawable.icon___shopping)
-            "economia" -> painterResource(id = R.drawable.economia)
-            "transporte" -> painterResource(id = R.drawable.onibus_escolar)
-            else -> painterResource(id = R.drawable.excluir)
+        val image = when(i.nomeCategoria){
+            "Saúde" -> R.drawable.saude
+            "Alimentação" -> R.drawable.alimentacao
+            "Lazer" -> R.drawable.lazer
+            "Gym" -> R.drawable.icon___academia
+            "Pet" -> R.drawable.pet
+            "Vestuario" -> R.drawable.icon___shopping
+            "Economia" -> R.drawable.economia
+            "Transporte" -> R.drawable.onibus_escolar
+            else -> R.drawable.safemoney2
         }
 
         Row (modifier = Modifier
@@ -75,7 +76,7 @@ fun PlanItem(i: PlanejamentoItem, planejamentoViewModel: PlanejamentoViewModel =
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ){
             Image(
-                painter = image,
+                painter = painterResource(id = image),
                 contentDescription = "Categoria",
                 modifier = Modifier.padding(top = 8.dp, end = 5.dp)
             )
@@ -92,6 +93,7 @@ fun PlanItem(i: PlanejamentoItem, planejamentoViewModel: PlanejamentoViewModel =
             )
 
             val progresso = if (i.totalGasto != null) i.totalGasto / i.valorPlanejado else 0.0
+            val progressoBar = progresso.toFloat()
 
             Column (
                 modifier = Modifier
@@ -107,7 +109,7 @@ fun PlanItem(i: PlanejamentoItem, planejamentoViewModel: PlanejamentoViewModel =
                     textAlign = TextAlign.Center)
 
                 LinearProgressIndicator(
-                    progress = progresso.toFloat(),
+                    progress = progressoBar,
                     color = VerdeClaro,
                     modifier = Modifier
                         .width(140.dp)
@@ -162,9 +164,9 @@ fun PlanItem(i: PlanejamentoItem, planejamentoViewModel: PlanejamentoViewModel =
         if (modalExcluir.value!!) {
             DeletarPlano(
                 plano = i,
-                image = image,
+                image = painterResource(id = image),
                 onConfirm = {
-                    planejamentoViewModel.excluirPlanejamento(i.id!!)
+                    planejamentoViewModel.excluirPlanejamento(i.idPlanejamento)
                     modalExcluir.value = false
                     navController.navigate("planejamento")
                 },
@@ -175,7 +177,7 @@ fun PlanItem(i: PlanejamentoItem, planejamentoViewModel: PlanejamentoViewModel =
         }
 
         if(modalEditar.value!!){
-            navController.navigate("editarPlanejamento/${i.id}")
+            navController.navigate("editarPlanejamento/${i.idPlanejamento}")
         }
     }
 }

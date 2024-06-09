@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.safemoney.planejamento.PlanejamentoGet
 import com.example.safemoney.planejamento.PlanejamentoItem
 import com.example.safemoney.repositorio.IPlanejamentoRepository
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -32,8 +33,8 @@ class PlanejamentoViewModel(
     val planejamento: LiveData<PlanejamentoItem>
         get() = _planejamento
 
-    private val _planejamentos = MutableLiveData<List<PlanejamentoItem>>()
-    val planejamentos: LiveData<List<PlanejamentoItem>>
+    private val _planejamentos = MutableLiveData<List<PlanejamentoGet>>()
+    val planejamentos: LiveData<List<PlanejamentoGet>>
         get() = _planejamentos
 
     fun cadastrarPlanejamento(planejamento: PlanejamentoItem){
@@ -51,7 +52,7 @@ class PlanejamentoViewModel(
             }
         }
     }
-    fun getPorIdUser(id: Int): LiveData<List<PlanejamentoItem>>{
+    fun getPorIdUser(id: Int): LiveData<List<PlanejamentoGet>>{
         CoroutineScope(Dispatchers.IO + coroutineExceptionHandler).launch {
             try {
                 val response = planejamentoRepository.getPorIdUser(id)

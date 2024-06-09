@@ -1,6 +1,7 @@
 package com.example.safemoney.telas_acao.despesa_acao
 
 import LoginViewModel
+import TopBarEditarPlano
 import TopBarPlano
 import Usuario1
 import android.util.Log
@@ -20,6 +21,7 @@ import com.example.safemoney.planejamento.PlanejamentoItem
 import com.example.safemoney.telas_acao.buttons.ButtonsRow
 import com.example.safemoney.telas_acao.inputs.DataInput
 import com.example.safemoney.telas_acao.inputs.DropInput
+import com.example.safemoney.telas_acao.inputs.DropInputEditar
 import com.example.safemoney.telas_acao.inputs.ValorInput
 import com.example.safemoney.viewmodel.PlanejamentoViewModel
 import toDatabaseDateFormat
@@ -44,11 +46,11 @@ fun EditarPlano(
     val valorEditar= remember { mutableStateOf<String?>(String.format("%.2f", valor.value)) }
     val data = remember { mutableStateOf(planejamento.data) }
     val categoriaSelecionadaId = remember { mutableStateOf<Int?>(planejamento.categoria.id) }
-    val categoriaSelecionadaNome = remember { mutableStateOf<String?>(planejamento.categoria.nome) }
+    val categoriaSelecionadaNome = remember { mutableStateOf(planejamento.categoria.nome) }
 
     Scaffold(
         topBar = {
-            TopBarPlano()
+            TopBarEditarPlano()
         }
     ) {contentPadding ->
         Column (
@@ -63,8 +65,9 @@ fun EditarPlano(
 
             )
 
-            DropInput(
+            DropInputEditar(
                 categorias = categorias,
+                categoriaInicial = planejamento.categoria,
                 onChange = { selectedCategoria ->
                     categoriaSelecionadaId.value = selectedCategoria.id
                     categoriaSelecionadaNome.value = selectedCategoria.nome

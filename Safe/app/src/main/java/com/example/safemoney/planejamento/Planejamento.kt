@@ -1,6 +1,7 @@
 package com.example.safemoney.planejamento
 
 import LoginViewModel
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -163,24 +164,27 @@ fun Planejamento(
                 textAlign = TextAlign.Right,
                 color = Cinza
             )
-
         }
 
         Spacer(Modifier.height(15.dp))
 
-       LazyColumn(
-            contentPadding = PaddingValues(vertical = 10.dp),
-            modifier = Modifier.fillMaxWidth(0.8f),
-        ) {
-            items(planejamentosState) { planejamento ->
-                Row(
-                    modifier = Modifier.fillParentMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(4.dp)
-                ) {
-                    PlanItem(i = planejamento, navController = navController)
+        if (!planejamentosState.isNullOrEmpty()) {
+            LazyColumn(
+                contentPadding = PaddingValues(vertical = 10.dp),
+                modifier = Modifier.fillMaxWidth(0.8f),
+            ) {
+                items(planejamentosState) { planejamento ->
+                    Log.d("PlanItem", "TotalGasto do planejamento: "+ planejamento.totalGasto)
+                    Row(
+                        modifier = Modifier.fillParentMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(4.dp)
+                    ) {
+                        PlanItem(i = planejamento, navController = navController)
+                    }
                 }
             }
         }
+
 
         Spacer(modifier = Modifier.weight(1f))
 
@@ -189,13 +193,4 @@ fun Planejamento(
     }
 
 
-}
-
-@Preview(showBackground = true)
-@Composable
-fun LoginScreenPreview1() {
-    val navController = rememberNavController()
-    SafeMoneyTheme {
-        Planejamento(navController = navController)
-    }
 }
