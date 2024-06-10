@@ -8,4 +8,6 @@ interface ITransacaoRepository {
     suspend fun adicionarFixa(r: Transacao)
     suspend fun adicionarDespesa(r: Transacao)
     suspend fun listarTransacoes(id: Int): Response<List<Transacao>>
+    suspend fun getGastoCartao(idCartao: Int): Response<List<Transacao>>
+
 }

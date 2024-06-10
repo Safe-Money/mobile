@@ -47,7 +47,8 @@ import java.util.Locale
 @Composable
 fun Cartao(
     modifier: Modifier = Modifier,
-    cartao: CartaoGet
+    cartao: CartaoGet,
+
 ) {
     val bandeiraImageMap = mapOf(
         "visa" to R.mipmap.logo_visa5,

@@ -1,6 +1,7 @@
 package com.example.safemoney.cartoes
 
 import android.content.Context
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.padding
@@ -10,7 +11,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -25,15 +28,16 @@ import com.example.safemoney.model.Cartao
 import com.example.safemoney.model.CartaoGet
 import com.example.safemoney.viewmodel.CartaoViewModel
 import com.example.safemoney.viewmodel.TransacaoViewModel
+import java.time.LocalDate
 
 @Composable
 fun MainCartao(modifier: Modifier = Modifier, transacaoViewModel: TransacaoViewModel, navController: NavController, cartaoViewModel: CartaoViewModel) {
     val sharedPreferences = LocalContext.current.getSharedPreferences("user_session", Context.MODE_PRIVATE)
     val userId = sharedPreferences.getInt("id", -1)
-    val listaTransacoes by transacaoViewModel.transacoes.observeAsState(initial = emptyList())
-    LaunchedEffect(Unit) {
-        transacaoViewModel.listarTransacoes(userId)
-    }
+    var selectedMonth by remember { mutableStateOf(LocalDate.now().withDayOfMonth(1)) }
+    var selectedCartaoId by remember { mutableStateOf(-1) }
+
+
     Scaffold(
         bottomBar = {
             FooterBar(navController = navController)
@@ -46,13 +50,25 @@ fun MainCartao(modifier: Modifier = Modifier, transacaoViewModel: TransacaoViewM
                 TopBar1(navController = navController)
             }
             item {
-                CartaoRow(cartoes = cartaoViewModel.cartaoLiveData.value ?: emptyList())
+                CartaoRow(
+                    cartoes = cartaoViewModel.cartaoLiveData.value ?: emptyList(),
+                    onCartaoSelected = { id ->
+                        if (id > 0) {
+                            selectedCartaoId = id
+                        }
+                    }
+                )
             }
             item {
-                BotaoMes()
+                BotaoMes(onMonthChange = { month -> selectedMonth = month })
             }
             item {
-                TransacaoColumn(transacaoViewModel = transacaoViewModel)
+                Log.d("MainCartao", "Selected Cartao ID: $selectedCartaoId")
+                TransacaoColumn(
+                    transacaoViewModel = transacaoViewModel,
+                    idCartao = selectedCartaoId,
+                    selectedMonth = selectedMonth
+                )
             }
         }
     }

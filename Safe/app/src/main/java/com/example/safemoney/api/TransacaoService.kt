@@ -17,4 +17,7 @@ interface TransacaoService {
 
     @GET("transacoes/listar-gastos/{id}")
     suspend fun listarTransacoes(@Path("id") idUser: Int): Response<List<Transacao>>
+
+    @GET("cartao-credito/listar-fatura-cartao/{idCartao}")
+    suspend fun getGastoCartao(@Path("idCartao") idCartao: Int): Response<List<Transacao>>
 }

@@ -23,6 +23,7 @@ data class Cartao(
 
 
 data class CartaoGet(
+    val id: Int,
     val nome: String,
     val bandeira: String,
     val limite: Int,

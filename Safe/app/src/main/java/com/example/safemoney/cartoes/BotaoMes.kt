@@ -5,6 +5,7 @@ import com.example.safemoney.ui.theme.CinzaDivisor
 import com.example.safemoney.ui.theme.VerdeEscuro
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,12 +22,20 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import java.time.LocalDate
+import java.time.format.TextStyle
+import java.util.Locale
 
 
 @Preview(
@@ -34,13 +43,23 @@ import androidx.compose.ui.unit.sp
 )
 @Composable
 fun BotaoMesPreview() {
-    BotaoMes()
+    var selectedMonth by remember { mutableStateOf(LocalDate.now().withDayOfMonth(1)) }
+    BotaoMes(onMonthChange = { month -> selectedMonth = month })
 }
 
 @Composable
 fun BotaoMes(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+            onMonthChange: (LocalDate) -> Unit
+
 ) {
+
+    var currentMonth by remember { mutableStateOf(LocalDate.now().withDayOfMonth(1)) }
+
+    LaunchedEffect(currentMonth) {
+        onMonthChange(currentMonth)
+    }
+
     Column (
         modifier = modifier
             .fillMaxWidth()
@@ -66,11 +85,13 @@ fun BotaoMes(
                 imageVector = Icons.Default.KeyboardArrowLeft,
                 contentDescription = null,
                 tint = VerdeEscuro,
+                modifier = Modifier.clickable { currentMonth = currentMonth.minusMonths(1) }
+
             )
 
 
             Text(
-                text = "Atual",
+                text = currentMonth.month.getDisplayName(TextStyle.FULL,Locale("pt", "BR")),
                 modifier = modifier
                     .background(
                         color = VerdeEscuro,
@@ -88,6 +109,7 @@ fun BotaoMes(
                 imageVector = Icons.Default.KeyboardArrowRight,
                 contentDescription = null,
                 tint = VerdeEscuro,
+                modifier = Modifier.clickable { currentMonth = currentMonth.plusMonths(1) }
             )
         }
 

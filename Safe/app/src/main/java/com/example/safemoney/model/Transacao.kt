@@ -12,3 +12,6 @@ data class Transacao(
     val tipo: TipoTransacao,
     val fixo: Boolean
 )
+
+
+

@@ -1,5 +1,6 @@
 package com.example.safemoney.cartoes
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -11,11 +12,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.magnifier
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -28,9 +32,8 @@ import com.example.safemoney.model.CartaoGet
 import com.example.safemoney.ui.theme.CinzaDivisor
 import com.example.safemoney.ui.theme.CinzaLetra
 import com.example.safemoney.ui.theme.VerdeClaro
-
-
-
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.time.debounce
 
 
 fun CartaoGet.toCartao(): Cartao {
@@ -48,12 +51,12 @@ fun CartaoGet.toCartao(): Cartao {
 fun CartaoRow(
     modifier: Modifier = Modifier,
     cartoes: List<CartaoGet>,
+    onCartaoSelected: (Int) -> Unit
 )
 
-
-
-
 {
+    val scrollState = rememberLazyListState()
+
     Column {
 
         Spacer(modifier = modifier.height(30.dp))
@@ -67,9 +70,18 @@ fun CartaoRow(
         )
             {
                 items(cartoes) { cartao ->
+                    if (cartao.id > 0) {
+                        Log.d("CartaoRow", "CartaoGet ID: ${cartao.id}")
+                        onCartaoSelected(cartao.id)
+                    }
                     Cartao(cartao = cartao)
                 }
             }
+        if (cartoes.size > 1 && cartoes[1].id > 0) {
+            LaunchedEffect(Unit) {
+                onCartaoSelected(cartoes[1].id)
+            }
+        }
 
         Row(
             modifier = modifier
@@ -130,7 +142,17 @@ fun CartaoRow(
             }
         }
     }
+    LaunchedEffect(scrollState) {
+        snapshotFlow { scrollState.layoutInfo.visibleItemsInfo }
+            .debounce(300)
+            .collect { visibleItemsInfo ->
+                val visibleItems = visibleItemsInfo.map { it.index }
+                val visibleCartoes = visibleItems.map { cartoes[it] }
+                val visibleCartoesIds = visibleCartoes.filter { it.id > 0 }.map { it.id }
 
+                Log.d("CartaoRow", "Cartões visíveis: $visibleCartoesIds")
+            }
+    }
 }
 
 data class Cartoes(

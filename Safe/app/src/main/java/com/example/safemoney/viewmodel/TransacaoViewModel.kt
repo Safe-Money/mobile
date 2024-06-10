@@ -28,6 +28,9 @@ class TransacaoViewModel(
     val transacoes: LiveData<List<Transacao>>
         get() = _transacoes
 
+    private val _faturaCartao = MutableLiveData<List<Transacao>>()
+    val faturaCartao: LiveData<List<Transacao>> get() = _faturaCartao
+
     private val _successEvent = MutableLiveData<Boolean>()
     val successEvent: LiveData<Boolean>
         get() = _successEvent
@@ -92,6 +95,24 @@ class TransacaoViewModel(
             }
         }
         return transacoes
+    }
+
+    fun listarFaturaCartao(idCartao: Int) {
+        viewModelScope.launch(coroutineExceptionHandler) {
+            try {
+                val response = transacaoRepository.getGastoCartao(idCartao)
+                if (response.isSuccessful) {
+                    _faturaCartao.postValue(response.body())
+                    val transacoes2 = response.body()
+                    Log.d("TransacaoViewModel", "Transações do cartão ${idCartao}: ${transacoes2}")
+                } else {
+                    val erro = response.errorBody()?.string() ?: "Erro desconhecido"
+                    Log.e("TransacaoViewModel", "Erro ao listar fatura do cartão $erro")
+                }
+            } catch (e: Exception) {
+                Log.e("TransacaoViewModel", "Erro ao listar fatura do cartão", e)
+            }
+        }
     }
 
 }

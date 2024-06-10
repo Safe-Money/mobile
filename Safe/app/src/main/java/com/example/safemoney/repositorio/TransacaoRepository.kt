@@ -26,4 +26,8 @@ class TransacaoRepository : ITransacaoRepository {
     override suspend fun listarTransacoes(id: Int): Response<List<Transacao>> {
         return transacaoService.listarTransacoes(id)
     }
+
+    override suspend fun getGastoCartao(idCartao: Int): Response<List<Transacao>> {
+        return transacaoService.getGastoCartao(idCartao)
+    }
 }
