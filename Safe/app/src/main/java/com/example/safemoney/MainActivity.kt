@@ -99,7 +99,7 @@ fun SafeMoneyApp() {
             val lancamentoViewModel: LancamentoViewModel = getViewModel()
             val loginViewModel: LoginViewModel = getViewModel()
             val userId = loginViewModel.getId()
-            val lancFixoGrafico by lancamentoViewModel.listarLancFixoGrafico(1)
+            val lancFixoGrafico by lancamentoViewModel.listarLancFixoGrafico(userId)
                 .observeAsState(initial = LancFixoTotal(0.0,0.0,0.0))
 
             MainPainel(
