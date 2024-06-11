@@ -24,14 +24,17 @@ import androidx.navigation.compose.rememberNavController
 import com.example.safemoney.R
 import com.example.safemoney.ui.theme.Cinza
 import com.example.safemoney.ui.theme.Vermelho
+import kotlinx.coroutines.launch
 
 @Composable
 fun DeletarLogin(
     onConfirm: () -> Unit,
     onDismiss: () -> Unit,
-    navController: NavController
+    navController: NavController,
+    loginViewModel: LoginViewModel
 ) {
 
+    val coroutineScope = rememberCoroutineScope()
     Dialog(
         onDismissRequest = { onDismiss() }
     ) {
@@ -108,7 +111,7 @@ fun DeletarLogin(
                         fontSize = 11.sp,
                         color = Color.Black,
 
-                    )
+                        )
 
                 }
 
@@ -135,7 +138,18 @@ fun DeletarLogin(
                     Spacer(modifier = Modifier.width(40.dp))
 
                     Button(
-                        onClick = { onConfirm() },
+
+                        onClick = {
+                            coroutineScope.launch {
+                                val result = loginViewModel.excluirUsuario()
+                                if (result) {
+                                    onConfirm()
+                                    navController.navigate("login")
+                                } else {
+
+                                }
+                            }
+                        },
                         contentPadding = PaddingValues(horizontal = 20.dp, vertical = 0.dp),
                         modifier = Modifier
                             .height(23.dp),
@@ -147,25 +161,15 @@ fun DeletarLogin(
                             fontSize = 10.sp,
                             fontFamily = FontFamily(Font(R.font.montserrat)))
                     }
+
+
                 }
                 Spacer(modifier = Modifier.height(10.dp))
             }
         }
     }
+
 }
 
-@Preview
-@Composable
-fun PreviewDeletarLogin() {
-    val showDialog = remember { mutableStateOf(true) }
-    val navController = rememberNavController()
 
-    if (showDialog.value) {
-        DeletarLogin(
-            onConfirm = { showDialog.value = false },
-            onDismiss = { showDialog.value = false },
-                    navController = navController
-        )
-    }
-}
 

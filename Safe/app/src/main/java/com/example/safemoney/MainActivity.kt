@@ -5,7 +5,8 @@ import LancFixoTotal
 import LancamentoViewModel
 import LoginViewModel
 import MainPainel
-import ObjetivoViewModel
+import ObjetivoEDIT
+
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -33,10 +34,11 @@ import com.example.safemoney.telas_acao.despesa_acao.DespesaScreen
 import com.example.safemoney.telas_acao.despesa_acao.EditarPlano
 import com.example.safemoney.telas_acao.despesa_acao.PlanoScreen
 import com.example.safemoney.telas_acao.despesa_acao.ReceitaScreen
+import com.example.safemoney.telas_acao.inputs.ObjetivoViewModel
 import com.example.safemoney.telas_acao.lancamentos_acao.LancamentosScreen
 import com.example.safemoney.telas_acao.objetivo_acao.AddMoneyScreen
 import com.example.safemoney.telas_acao.objetivo_acao.ObjetivoAddScreen
-import com.example.safemoney.telas_acao.objetivo_acao.ObjetivoEDIT
+
 import com.example.safemoney.viewmodel.CadastroViewModel
 import com.example.safemoney.viewmodel.CartaoViewModel
 import com.example.safemoney.viewmodel.CategoriaViewModel
@@ -261,17 +263,25 @@ fun SafeMoneyApp() {
 
 
 
-
         composable("addObjetivos") {
             val loginViewModel: LoginViewModel = getViewModel()
             val objetivoViewModel : ObjetivoViewModel = getViewModel()
             ObjetivoAddScreen(navController = navController,  loginViewModel = loginViewModel, objetivoViewModel = objetivoViewModel)
         }
 
-        composable("editObjetivos") {
+        composable(
+            route = "editObjetivos/{objetivoId}",
+            arguments = listOf(navArgument("objetivoId") { type = NavType.IntType })
+        ) { backStackEntry ->
             val loginViewModel: LoginViewModel = getViewModel()
-            val objetivoViewModel : ObjetivoViewModel = getViewModel()
-            ObjetivoEDIT(navController = navController,  loginViewModel = loginViewModel, objetivoViewModel = objetivoViewModel)
+            val objetivoViewModel: ObjetivoViewModel = getViewModel()
+            val objetivoId = backStackEntry.arguments?.getInt("objetivoId") ?: 0
+            ObjetivoEDIT(
+                navController = navController,
+                loginViewModel = loginViewModel,
+                objetivoViewModel = objetivoViewModel,
+                objetivoId = objetivoId
+            )
         }
 
         composable(
@@ -289,6 +299,7 @@ fun SafeMoneyApp() {
                 objetivoId = objetivoId
             )
         }
+
 
 
         composable("objetivo") {

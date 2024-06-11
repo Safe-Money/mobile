@@ -6,7 +6,7 @@ import ICadastrarRepository
 import LancamentoViewModel
 import LoginRepository
 import LoginViewModel
-import ObjetivoViewModel
+
 import UsuarioViewModel
 import android.content.Context
 import android.content.SharedPreferences
@@ -26,6 +26,7 @@ import com.example.safemoney.repositorio.LancamentoRepository
 import com.example.safemoney.repositorio.ObjetivoRepository
 import com.example.safemoney.repositorio.PlanejamentoRepository
 import com.example.safemoney.repositorio.TransacaoRepository
+import com.example.safemoney.telas_acao.inputs.ObjetivoViewModel
 import com.example.safemoney.viewmodel.CadastroViewModel
 import com.example.safemoney.viewmodel.CategoriaViewModel
 import com.example.safemoney.viewmodel.PlanejamentoViewModel

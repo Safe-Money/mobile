@@ -19,6 +19,10 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,10 +36,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
 import com.example.safemoney.R
 import com.example.safemoney.model.Objetivos
+import com.example.safemoney.telas_acao.inputs.ObjetivoViewModel
 import com.example.safemoney.ui.theme.VerdeClaro
 
 
@@ -43,33 +49,41 @@ import com.example.safemoney.ui.theme.VerdeClaro
 @Composable
 fun Content(
     objetivos: List<Objetivos>,
-    @DrawableRes image: Int = R.drawable.logo,
-    trashImage: Int = R.drawable.excluir,
-    moneyImage: Int = R.drawable.money,
-    editImage: Int = R.drawable.edit,
-    paris: Int = R.drawable.paris,
+    @DrawableRes defaultImage: Int = R.drawable.paris,
+    @DrawableRes trashImage: Int = R.drawable.excluir,
+    @DrawableRes moneyImage: Int = R.drawable.money,
+    @DrawableRes editImage: Int = R.drawable.edit,
+    @DrawableRes paris: Int = R.drawable.paris,
     navController: NavController,
+
+    objetivoViewModel: ObjetivoViewModel = viewModel(),
     modifier: Modifier = Modifier
 ) {
+    var showDialog by remember { mutableStateOf(false) }
+    var selectedObjetivo by remember { mutableStateOf<Objetivos?>(null) }
+
+
+
     objetivos.forEach { objetivo ->
         Box(
             modifier = modifier
-                .fillMaxWidth(1f)
-                .padding(vertical = 8.dp)
-                .padding(horizontal = 20.dp)
+                .fillMaxWidth()
+                .padding(vertical = 8.dp, horizontal = 20.dp)
         ) {
             Row(
                 modifier = Modifier
-                    .fillMaxWidth(1f)
+                    .fillMaxWidth()
                     .align(Alignment.TopCenter),
                 verticalAlignment = Alignment.CenterVertically
             ) {
+                val imageUrl = objetivo.urlImagem
                 val painter = rememberImagePainter(
-                    data = objetivo.urlImagem,
+                    data = if (imageUrl.isNotEmpty()) imageUrl else defaultImage,
                     builder = {
                         crossfade(true)
                     }
                 )
+
                 Image(
                     painter = painter,
                     contentDescription = null,
@@ -100,7 +114,7 @@ fun Content(
                             modifier = Modifier.padding(top = 0.dp)
                         )
                         Text(
-                            text = "${(objetivo.valorInvestido / objetivo.valorFinal) * 100}%",
+                            text = "${String.format("%.2f", (objetivo.valorInvestido / objetivo.valorFinal) * 100)}%",
                             style = TextStyle(
                                 fontSize = 12.sp,
                                 fontFamily = FontFamily(Font(R.font.montserrat)),
@@ -154,12 +168,12 @@ fun Content(
                     Image(
                         painter = painterResource(id = editImage),
                         contentDescription = null,
-                        modifier = Modifier.size(18.dp)
+                        modifier = Modifier
+                            .size(18.dp)
                             .clickable {
-                                navController.navigate("editObjetivos")
+                                navController.navigate("editObjetivos/${objetivo.id}")
                             }
                     )
-
 
                     Spacer(modifier = Modifier.height(4.dp))
 
@@ -168,9 +182,29 @@ fun Content(
                         contentDescription = null,
                         modifier = Modifier
                             .size(21.dp)
+                            .clickable {
+                                selectedObjetivo = objetivo
+                                showDialog = true
+                            }
                     )
+
                 }
             }
         }
+    }
+
+    if (showDialog) {
+        DeletarObjetivo(
+            objetivo = selectedObjetivo!!,
+            onConfirm = {
+                showDialog = false
+                selectedObjetivo?.id?.let { objetivoId ->
+                    objetivoViewModel.deletarObjetivo(objetivoId)
+                }
+            },
+            onDismiss = {
+                showDialog = false
+            }
+        )
     }
 }

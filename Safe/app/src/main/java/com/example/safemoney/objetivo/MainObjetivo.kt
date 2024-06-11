@@ -1,8 +1,6 @@
 package com.example.tela_objetivos
 
 import Content
-import ObjetivoViewModel
-
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -19,6 +17,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.projetoaula07_03.home.TopBar
 import com.example.safemoney.FooterBar
+import com.example.safemoney.telas_acao.inputs.ObjetivoViewModel
 
 
 import com.example.safemoney.ui.theme.SafeMoneyTheme

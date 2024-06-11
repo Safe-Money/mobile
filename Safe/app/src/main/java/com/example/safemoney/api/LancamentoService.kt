@@ -15,4 +15,10 @@ interface LancamentoService {
 
     @GET("graficos/previsto/{id}")
     suspend fun listarTotalFixos(@Path("id") userId: Int): Response<LancFixoTotal>
+
+    @GET("transacoes/listar-gastos/{id}")
+    suspend fun listarTudo(@Path("id") contaId: Int): Response<List<LancamentosGet>>
+
+
+
 }

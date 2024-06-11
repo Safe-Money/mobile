@@ -13,6 +13,9 @@ interface ILancamentoRepository {
     suspend fun listarLancamentos(contaId: Int): Response<List<LancamentosGet>>
     suspend fun listarTotalFixos(userId: Int): Response<LancFixoTotal>
 
-    }
+    suspend fun listarTudo(contaId: Int): Response<List<LancamentosGet>>
+
+
+}
 
 

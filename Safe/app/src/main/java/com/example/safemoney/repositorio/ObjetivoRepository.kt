@@ -18,6 +18,14 @@ class ObjetivoRepository : IObjetivoRepository {
         return objetivoService.getObjetivoById(id)
     }
 
+    override suspend fun getObjetivoByIdObj(id: Int): Response<Objetivos> {
+        return objetivoService.getObjetivoByIdObj(id)
+    }
+
+    override suspend fun deletarObjetivo(id: Int): Response<Unit> {
+        return objetivoService.deletarObjetivo(id)
+    }
+
     override suspend fun adicionarValorInvestido(idObjetivo: Int, novoValorInvestido: Double, idUsuario: Int): Response<Unit> {
         return objetivoService.adicionarValorInvestido(idObjetivo, novoValorInvestido, idUsuario)
     }

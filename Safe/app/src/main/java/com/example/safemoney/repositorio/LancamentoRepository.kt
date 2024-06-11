@@ -24,6 +24,10 @@ class LancamentoRepository: ILancamentoRepository {
         return lancamentoService.listarLancamento(contaId)
     }
 
+    override suspend fun listarTudo(contaId: Int): Response<List<LancamentosGet>> {
+        return lancamentoService.listarTudo(contaId)
+    }
+
     override suspend fun listarTotalFixos(idUser: Int): Response<LancFixoTotal> {
         return lancamentoService.listarTotalFixos(idUser)
     }

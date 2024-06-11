@@ -22,20 +22,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.example.safemoney.R
+import com.example.safemoney.model.Objetivos
 import com.example.safemoney.ui.theme.Cinza
 import com.example.safemoney.ui.theme.Vermelho
 
 
 
-data class Objetivo(
-    val nome: String,
-    @DrawableRes
-    val icone: Int
-)
+
 
 @Composable
 fun DeletarObjetivo(
-    objetivo: Objetivo,
+    objetivo: Objetivos,
     onConfirm: () -> Unit,
     onDismiss: () -> Unit
 ) {
@@ -120,13 +117,7 @@ fun DeletarObjetivo(
 
                 ){
 
-                    Image(
-                        painter = painterResource(objetivo.icone),
-                        contentDescription = "Objetivo Image",
-                        modifier = Modifier
-                            .size(20.dp)
-                            .clip(shape = CircleShape)
-                    )
+
 
                     Spacer(modifier = Modifier.width(10.dp))
                     Text(
@@ -183,17 +174,3 @@ fun DeletarObjetivo(
 
 
 
-@Preview
-@Composable
-fun PreviewDeletarObjetivo() {
-    val showDialog = remember { mutableStateOf(true) }
-    val meuObjetivo = Objetivo(nome = "Video game", icone = R.drawable.game)
-
-    if (showDialog.value) {
-        DeletarObjetivo(
-            objetivo = meuObjetivo,
-            onConfirm = {  },
-            onDismiss = {  }
-        )
-    }
-}

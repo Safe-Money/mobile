@@ -122,6 +122,6 @@ fun DataInput(
 
 fun Long.toBrazilianDateFormat17(): String {
     val date = Date(this)
-    val formatter = SimpleDateFormat("dd/MM/yyyy", Locale("pt-br"))
+    val formatter = SimpleDateFormat("yyyy-MM-dd", Locale("pt-br"))
     return formatter.format(date)
 }

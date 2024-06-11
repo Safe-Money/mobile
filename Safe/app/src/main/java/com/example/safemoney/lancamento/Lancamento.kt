@@ -46,12 +46,14 @@ fun LancamentosScreen2(
 ) {
     val userId = loginViewModel.getId()
     val lancamentosState by lancamentoViewModel.lancamentos.observeAsState(listOf())
+    val allLancamentosState by lancamentoViewModel.allLancamentos.observeAsState(listOf())
 
     LaunchedEffect(Unit) {
         val contasDoUsuario = contaViewModel.idConta(userId)
         contasDoUsuario.forEach { contaId ->
             lancamentoViewModel.listarLancamentos(contaId)
-            Log.d("LancamentosScreen2", "Chamando listarLancamentos para idConta: $contaId")
+            lancamentoViewModel.listarTudo(userId)
+            Log.d("LancamentosScreen2", "Chamando listarLancamentos e listarTudo para idConta: $contaId")
         }
     }
 
@@ -64,8 +66,8 @@ fun LancamentosScreen2(
 
     val formatter = DateTimeFormatter.ofPattern("EEEE, dd", Locale("pt", "BR"))
 
-    // Filtrar lançamentos pelo mês atual
-    val lancamentosDoMesAtual = lancamentosState.filter { lancamento ->
+
+    val lancamentosDoMesAtual = (lancamentosState + allLancamentosState).filter { lancamento ->
         val lancamentoDate = LocalDate.parse(lancamento.data)
         lancamentoDate.monthValue == currentMonthIndex.value + 1
     }
@@ -126,7 +128,7 @@ fun LancamentosScreen2(
                     .padding(vertical = 8.dp)
                     .padding(start = 16.dp)
             ) {
-                BotoesSwitch()
+
             }
 
             Spacer(modifier = Modifier.height(5.dp))
@@ -160,7 +162,7 @@ fun LancamentosScreen2(
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            // Parte dentro do LazyColumn
+
             LazyColumn(
                 modifier = Modifier
                     .fillMaxWidth()

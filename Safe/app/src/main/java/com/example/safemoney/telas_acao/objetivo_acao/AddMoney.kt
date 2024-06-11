@@ -1,7 +1,6 @@
 package com.example.safemoney.telas_acao.objetivo_acao
 
 import LoginViewModel
-import ObjetivoViewModel
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import com.example.safemoney.telas_acao.cartao_acao.TopBarObjetivos
@@ -17,6 +16,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.safemoney.model.Objetivos
 import com.example.safemoney.telas_acao.buttons.ButtonsRow
+import com.example.safemoney.telas_acao.inputs.ObjetivoViewModel
 import com.example.safemoney.telas_acao.inputs.ValorInput
 
 @Composable

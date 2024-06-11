@@ -12,7 +12,6 @@ import Conta1
 import LancamentoViewModel
 import Lancamentos
 import LoginViewModel
-import ObjetivoViewModel
 import TipoTransacao
 import UserConta
 import Usuario1
@@ -39,6 +38,7 @@ import com.example.safemoney.telas_acao.inputs.ContaVinculadaInput
 import com.example.safemoney.telas_acao.inputs.DataInput
 import com.example.safemoney.telas_acao.inputs.DropInput
 import com.example.safemoney.telas_acao.inputs.ImagemInput
+import com.example.safemoney.telas_acao.inputs.ObjetivoViewModel
 import com.example.safemoney.telas_acao.inputs.ValorInput
 import com.example.safemoney.telas_acao.inputs.toBrazilianDateFormat17
 import com.example.safemoney.viewmodel.CartaoViewModel
