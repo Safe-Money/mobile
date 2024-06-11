@@ -36,7 +36,11 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
@@ -49,6 +53,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -82,7 +87,7 @@ import java.util.Locale
 
 @Composable
 fun ThreeContainersWithList(navController: NavController, contaViewModel: ContaViewModel,  cartaoViewModel: CartaoViewModel, transacaoViewModel: TransacaoViewModel, lancamentoViewModel: LancamentoViewModel, lancFixoTotal: LancFixoTotal) {
-
+    var isBalanceVisible by remember { mutableStateOf(false) }
     val (listaContas, setListaContas) = remember { mutableStateOf(emptyList<UserConta>()) }
     val (listaCartao, setListaCartao) = remember { mutableStateOf(emptyList<CartaoGet>()) }
     val (listaTransacoes, setListaTransacoes) = remember { mutableStateOf(emptyList<Transacao>()) }
@@ -224,22 +229,33 @@ fun ThreeContainersWithList(navController: NavController, contaViewModel: ContaV
                             text = "seu Balanço:",
                             style = MaterialTheme.typography.bodyLarge,
                             fontFamily = FontFamily(Font(R.font.montserrat)),
-                            modifier = Modifier
-                                .padding(8.dp),
+                            modifier = Modifier.padding(8.dp),
                             color = Color.White
                         )
-                        Text(
-                            text = String.format("R$ %.2f", balanco),
-                            style = TextStyle(
-                                fontSize = 24.sp,
-                                fontWeight = FontWeight.Bold,
-                                fontFamily = FontFamily(Font(R.font.montserrat)),
-                                letterSpacing = 2.sp
-                            ),
-                            modifier = Modifier
-                                .padding(8.dp, top = 1.dp),
-                            color = Color.White
-                        )
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = if (isBalanceVisible) String.format("R$ %.2f", balanco) else "************",
+                                style = TextStyle(
+                                    fontSize = 24.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    fontFamily = FontFamily(Font(R.font.montserrat)),
+                                    letterSpacing = 2.sp
+                                ),
+                                modifier = Modifier.padding(8.dp, top = 1.dp),
+                                color = Color.White
+                            )
+                            Icon(
+                                imageVector = if (isBalanceVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff,
+                                contentDescription = if (isBalanceVisible) "Esconder saldo" else "Mostrar saldo",
+                                modifier = Modifier
+                                    .padding(start = 8.dp)
+                                    .size(24.dp)
+                                    .clickable { isBalanceVisible = !isBalanceVisible },
+                                tint = Color.White
+                            )
+                        }
                     }
                 }
                 // container sobreposto do meio

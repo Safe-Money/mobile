@@ -51,7 +51,8 @@ android {
 
 dependencies {
 
-
+    implementation("androidx.compose.material:material-icons-core:1.3.0")
+    implementation("androidx.compose.material:material-icons-extended:1.3.0")
     implementation("io.insert-koin:koin-androidx-compose:3.5.0")
     implementation("androidx.compose.material3:material3:1.2.0-alpha02")
     implementation("androidx.core:core-ktx:1.12.0")
